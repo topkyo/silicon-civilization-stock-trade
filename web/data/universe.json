@@ -1,7 +1,7 @@
 {
   "$schema_note": "硅基文明消费股 watchlist. Edit via UI or directly. Each entry: {symbol, name, theme, note?}.",
   "updated_at": "2026-05-14",
-  "updated_by": "manual",
+  "updated_by": "deepseek-refresh",
   "entries": [
     {
       "symbol": "688256",
@@ -118,19 +118,6 @@
       "name": "紫光股份",
       "theme": "AI服务器",
       "note": "新华三",
-      "global_supply": false
-    },
-    {
-      "symbol": "002261",
-      "name": "拓维信息",
-      "theme": "AI服务器",
-      "note": "鲲鹏服务器",
-      "global_supply": false
-    },
-    {
-      "symbol": "000034",
-      "name": "神州数码",
-      "theme": "AI服务器",
       "global_supply": false
     },
     {
@@ -434,6 +421,48 @@
       "theme": "云/AI基建",
       "note": "阿里云",
       "global_supply": true
+    },
+    {
+      "symbol": "hk00992",
+      "name": "联想集团",
+      "theme": "AI服务器",
+      "note": "全球AI服务器ODM龙头，向微软、谷歌等超大规模云厂商大批量出货",
+      "global_supply": true
+    },
+    {
+      "symbol": "688261",
+      "name": "东微半导",
+      "theme": "功率半导体",
+      "note": "高压超级结MOSFET龙头，AI服务器电源核心功率器件供应商",
+      "global_supply": false
+    },
+    {
+      "symbol": "688019",
+      "name": "安集科技",
+      "theme": "半导体材料",
+      "note": "CMP抛光液龙头，已供货台积电等全球先进制程晶圆厂",
+      "global_supply": true
+    },
+    {
+      "symbol": "002409",
+      "name": "雅克科技",
+      "theme": "半导体材料",
+      "note": "半导体前驱体与SOD龙头，向SK海力士、三星等出货用于HBM先进制程",
+      "global_supply": true
+    },
+    {
+      "symbol": "hk09888",
+      "name": "百度集团",
+      "theme": "云/AI基建",
+      "note": "国内AI云服务与文心大模型龙头，提供AI算力基础设施",
+      "global_supply": false
+    },
+    {
+      "symbol": "hk09698",
+      "name": "万国数据",
+      "theme": "IDC",
+      "note": "国内头部第三方数据中心运营商，服务于云厂商及AI算力需求",
+      "global_supply": false
     }
   ]
 }
