@@ -66,9 +66,14 @@ function indexByDate(klines: Kline[]) {
   return m;
 }
 
+export type Progress =
+  | { phase: "signals"; done: number; total: number }
+  | { phase: "simulating"; done: number; total: number };
+
 export async function runBacktest(
   series: SymbolSeries[],
   cfg: BacktestConfig,
+  onProgress?: (p: Progress) => void,
 ): Promise<BacktestResult> {
   const dates = alignedTradingDates(series).filter(
     (d) => d >= cfg.startDate && d <= cfg.endDate,
@@ -87,6 +92,8 @@ export async function runBacktest(
   const rebalanceDates = dates.filter((_, i) => i % cfg.rebalanceEveryNDays === 0);
   const signalsByDate: Record<string, Signal[]> = {};
   const CONCURRENCY = 6;
+  let signalsDone = 0;
+  onProgress?.({ phase: "signals", done: 0, total: rebalanceDates.length });
   for (let i = 0; i < rebalanceDates.length; i += CONCURRENCY) {
     const slice = rebalanceDates.slice(i, i + CONCURRENCY);
     const results = await Promise.all(
@@ -101,7 +108,10 @@ export async function runBacktest(
             fundamental: s.fundamental,
           };
         });
-        return [d, await scoreSymbols(snapshots, { asOf: d, mode: "backtest" })] as const;
+        const sigs = await scoreSymbols(snapshots, { asOf: d, mode: "backtest" });
+        signalsDone++;
+        onProgress?.({ phase: "signals", done: signalsDone, total: rebalanceDates.length });
+        return [d, sigs] as const;
       }),
     );
     for (const [d, sigs] of results) signalsByDate[d] = sigs;
@@ -118,8 +128,13 @@ export async function runBacktest(
   const trades: BacktestResult["trades"] = [];
   const fee = cfg.feeBps / 10_000;
 
+  const progressEvery = Math.max(1, Math.floor(dates.length / 20));
+  onProgress?.({ phase: "simulating", done: 0, total: dates.length });
   for (let i = 0; i < dates.length; i++) {
     const date = dates[i];
+    if (i % progressEvery === 0 || i === dates.length - 1) {
+      onProgress?.({ phase: "simulating", done: i + 1, total: dates.length });
+    }
     const prices: Record<string, number> = {};
     for (let j = 0; j < symbols.length; j++) {
       const k = byDate[j].get(date)!;

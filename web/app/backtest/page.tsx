@@ -12,6 +12,28 @@ import {
 } from "recharts";
 import type { BacktestResult } from "@/lib/backtest";
 
+type Phase = "loading" | "signals" | "simulating";
+
+interface Progress {
+  phase: Phase;
+  done: number;
+  total: number;
+}
+
+const PHASE_LABEL: Record<Phase, string> = {
+  loading: "加载行情与基本面",
+  signals: "DeepSeek 信号生成",
+  simulating: "回测撮合",
+};
+
+// Weights of each phase in the overall bar (must sum to 1).
+const PHASE_WEIGHT: Record<Phase, number> = {
+  loading: 0.15,
+  signals: 0.75,
+  simulating: 0.10,
+};
+const PHASE_ORDER: Phase[] = ["loading", "signals", "simulating"];
+
 export default function BacktestPage() {
   const [startDate, setStartDate] = useState("2024-01-01");
   const [endDate, setEndDate] = useState(new Date().toISOString().slice(0, 10));
@@ -20,11 +42,28 @@ export default function BacktestPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<BacktestResult | null>(null);
+  const [progress, setProgress] = useState<Progress | null>(null);
+  const [logs, setLogs] = useState<string[]>([]);
+
+  function overallPct(p: Progress | null): number {
+    if (!p) return 0;
+    let pct = 0;
+    for (const ph of PHASE_ORDER) {
+      if (ph === p.phase) {
+        pct += PHASE_WEIGHT[ph] * (p.total > 0 ? p.done / p.total : 0);
+        break;
+      }
+      pct += PHASE_WEIGHT[ph];
+    }
+    return Math.min(1, pct);
+  }
 
   async function run() {
     setLoading(true);
     setError(null);
     setResult(null);
+    setProgress(null);
+    setLogs([]);
     try {
       const r = await fetch("/api/backtest", {
         method: "POST",
@@ -38,14 +77,44 @@ export default function BacktestPage() {
           feeBps: 10,
         }),
       });
-      if (!r.ok) throw new Error(await r.text());
-      setResult(await r.json());
+      if (!r.ok || !r.body) throw new Error(`HTTP ${r.status}`);
+
+      const reader = r.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        let nl: number;
+        while ((nl = buf.indexOf("\n")) >= 0) {
+          const line = buf.slice(0, nl);
+          buf = buf.slice(nl + 1);
+          if (!line) continue;
+          const evt = JSON.parse(line) as
+            | { type: "progress"; phase: Phase; done: number; total: number }
+            | { type: "log"; message: string }
+            | { type: "result"; result: BacktestResult }
+            | { type: "error"; message: string };
+          if (evt.type === "progress") {
+            setProgress({ phase: evt.phase, done: evt.done, total: evt.total });
+          } else if (evt.type === "log") {
+            setLogs((prev) => [...prev, evt.message]);
+          } else if (evt.type === "result") {
+            setResult(evt.result);
+          } else if (evt.type === "error") {
+            setError(evt.message);
+          }
+        }
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
       setLoading(false);
     }
   }
+
+  const pct = overallPct(progress);
 
   return (
     <div className="container">
@@ -75,6 +144,38 @@ export default function BacktestPage() {
           {loading ? "运行中…" : "运行回测"}
         </button>
       </div>
+
+      {(loading || progress) && (
+        <div className="card" style={{ marginTop: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
+            <span>
+              {progress ? PHASE_LABEL[progress.phase] : "准备中…"}
+              {progress && `  ${progress.done} / ${progress.total}`}
+            </span>
+            <span style={{ color: "var(--muted)" }}>{(pct * 100).toFixed(0)}%</span>
+          </div>
+          <div style={{
+            height: 8,
+            marginTop: 8,
+            background: "#0d1320",
+            borderRadius: 4,
+            overflow: "hidden",
+            border: "1px solid var(--border)",
+          }}>
+            <div style={{
+              height: "100%",
+              width: `${pct * 100}%`,
+              background: "var(--accent)",
+              transition: "width 0.2s ease",
+            }} />
+          </div>
+          {logs.length > 0 && (
+            <div style={{ marginTop: 10, fontSize: 12, color: "var(--muted)" }}>
+              {logs.map((l, i) => <div key={i}>· {l}</div>)}
+            </div>
+          )}
+        </div>
+      )}
 
       {error && (
         <div className="card" style={{ marginTop: 16, borderColor: "var(--danger)" }}>
