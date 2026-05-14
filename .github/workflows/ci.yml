@@ -1,0 +1,77 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ----------------------------------------------------------------------
+  # Next.js webapp: type-check, unit tests, production build.
+  # ----------------------------------------------------------------------
+  web:
+    name: web (typecheck + test + build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Type-check
+        run: ./node_modules/.bin/tsc --noEmit
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        # The build doesn't need real secrets — env vars are read at runtime,
+        # and the universe JSON + cache.db live on the runtime filesystem.
+        env:
+          DEEPSEEK_API_KEY: dummy-ci-key
+        run: npm run build
+
+  # ----------------------------------------------------------------------
+  # Python sidecar: syntax + import check. We do NOT exercise akshare
+  # network calls in CI — they hit upstream and are flaky by design.
+  # ----------------------------------------------------------------------
+  pyserver:
+    name: pyserver (syntax + import)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pyserver
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: pyserver/uv.lock
+
+      - name: Sync dependencies (locked)
+        run: uv sync --frozen
+
+      - name: Syntax check
+        run: uv run python -m py_compile main.py
+
+      - name: Import check
+        # Confirms fastapi/akshare/pandas/pydantic all resolve and main.py
+        # imports without executing network I/O.
+        run: uv run python -c "import importlib.util as u; spec = u.spec_from_file_location('m','main.py'); m = u.module_from_spec(spec); spec.loader.exec_module(m); print('main loaded, app =', m.app)"
