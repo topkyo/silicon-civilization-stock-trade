@@ -52,6 +52,21 @@ export function fetchFundamental(symbol: string) {
   return get<Fundamental>("/fundamental", { symbol });
 }
 
+export interface Analyst {
+  symbol: string;
+  buy_count?: number;
+  total_count?: number;
+  buy_ratio?: number | null;
+  consensus_eps_next?: number | null;
+  implied_target?: number | null;
+  current_price?: number | null;
+  upside_pct?: number | null;
+}
+
+export function fetchAnalyst(symbol: string) {
+  return get<Analyst>("/analyst", { symbol });
+}
+
 export function fetchSpot(symbol: string) {
   return get<{ symbol: string; name: string; price: number; change_pct: number }>(
     "/spot",

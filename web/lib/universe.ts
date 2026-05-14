@@ -9,6 +9,9 @@ export interface UniverseEntry {
   name: string;
   theme: string;
   note?: string;
+  /** Does the company sell into the global AI supply chain (NVIDIA, AMD,
+   *  Apple, Google, hyperscalers) — vs. domestic-only revenue. */
+  global_supply?: boolean;
 }
 
 export interface UniverseFile {

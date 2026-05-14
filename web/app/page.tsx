@@ -1,18 +1,12 @@
 import Link from "next/link";
 import { loadEntries } from "@/lib/universe";
 import RefreshUniverseButton from "./RefreshUniverseButton";
+import UniverseTable from "./UniverseTable";
 
 export const dynamic = "force-dynamic";
 
 export default function Home() {
   const entries = loadEntries();
-  const byTheme = entries.reduce<Record<string, typeof entries>>(
-    (acc, e) => {
-      (acc[e.theme] ??= []).push(e);
-      return acc;
-    },
-    {},
-  );
 
   return (
     <div className="container">
@@ -33,26 +27,11 @@ export default function Home() {
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 32 }}>
-        <h2 style={{ margin: 0 }}>股票池（按主题, 共 {entries.length} 只）</h2>
+        <h2 style={{ margin: 0 }}>股票池（共 {entries.length} 只）</h2>
         <RefreshUniverseButton />
       </div>
-      <div className="row" style={{ marginTop: 8 }}>
-        {Object.entries(byTheme).map(([theme, items]) => (
-          <div key={theme} className="card" style={{ minWidth: 260, flex: "1 1 260px" }}>
-            <strong>{theme}</strong>
-            <table style={{ marginTop: 8 }}>
-              <tbody>
-                {items.map((e) => (
-                  <tr key={e.symbol}>
-                    <td style={{ color: "var(--muted)" }}>{e.symbol}</td>
-                    <td>{e.name}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ))}
-      </div>
+
+      <UniverseTable entries={entries} />
     </div>
   );
 }

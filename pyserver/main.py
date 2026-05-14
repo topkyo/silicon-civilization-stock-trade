@@ -98,6 +98,24 @@ class Fundamental(BaseModel):
     profit_yoy: float | None = None
 
 
+class Analyst(BaseModel):
+    """Consensus sell-side view aggregated from eastmoney research reports.
+
+    Note: A-share brokers rarely publish a structured 目标价 field — eastmoney
+    only exposes forecast EPS. We compute an *implied* target as
+    `consensus_eps_next_year × current PE(TTM)`, which is mathematically
+    equivalent to "if PE stays flat, what would the price be at next-year EPS".
+    """
+    symbol: str
+    buy_count: int = 0
+    total_count: int = 0
+    buy_ratio: float | None = None
+    consensus_eps_next: float | None = None     # 元
+    implied_target: float | None = None          # 元
+    current_price: float | None = None           # 元
+    upside_pct: float | None = None              # %
+
+
 # ---------- helpers --------------------------------------------------------
 
 
@@ -190,6 +208,70 @@ def fundamental(symbol: str):
                 pass
     except Exception as e:
         raise HTTPException(502, f"akshare error: {e}") from e
+
+    cache_put(key, out, 24 * 3600)
+    return out
+
+
+@app.get("/analyst", response_model=Analyst)
+def analyst(symbol: str):
+    """Sell-side consensus. 24h cache (slow upstream)."""
+    key = f"analyst:{symbol}"
+    cached = cache_get(key)
+    if cached is not None:
+        return cached
+
+    code, market = _normalize_symbol(symbol)
+    out: dict[str, Any] = {"symbol": symbol}
+    if market == "hk":
+        # eastmoney research-report API is A-share only. Leave fields null.
+        cache_put(key, out, 24 * 3600)
+        return out
+
+    try:
+        df = ak.stock_research_report_em(symbol=code)
+    except Exception as e:
+        raise HTTPException(502, f"akshare error: {e}") from e
+
+    if df is None or df.empty:
+        cache_put(key, out, 24 * 3600)
+        return out
+
+    out["total_count"] = int(len(df))
+    if "东财评级" in df.columns:
+        out["buy_count"] = int((df["东财评级"] == "买入").sum())
+        out["buy_ratio"] = round(out["buy_count"] / out["total_count"], 3) if out["total_count"] else None
+
+    # consensus EPS for next fiscal year — pick the smallest year column we have
+    year_cols = sorted(
+        c for c in df.columns if c.endswith("-盈利预测-收益") and c[:4].isdigit()
+    )
+    if year_cols:
+        # Skip the first column if it is the current year; prefer the next one.
+        import datetime as _dt
+        this_year = _dt.date.today().year
+        next_col = next((c for c in year_cols if int(c[:4]) >= this_year + 1), year_cols[0])
+        series = pd.to_numeric(df[next_col], errors="coerce").dropna()
+        if not series.empty:
+            out["consensus_eps_next"] = round(float(series.median()), 4)
+
+    # current price + PE(TTM) from stock_value_em to compute implied target.
+    try:
+        val = ak.stock_value_em(symbol=code)
+        if val is not None and not val.empty:
+            latest = val.iloc[-1]
+            price = latest.get("当日收盘价")
+            pe = latest.get("PE(TTM)")
+            if pd.notna(price):
+                out["current_price"] = round(float(price), 3)
+            if out.get("consensus_eps_next") is not None and pd.notna(pe):
+                out["implied_target"] = round(out["consensus_eps_next"] * float(pe), 3)
+                if out.get("current_price"):
+                    out["upside_pct"] = round(
+                        (out["implied_target"] / out["current_price"] - 1) * 100, 2
+                    )
+    except Exception:
+        pass
 
     cache_put(key, out, 24 * 3600)
     return out
