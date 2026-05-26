@@ -17,6 +17,24 @@ chmod +x scripts/macos/install-launchd.sh scripts/macos/uninstall-launchd.sh
 
 Web 以 **生产模式**（`npm run start`）运行；首次安装若缺少 `web/.next` 会自动 `npm run build`。
 
+## 清行情缓存
+
+mock 模式或网络异常后，`cache.db` 可能残留 `Mock-*` 数据：
+
+```bash
+./scripts/macos/clear-market-cache.sh
+```
+
+pyserver 默认**清除失效代理**；若东财直连失败但 VPN 在 `127.0.0.1:7890` 可用，在 `pyserver/.env` 设置：
+
+```bash
+MARKET_HTTP_PROXY=http://127.0.0.1:7890
+```
+
+然后 `./scripts/macos/clear-market-cache.sh` 并复测 `./scripts/macos/verify-network.sh`。
+
+Tushare 积分与接口权限见 [`docs/TUSHARE-PERMISSIONS.md`](../../docs/TUSHARE-PERMISSIONS.md)。
+
 ## 卸载
 
 ```bash

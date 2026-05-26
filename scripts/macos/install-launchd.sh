@@ -77,9 +77,30 @@ load_agent() {
   launchctl kickstart -k "${domain}/${label}"
 }
 
-# --- pyserver ---
+# --- pyserver (disable inherited HTTP proxies for AkShare/Eastmoney) ---
+ENV_XML="  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>$(dirname "${UV_BIN}"):/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>NO_PROXY</key>
+    <string>localhost,127.0.0.1,::1,push2.eastmoney.com,.eastmoney.com</string>
+    <key>HTTP_PROXY</key>
+    <string></string>
+    <key>HTTPS_PROXY</key>
+    <string></string>
+    <key>ALL_PROXY</key>
+    <string></string>
+    <key>http_proxy</key>
+    <string></string>
+    <key>https_proxy</key>
+    <string></string>
+    <key>all_proxy</key>
+    <string></string>
+  </dict>
+"
 write_plist "com.topkyo.ai-infra.pyserver" "${REPO_ROOT}/pyserver" \
   "${UV_BIN}" run python -m uvicorn main:app --host 127.0.0.1 --port 8001
+unset ENV_XML
 
 # --- web (production) ---
 if [[ ! -f "${REPO_ROOT}/web/.next/BUILD_ID" ]]; then

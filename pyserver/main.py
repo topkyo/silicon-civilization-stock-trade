@@ -34,6 +34,33 @@ from pydantic import BaseModel
 # ---------- bootstrap ------------------------------------------------------
 
 load_dotenv(Path(__file__).parent / ".env")
+
+
+MARKET_HTTP_PROXY = os.environ.get("MARKET_HTTP_PROXY", "").strip()
+
+
+def _strip_proxy_env() -> None:
+    """Use MARKET_HTTP_PROXY when set (VPN); else drop broken inherited proxies."""
+    for key in (
+        "HTTP_PROXY",
+        "HTTPS_PROXY",
+        "ALL_PROXY",
+        "http_proxy",
+        "https_proxy",
+        "all_proxy",
+    ):
+        os.environ.pop(key, None)
+    if MARKET_HTTP_PROXY:
+        os.environ["HTTP_PROXY"] = MARKET_HTTP_PROXY
+        os.environ["HTTPS_PROXY"] = MARKET_HTTP_PROXY
+        return
+    os.environ.setdefault(
+        "NO_PROXY",
+        "localhost,127.0.0.1,::1,push2.eastmoney.com,push2his.eastmoney.com,.eastmoney.com",
+    )
+
+
+_strip_proxy_env()
 TUSHARE_TOKEN = os.environ.get("TUSHARE_TOKEN", "").strip()
 MOCK_MODE = TUSHARE_TOKEN.lower() in {"", "mock", "your-tushare-pro-token-here"}
 from mock_data import BENCHMARKS  # noqa: E402
@@ -51,6 +78,23 @@ else:
     _pro = ts.pro_api()
 
 DB_PATH = Path(__file__).parent / "cache.db"
+
+# Bypass broken shell proxies (e.g. 127.0.0.1:7890) for Eastmoney spot quotes.
+_EM_SESSION: requests.Session | None = None
+
+
+def _requests_get_no_proxy(url: str, *, params: dict[str, Any], timeout: float) -> requests.Response:
+    global _EM_SESSION
+    if _EM_SESSION is None:
+        _EM_SESSION = requests.Session()
+        _EM_SESSION.trust_env = False
+        if MARKET_HTTP_PROXY:
+            _EM_SESSION.proxies = {
+                "http": MARKET_HTTP_PROXY,
+                "https": MARKET_HTTP_PROXY,
+            }
+    return _EM_SESSION.get(url, params=params, timeout=timeout)
+
 
 app = FastAPI(title="silicon-civ pyserver", version="0.2.0")
 
@@ -298,6 +342,68 @@ def _eastmoney_market_code(market: str) -> int:
     return 1 if market == "sh" else 0
 
 
+_AK_HIST_RENAME = {
+    "日期": "date",
+    "开盘": "open",
+    "最高": "high",
+    "最低": "low",
+    "收盘": "close",
+    "成交量": "volume",
+    "成交额": "amount",
+    "涨跌幅": "pct_chg",
+}
+
+
+def _ak_a_hist_df(code: str, start: str, end: str, adjust: str = "qfq") -> pd.DataFrame | None:
+    """A-share daily bars via AkShare (push2his) — works when Tushare pro_bar is denied."""
+    try:
+        df = _with_retries(
+            ak.stock_zh_a_hist,
+            symbol=code,
+            period="daily",
+            start_date=start,
+            end_date=end,
+            adjust=adjust or "",
+        )
+    except Exception:
+        return None
+    if df is None or df.empty:
+        return None
+    return df
+
+
+def _rows_from_ak_hist(df: pd.DataFrame) -> list[dict[str, Any]]:
+    out = df.rename(columns=_AK_HIST_RENAME)
+    if "date" in out.columns:
+        out["date"] = pd.to_datetime(out["date"]).dt.strftime("%Y-%m-%d")
+    cols = [c for c in ("date", "open", "high", "low", "close", "volume") if c in out.columns]
+    return out[cols].to_dict(orient="records")
+
+
+def _ak_a_spot_from_hist(ts_code: str, market: str, symbol: str) -> dict[str, Any] | None:
+    """Last daily bar as a spot quote when Eastmoney realtime is unreachable."""
+    if market not in {"sh", "sz", "bj"}:
+        return None
+    code = _compact_code(ts_code)
+    end = date.today().strftime("%Y%m%d")
+    start = (date.today() - timedelta(days=15)).strftime("%Y%m%d")
+    df = _ak_a_hist_df(code, start, end, "qfq")
+    if df is None:
+        return None
+    row = df.iloc[-1]
+    price = _num_or_none(_ak_col(row, "收盘", "close"))
+    if price is None:
+        return None
+    return {
+        "symbol": symbol,
+        "name": str(row.get("名称") or ""),
+        "price": price,
+        "change_pct": _num_or_none(_ak_col(row, "涨跌幅", "pct_chg")) or 0,
+        "volume": _num_or_none(_ak_col(row, "成交量", "volume")) or 0,
+        "turnover": _num_or_none(_ak_col(row, "成交额", "amount")) or 0,
+    }
+
+
 def _ak_a_spot_rows(ts_code: str, market: str) -> dict[str, Any] | None:
     """Fetch/cached A-share spot quote with a hard timeout.
 
@@ -318,7 +424,7 @@ def _ak_a_spot_rows(ts_code: str, market: str) -> dict[str, Any] | None:
         "secid": f"{_eastmoney_market_code(market)}.{code}",
     }
     try:
-        response = requests.get(url, params=params, timeout=3)
+        response = _requests_get_no_proxy(url, params=params, timeout=3)
         response.raise_for_status()
         data = response.json().get("data")
     except Exception:
@@ -459,8 +565,9 @@ def health():
     return {
         "ok": True,
         "time": datetime.now().isoformat(),
-        "source": "mock" if MOCK_MODE else "tushare",
+        "source": "mock" if MOCK_MODE else "akshare+tushare",
         "mock": MOCK_MODE,
+        "a_share_quotes": "akshare_primary",
     }
 
 
@@ -494,10 +601,16 @@ def klines(
                 start_date=start, end_date=end, adjust=(adjust or ""),
             )
         else:
-            df = _with_retries(
-                ts.pro_bar,
-                ts_code=ts_code, adj=(adjust or None), start_date=start, end_date=end,
-            )
+            code = _compact_code(ts_code)
+            df = _ak_a_hist_df(code, start, end, adjust or "qfq")
+            if df is None and _pro is not None:
+                df = _with_retries(
+                    ts.pro_bar,
+                    ts_code=ts_code,
+                    adj=(adjust or None),
+                    start_date=start,
+                    end_date=end,
+                )
     except Exception as e:
         raise HTTPException(502, f"upstream error: {e}") from e
 
@@ -513,7 +626,7 @@ def klines(
         })
         df["date"] = pd.to_datetime(df["date"]).dt.strftime("%Y-%m-%d")
         rows = df[["date", "open", "high", "low", "close", "volume"]].to_dict(orient="records")
-    else:
+    elif "trade_date" in df.columns:
         df = df.sort_values("trade_date")
         rows = [
             {
@@ -527,6 +640,8 @@ def klines(
             for r in df.itertuples()
             for d in [str(r.trade_date)]
         ]
+    else:
+        rows = _rows_from_ak_hist(df)
     cache_put(key, rows, seconds_until_next_trading_close())
     return rows
 
@@ -546,7 +661,15 @@ def fundamental(symbol: str):
     ts_code, market = _to_ts_code(symbol)
     out: dict[str, Any] = {"symbol": symbol, "name": _resolve_name(ts_code, market)}
 
+    hist_spot: dict[str, Any] | None = None
     ak_spot = _ak_a_spot(ts_code, market)
+    if ak_spot is None and market in {"sh", "sz", "bj"}:
+        hist_spot = _ak_a_spot_from_hist(ts_code, market, symbol)
+        if hist_spot is not None:
+            ak_spot = {
+                "名称": hist_spot.get("name") or symbol,
+                "最新价": hist_spot["price"],
+            }
     if ak_spot is not None:
         out["name"] = str(ak_spot.get("名称") or out.get("name") or "")
         pe_ttm = _num_or_none(_ak_col(pd.Series(ak_spot), "市盈率-动态", "市盈率", "PE"))
@@ -561,6 +684,9 @@ def fundamental(symbol: str):
         _attach_profit_yoy(out, ts_code, market)
         if out.get("pe_ttm") is not None and out.get("pb") is not None and out.get("market_cap") is not None:
             cache_put(key, out, 24 * 3600 if out.get("profit_yoy") is not None else 30)
+            return out
+        if hist_spot is not None and out.get("name"):
+            cache_put(key, out, 30)
             return out
 
     try:
@@ -772,6 +898,10 @@ def spot(symbol: str):
                 }
                 cache_put(key, out, 30)
                 return out
+            hist_spot = _ak_a_spot_from_hist(ts_code, market, symbol)
+            if hist_spot is not None:
+                cache_put(key, hist_spot, 30)
+                return hist_spot
         if market == "hk":
             ak_code = ts_code.split(".")[0]
             df = _with_retries(
@@ -786,8 +916,9 @@ def spot(symbol: str):
                 "成交额": "amount", "涨跌幅": "pct_chg",
             })
         else:
-            # A-share fallback when the AkShare/Eastmoney realtime quote is
-            # unavailable or too slow.
+            # Tushare daily only when AkShare realtime + hist both fail.
+            if _pro is None:
+                raise HTTPException(404, f"symbol {symbol} not found")
             df = _with_retries(_pro.daily, ts_code=ts_code, start_date=start, end_date=end)
             if df is None or df.empty:
                 raise HTTPException(404, f"symbol {symbol} not found")
