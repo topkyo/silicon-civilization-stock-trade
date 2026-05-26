@@ -8,5 +8,5 @@ export const SITE_HERO =
 export const SITE_OWNER = "topkyo";
 export const SITE_REPO = "topkyo-ai-infra-dashboard";
 export const SITE_PAGES_URL = `https://${SITE_OWNER}.github.io/${SITE_REPO}/`;
-export const SITE_PRIVATE_NOTE = "私有研究项目，不构成投资建议";
+export const SITE_PRIVATE_NOTE = "个人研究项目，不构成投资建议";
 export const SITE_SOCIAL_CARD_ALT = `${SITE_NAME} 社交分享卡片`;

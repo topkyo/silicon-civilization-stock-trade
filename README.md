@@ -2,7 +2,8 @@
 
 **topkyo** 的个人 AI 基建研究仪表盘，聚焦 A 股 **AI 基建主题**：算力、互连、散热、电力、IDC、存储、半导体设备与材料等供给链。
 
-> 个人研究工具 · **不构成任何投资建议**
+> 个人研究工具 · **不构成任何投资建议**  
+> 基于 [madeye/silicon-civilization-stock-trade](https://github.com/madeye/silicon-civilization-stock-trade) fork 并定制化。
 
 ## 投资主题
 
