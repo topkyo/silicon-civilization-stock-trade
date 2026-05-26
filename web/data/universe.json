@@ -1,6 +1,6 @@
 {
   "$schema_note": "硅基文明消费股 watchlist. Edit via UI or directly. Each entry: {symbol, name, theme, note?}.",
-  "updated_at": "2026-05-21",
+  "updated_at": "2026-05-26",
   "updated_by": "deepseek-refresh",
   "entries": [
     {
@@ -15,13 +15,6 @@
       "name": "海光信息",
       "theme": "算力/AI芯片",
       "note": "DCU + x86 CPU",
-      "global_supply": false
-    },
-    {
-      "symbol": "688047",
-      "name": "龙芯中科",
-      "theme": "算力/AI芯片",
-      "note": "自主指令集 CPU",
       "global_supply": false
     },
     {
@@ -448,6 +441,69 @@
       "name": "南大光电",
       "theme": "半导体材料",
       "note": "国内光刻胶领先，高纯电子特气用于先进制程",
+      "global_supply": false
+    },
+    {
+      "symbol": "600703",
+      "name": "三安光电",
+      "theme": "功率半导体",
+      "note": "国内SiC衬底及器件龙头，为AI数据中心高效率电源提供功率半导体。",
+      "global_supply": true
+    },
+    {
+      "symbol": "300666",
+      "name": "江丰电子",
+      "theme": "半导体材料",
+      "note": "高纯溅射靶材龙头，产品进入台积电先进制程供应链。",
+      "global_supply": true
+    },
+    {
+      "symbol": "600050",
+      "name": "中国联通",
+      "theme": "云/AI基建",
+      "note": "三大运营商之一，积极布局算力网络，提供AI云计算服务。",
+      "global_supply": false
+    },
+    {
+      "symbol": "600667",
+      "name": "太极实业",
+      "theme": "存储/HBM",
+      "note": "与SK海力士合资成立海太半导体，从事内存封装测试，涉及先进封装。",
+      "global_supply": true
+    },
+    {
+      "symbol": "688120",
+      "name": "华海清科",
+      "theme": "半导体设备",
+      "note": "国产CMP设备龙头，用于芯片制造关键平坦化工艺。",
+      "global_supply": false
+    },
+    {
+      "symbol": "688037",
+      "name": "芯源微",
+      "theme": "半导体设备",
+      "note": "国产涂胶显影设备龙头，用于光刻工序前处理。",
+      "global_supply": false
+    },
+    {
+      "symbol": "603228",
+      "name": "景旺电子",
+      "theme": "AI-PCB",
+      "note": "国内PCB主要厂商，产品用于AI服务器、交换机和液冷系统。",
+      "global_supply": true
+    },
+    {
+      "symbol": "000021",
+      "name": "深科技",
+      "theme": "存储/HBM",
+      "note": "全球领先的存储芯片封测与模组制造商，服务金士顿等国际客户。",
+      "global_supply": true
+    },
+    {
+      "symbol": "600845",
+      "name": "宝信软件",
+      "theme": "IDC",
+      "note": "上海IDC龙头，宝武集团旗下，提供批发型数据中心服务。",
       "global_supply": false
     }
   ]
