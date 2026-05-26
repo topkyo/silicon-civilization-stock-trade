@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,
+  SITE_PAGES_URL,
   SITE_SOCIAL_CARD_ALT,
   SITE_TAGLINE,
 } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_PAGES_URL),
   title: {
     default: SITE_NAME,
     template: `%s · ${SITE_NAME}`,

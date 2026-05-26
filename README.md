@@ -76,6 +76,8 @@ cd web && npx tsx scripts/snapshot.ts
 python3 -m http.server 8765 --directory docs
 ```
 
+GitHub Pages（私有仓库）：<https://topkyo.github.io/topkyo-ai-infra-dashboard/>
+
 跳过耗时的 LLM 步骤：
 
 ```bash

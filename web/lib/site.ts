@@ -6,5 +6,7 @@ export const SITE_DESCRIPTION =
 export const SITE_HERO =
   "跟踪算力芯片、光模块、AI 服务器、液冷、电力、IDC、半导体材料与 AI-PCB 等 AI 基建供给侧标的。";
 export const SITE_OWNER = "topkyo";
+export const SITE_REPO = "topkyo-ai-infra-dashboard";
+export const SITE_PAGES_URL = `https://${SITE_OWNER}.github.io/${SITE_REPO}/`;
 export const SITE_PRIVATE_NOTE = "私有研究项目，不构成投资建议";
 export const SITE_SOCIAL_CARD_ALT = `${SITE_NAME} 社交分享卡片`;

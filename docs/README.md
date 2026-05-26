@@ -32,4 +32,8 @@ python3 -m http.server 8765 --directory docs
 open http://localhost:8765/
 ```
 
-VPS 完整部署见 [DEPLOY.md](./DEPLOY.md)。
+GitHub Pages（私有仓库，仅协作者可访问）：
+
+**https://topkyo.github.io/topkyo-ai-infra-dashboard/**
+
+在仓库 Settings → Pages 中确认 source 为 `main` 分支 `/docs` 文件夹。

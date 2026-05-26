@@ -12,8 +12,8 @@
 ## 1. 克隆私有仓库
 
 ```bash
-git clone git@github.com:topkyo/silicon-civilization-stock-trade.git
-cd silicon-civilization-stock-trade
+git clone git@github.com:topkyo/topkyo-ai-infra-dashboard.git
+cd topkyo-ai-infra-dashboard
 ```
 
 ## 2. 配置环境变量
