@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://madeye.github.io/silicon-civilization-stock-trade/"),
+  metadataBase: new URL("https://topkyo.github.io/silicon-civilization-stock-trade/"),
   title: {
     default: "硅基文明消费股交易系统",
     template: "%s · 硅基文明消费股交易系统",

@@ -2,7 +2,7 @@
 
 一个面向中国市场的主题研究与交易仪表盘，聚焦 **硅基文明消费股**：AI 基础设施为了存在、扩张和迭代所持续消耗的算力、互连、散热、电力、IDC、存储、半导体设备与材料等供给链。
 
-静态快照站点：<https://scs.maxlv.net>
+静态快照站点：<https://topkyo.github.io/silicon-civilization-stock-trade/>
 
 ## 主题定义
 
@@ -27,7 +27,7 @@
 flowchart LR
   web["Next.js 15 App Router<br/>web/<br/><br/>自选股 / 信号 / 回测 UI<br/>API routes 与 TypeScript 回测<br/>DeepSeek 策略与缓存<br/>浏览器 24h localStorage"]
   py["FastAPI sidecar<br/>pyserver/<br/><br/>Tushare Pro + AkShare<br/>SQLite 市场数据缓存<br/>批量行情 / 分析师接口"]
-  docs["GitHub Pages snapshot<br/>docs/<br/><br/>https://scs.maxlv.net<br/>社交卡片 / 图标 / CNAME"]
+  docs["GitHub Pages snapshot<br/>docs/<br/><br/>https://topkyo.github.io/silicon-civilization-stock-trade/<br/>社交卡片 / 图标"]
 
   web -- HTTP --> py
   web --> docs
@@ -85,7 +85,7 @@ PYSERVER_URL=http://localhost:8001
 
 ## 静态快照
 
-静态站点发布自 `docs/`，GitHub Pages 自定义域名为 `scs.maxlv.net`，域名配置保存在 `docs/CNAME`。
+静态站点发布自 `docs/`，通过 GitHub Pages 托管于 `https://topkyo.github.io/silicon-civilization-stock-trade/`。若需自定义域名，在 `docs/CNAME` 写入域名并在 DNS 配置 GitHub Pages 记录。
 
 生成快照：
 
@@ -111,7 +111,7 @@ python3 -m http.server 8765 --directory docs
 
 ```
 silicon-civilization-stock-trade/
-├── docs/                      # GitHub Pages 静态快照、图标、社交卡片、CNAME
+├── docs/                      # GitHub Pages 静态快照、图标、社交卡片
 ├── pyserver/                  # FastAPI + Tushare Pro/AkShare sidecar
 │   ├── main.py
 │   ├── env.example

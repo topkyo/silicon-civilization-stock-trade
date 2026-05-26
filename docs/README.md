@@ -46,4 +46,7 @@ open http://localhost:8765/
 ## Publish
 
 In **Settings → Pages**, set source to **Deploy from a branch**, branch `main`,
-folder `/docs`. The next push to `main` publishes the site.
+folder `/docs`. The site publishes at
+**https://topkyo.github.io/silicon-civilization-stock-trade/**.
+
+For full interactive deployment (VPS + Docker), see [DEPLOY.md](./DEPLOY.md).
