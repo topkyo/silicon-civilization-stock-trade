@@ -1,8 +1,8 @@
 # topkyo · AI 基建研究台
 
-**topkyo** 的个人私有研究仪表盘，聚焦 A 股 **AI 基建主题**：算力、互连、散热、电力、IDC、存储、半导体设备与材料等供给链。
+**topkyo** 的个人 AI 基建研究仪表盘，聚焦 A 股 **AI 基建主题**：算力、互连、散热、电力、IDC、存储、半导体设备与材料等供给链。
 
-> 私有仓库 · 仅供本人与授权协作者使用 · **不构成任何投资建议**
+> 个人研究工具 · **不构成任何投资建议**
 
 ## 投资主题
 
@@ -76,7 +76,7 @@ cd web && npx tsx scripts/snapshot.ts
 python3 -m http.server 8765 --directory docs
 ```
 
-GitHub Pages：<https://topkyo.github.io/topkyo-ai-infra-dashboard/>（私有仓库需 GitHub Pro 才能启用；当前可用本地 `docs/` 预览）
+GitHub Pages：<https://topkyo.github.io/topkyo-ai-infra-dashboard/>
 
 跳过耗时的 LLM 步骤：
 
@@ -122,7 +122,7 @@ lsof -ti:3000,8001 | xargs kill
 - **切勿**提交 `.env`、`.env.local`、`cache.db`、API key
 - `TUSHARE_TOKEN` → `pyserver/.env`
 - LLM key、`PYSERVER_URL` → `web/.env.local`
-- 本仓库为 **private**，快照数据含策略输出，请勿公开分享
+- 快照数据含策略输出，请勿当作投资建议
 
 ## 提交流程
 

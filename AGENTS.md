@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-This repository is **topkyo**'s private **AI infrastructure research dashboard** for Chinese A-share thematic stock analysis (compute, interconnect, cooling, power, IDC, storage, semiconductors).
+This repository is **topkyo**'s **AI infrastructure research dashboard** for Chinese A-share thematic stock analysis (compute, interconnect, cooling, power, IDC, storage, semiconductors).
 
 - `web/`: Next.js 15 App Router frontend, API routes, TypeScript backtests, DeepSeek integration, SQLite cache, and tests.
 - `web/app/`: UI pages and route handlers. Key pages include `page.tsx`, `signals/page.tsx`, and `backtest/page.tsx`.

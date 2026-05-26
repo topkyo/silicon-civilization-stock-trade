@@ -9,10 +9,10 @@
 - [`TUSHARE_TOKEN`](../pyserver/env.example)（Tushare Pro）
 - LLM API key：[`OPENCODE_GO_API_KEY`](../web/env.example.txt) 或 `DEEPSEEK_API_KEY`
 
-## 1. 克隆私有仓库
+## 1. 克隆仓库
 
 ```bash
-git clone git@github.com:topkyo/topkyo-ai-infra-dashboard.git
+git clone https://github.com/topkyo/topkyo-ai-infra-dashboard.git
 cd topkyo-ai-infra-dashboard
 ```
 
