@@ -76,7 +76,7 @@ cd web && npx tsx scripts/snapshot.ts
 python3 -m http.server 8765 --directory docs
 ```
 
-GitHub Pages（私有仓库）：<https://topkyo.github.io/topkyo-ai-infra-dashboard/>
+GitHub Pages：<https://topkyo.github.io/topkyo-ai-infra-dashboard/>（私有仓库需 GitHub Pro 才能启用；当前可用本地 `docs/` 预览）
 
 跳过耗时的 LLM 步骤：
 

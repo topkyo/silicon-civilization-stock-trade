@@ -32,8 +32,8 @@ python3 -m http.server 8765 --directory docs
 open http://localhost:8765/
 ```
 
-GitHub Pages（私有仓库，仅协作者可访问）：
+GitHub Pages 地址（需 [GitHub Pro](https://github.com/pricing) 或公开仓库方可启用）：
 
 **https://topkyo.github.io/topkyo-ai-infra-dashboard/**
 
-在仓库 Settings → Pages 中确认 source 为 `main` 分支 `/docs` 文件夹。
+当前仓库为 private + 免费套餐，Pages 暂无法创建；本地预览见上文。
