@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { readUniverse } from "@/lib/universe";
+import { SITE_EYEBROW, SITE_HERO, SITE_NAME } from "@/lib/site";
 import RefreshUniverseButton from "./RefreshUniverseButton";
 import UniverseTable from "./UniverseTable";
 
@@ -15,11 +16,9 @@ export default function Home() {
     <div className="container">
       <header className="page-header">
         <div>
-          <div className="eyebrow">DeepSeek · Tushare · A股股票池</div>
-          <h1>硅基文明消费股交易系统</h1>
-          <p>
-            跟踪算力芯片、光模块、AI 服务器、液冷、电力、IDC、半导体材料与 AI-PCB 等供给侧标的。
-          </p>
+          <div className="eyebrow">{SITE_EYEBROW}</div>
+          <h1>{SITE_NAME}</h1>
+          <p>{SITE_HERO}</p>
         </div>
         <div className="header-actions">
           <Link href="/signals" className="button secondary">实时信号</Link>

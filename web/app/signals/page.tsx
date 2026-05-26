@@ -1,7 +1,8 @@
-import { loadEntries } from "@/lib/universe";
-import { fetchKlines, fetchFundamental, fetchSpot } from "@/lib/pyserver";
-import { scoreSymbols, type SymbolSnapshot } from "@/lib/deepseek";
 import Link from "next/link";
+import { scoreSymbols, type SymbolSnapshot } from "@/lib/deepseek";
+import { fetchKlines, fetchFundamental, fetchSpot } from "@/lib/pyserver";
+import { SITE_EYEBROW } from "@/lib/site";
+import { loadEntries } from "@/lib/universe";
 
 export const dynamic = "force-dynamic";
 
@@ -72,9 +73,9 @@ export default async function SignalsPage() {
       <Link href="/" className="back-link">返回股票池</Link>
       <header className="page-header compact">
         <div>
-          <div className="eyebrow">Live scoring</div>
+          <div className="eyebrow">{SITE_EYEBROW}</div>
           <h1>实时信号</h1>
-          <p>以 PEG 和利润增速/估值匹配为主，短期价格指标降权，生成 5-20 个交易日动作建议。</p>
+          <p>基于 AI 基建主题池，以 PEG 与利润增速/估值匹配为主，生成 5–20 个交易日的动作建议。</p>
         </div>
       </header>
       {error && (

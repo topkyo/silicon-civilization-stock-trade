@@ -1,5 +1,5 @@
 {
-  "$schema_note": "硅基文明消费股 watchlist. Edit via UI or directly. Each entry: {symbol, name, theme, note?}.",
+  "$schema_note": "topkyo 个人 AI 基建主题 A 股 watchlist。可通过 UI 或 DeepSeek 刷新维护。",
   "updated_at": "2026-05-26",
   "updated_by": "deepseek-refresh",
   "entries": [

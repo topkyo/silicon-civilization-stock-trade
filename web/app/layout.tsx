@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_SOCIAL_CARD_ALT,
+  SITE_TAGLINE,
+} from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://topkyo.github.io/silicon-civilization-stock-trade/"),
   title: {
-    default: "硅基文明消费股交易系统",
-    template: "%s · 硅基文明消费股交易系统",
+    default: SITE_NAME,
+    template: `%s · ${SITE_NAME}`,
   },
-  description: "DeepSeek、Tushare 与 AkShare 驱动的 A 股主题股票池、目标价、信号与回测系统。",
+  description: SITE_DESCRIPTION,
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
@@ -18,24 +23,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "zh_CN",
-    siteName: "硅基文明消费股交易系统",
-    title: "硅基文明消费股交易系统",
-    description: "A 股硅基文明消费主题股票池、分析师目标价、DeepSeek 信号与策略回测。",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_TAGLINE,
     url: "/",
     images: [
       {
-        url: "/social-card.png",
+        url: "/social-card.svg",
         width: 1200,
         height: 630,
-        alt: "硅基文明消费股交易系统社交分享卡片",
+        alt: SITE_SOCIAL_CARD_ALT,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "硅基文明消费股交易系统",
-    description: "A 股硅基文明消费主题股票池、分析师目标价、DeepSeek 信号与策略回测。",
-    images: ["/social-card.png"],
+    title: SITE_NAME,
+    description: SITE_TAGLINE,
+    images: ["/social-card.svg"],
   },
 };
 

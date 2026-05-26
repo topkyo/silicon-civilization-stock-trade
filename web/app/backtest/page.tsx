@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { SITE_EYEBROW } from "@/lib/site";
 import {
   LineChart,
   Line,
@@ -123,9 +124,9 @@ export default function BacktestPage() {
       <Link href="/" className="back-link">返回股票池</Link>
       <header className="page-header compact">
         <div>
-          <div className="eyebrow">Backtest</div>
+          <div className="eyebrow">{SITE_EYEBROW}</div>
           <h1>策略回测</h1>
-          <p>滚动生成 DeepSeek 信号并按调仓周期撮合，行情与信号会被缓存。</p>
+          <p>在个人 AI 基建股票池上滚动生成 DeepSeek 信号并按调仓周期撮合，行情与信号会被缓存。</p>
         </div>
       </header>
 
