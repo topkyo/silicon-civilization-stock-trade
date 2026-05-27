@@ -63,15 +63,14 @@ OpenCode Go / DeepSeek 对大股票池的同步 JSON 生成延迟较高。默认
 | 变量 | 默认 | 说明 |
 |---|---:|---|
 | `LLM_SCORE_BATCH_SIZE` | `10` | LLM 打分默认批大小；批次越小越稳，批次越大调用次数越少但更容易超时。 |
-| `SIGNALS_LLM_SCORE_BATCH_SIZE` | `10` | 实时信号页 LLM 批大小；每批完成后会更新评分进度。 |
 | `BACKTEST_LLM_SCORE_BATCH_SIZE` | `10` | 回测调仓日 LLM 批大小。 |
-| `SIGNALS_LLM_TIMEOUT_MS` | `90000` | 实时信号单次 LLM 请求超时。 |
+| `SIGNALS_LLM_TIMEOUT_MS` | `900000` | 实时信号整池单次 LLM 请求超时（全市场一个 prompt；`deepseek-v4-pro` 建议 15 分钟）。 |
 | `BACKTEST_LLM_TIMEOUT_MS` | `90000` | 回测单次 LLM 请求超时。 |
 | `SIGNALS_LLM_MAX_ATTEMPTS` | `1` | 实时信号单批 LLM 最大尝试次数；提高会增加等待时间。 |
 | `BACKTEST_LLM_MAX_ATTEMPTS` | `1` | 回测单批 LLM 最大尝试次数；失败仍会中止回测。 |
 | `UNIVERSE_REFRESH_VALIDATE_TIMEOUT_MS` | `20000` | 股票池刷新时单个新增标的的 pyserver 校验超时。 |
 
-底层 `scoreSymbols` 保持严格模式：LLM 不可用、空响应、输出不完整或输出非法时抛错；非 bypass 请求会做有限技术重试，按批串行打分并上报进度，但不会合成交易结论。
+底层 `scoreSymbols` 保持严格模式：LLM 不可用、空响应、输出不完整或输出非法时抛错；非 bypass 请求会做有限技术重试，但不会合成交易结论。实时信号页对整池 **一次** LLM 调用；回测仍按调仓日分批。
 
 默认交互式模型使用 `deepseek-v4-flash`，原因是实时信号和短窗回测需要稳定返回完整 JSON；如需更慢的高推理模型，可通过 `LLM_MODEL` 显式覆盖，但失败仍会中止任务。
 

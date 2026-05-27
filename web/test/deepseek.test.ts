@@ -72,6 +72,25 @@ test("scoreSymbols sends every scorable symbol through the LLM pipeline in deter
   assert.ok(result.every((s) => s.source === "llm-live"));
 });
 
+test("scoreSymbols uses one LLM call when batchSize covers the full universe", async () => {
+  const { scoreSymbols } = await import("../lib/deepseek");
+  const input = [snapshot("A"), snapshot("B"), snapshot("C")];
+  const { calls } = await withMockedLlm(
+    (symbols) => ({
+      signals: symbols.map((symbol) => ({
+        symbol,
+        action: "hold",
+        confidence: 0.5,
+        size: 0,
+        rationale: "ok",
+      })),
+    }),
+    () => scoreSymbols(input, { bypassCache: true, batchSize: input.length }),
+  );
+  assert.equal(calls.length, 1);
+  assert.deepEqual(calls[0].sort(), ["A", "B", "C"]);
+});
+
 test("scoreSymbols reports progress after each strict LLM batch", async () => {
   const { scoreSymbols } = await import("../lib/deepseek");
   const progress: Array<[number, number]> = [];
