@@ -33,8 +33,8 @@ const SPOT_BATCH_SIZE = 12;
 const EMPTY_SPOTS: Spot[] = [];
 export const SPOT_BROWSER_CACHE_TTL_MS = 15 * 60 * 1000;
 export const ANALYST_BROWSER_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
-const SPOT_CACHE_KEY = "silicon-civ:spot:v3";
-const ANALYST_CACHE_KEY = "silicon-civ:analyst:v3";
+const SPOT_CACHE_KEY = "silicon-civ:spot:v4";
+const ANALYST_CACHE_KEY = "silicon-civ:analyst:v4";
 
 interface CacheEntry<T> {
   value: T;

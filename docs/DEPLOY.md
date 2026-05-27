@@ -6,7 +6,7 @@
 
 - VPS 或云主机（Linux，建议 2 vCPU / 2 GB RAM 以上）
 - 域名（可选，推荐用于 HTTPS）
-- [`TUSHARE_TOKEN`](../pyserver/env.example)（Tushare Pro）
+- 市场数据默认使用 AkShare/Eastmoney + BaoStock 免费源；[`TUSHARE_TOKEN`](../pyserver/env.example) 仅在启用 Tushare 次级源时需要
 - LLM API key：[`OPENCODE_GO_API_KEY`](../web/env.example.txt) 或 `DEEPSEEK_API_KEY`
 
 ## 1. 克隆仓库
@@ -21,7 +21,6 @@ cd topkyo-ai-infra-dashboard
 在项目根目录创建 `.env`（供 `docker compose` 读取）：
 
 ```bash
-TUSHARE_TOKEN=your-tushare-token
 OPENCODE_GO_API_KEY=your-opencode-go-key
 OPENCODE_GO_BASE_URL=https://opencode.ai/zen/go/v1
 LLM_PROVIDER=opencode-go
@@ -34,6 +33,8 @@ LLM_SCORE_BATCH_SIZE=40
 
 ```bash
 PYSERVER_CACHE_DB=/app/data/cache.db
+TUSHARE_TOKEN=your-tushare-token
+MARKET_ENABLE_TUSHARE_SECONDARY=1
 SIGNALS_LOAD_CONCURRENCY=6
 SIGNALS_LIVE_TIMEOUT_MS=25000
 ```
@@ -68,5 +69,5 @@ docker compose down   # 停止
 |---|---|
 | 首页无行情 | `docker compose ps`；`curl http://127.0.0.1:8001/health`；确认 `PYSERVER_URL` 指向 pyserver |
 | 信号/回测失败 | LLM key、模型名、`docker compose logs web` |
-| pyserver 无数据 | `TUSHARE_TOKEN` 是否有效且有积分；`docker compose logs pyserver` |
+| pyserver 无数据 | `curl http://127.0.0.1:8001/health`；AkShare/BaoStock 网络是否可达；如启用 Tushare 次级源，再检查 `TUSHARE_TOKEN` 权限和积分；`docker compose logs pyserver` |
 | 静态页数据旧 | 是否重新运行 `web/scripts/snapshot.ts` 并提交 `docs/data/` |

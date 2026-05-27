@@ -22,7 +22,7 @@
 
 ```text
 web/       Next.js 15 App Router、页面、API routes、LLM 策略、回测和测试
-pyserver/  FastAPI sidecar，AkShare/Eastmoney 优先，Tushare 显式次级源，并做 SQLite 缓存
+pyserver/  FastAPI sidecar，AkShare/Eastmoney + BaoStock 免费源优先，Tushare 可选次级源，并做 SQLite 缓存
 docs/      GitHub Pages 静态快照页面和数据
 scripts/   本地运维脚本
 ```
@@ -34,7 +34,7 @@ scripts/   本地运维脚本
 ```mermaid
 flowchart LR
   web["Next.js App<br/>股票池 / 信号 / 回测"]
-  py["FastAPI sidecar<br/>AkShare first + Tushare secondary"]
+  py["FastAPI sidecar<br/>AkShare + BaoStock first<br/>optional Tushare secondary"]
   cache["SQLite / localStorage<br/>行情 + LLM + 回测缓存"]
   docs["docs/ 静态快照<br/>GitHub Pages"]
 
@@ -46,9 +46,9 @@ flowchart LR
 
 ## 数据与策略边界
 
-- A 股数据源：AkShare/Eastmoney 优先，Tushare 只作为显式次级源；返回值通过 `source`、`warnings`、`field_sources` 标明来源。
-- 现价口径：Eastmoney 可用时显示实时/准实时价；Tushare daily 只作为“最近日收盘”次级源，不伪装成实时价。
-- 基本面与分析师数据：AkShare 研报/盈利预测和 Eastmoney 基础字段优先；Tushare 补充缺字段，部分字段可能缺失。
+- A 股数据源：AkShare/Eastmoney 与 BaoStock 免费源优先，Tushare 只作为显式次级源；返回值通过 `source`、`warnings`、`field_sources` 标明来源。
+- 现价口径：Eastmoney 可用时显示实时/准实时价；不可用时返回 AkShare `stock_value_em` 或日线最近收盘，不伪装成实时价。
+- 基本面与分析师数据：AkShare `stock_value_em`、研报/盈利预测和 BaoStock 成长字段优先；Tushare 只在 `MARKET_ENABLE_TUSHARE_SECONDARY=1` 时补充缺字段，部分字段可能缺失。
 - 隐含目标口径：页面中的“隐含目标/一致预期参考”不是确定预测。
 - 策略决策：LLM 是唯一 buy / hold / sell 来源；规则特征只进入提示词。
 - 输出校验：未知代码、缺失代码、重复代码、非法 action 会被拒绝。
@@ -72,7 +72,7 @@ flowchart LR
 ```bash
 cd pyserver
 cp env.example .env
-# 设置 TUSHARE_TOKEN；严肃实盘/真实测试使用 STRICT_LIVE_DATA=1，避免误进 mock
+# 免费源无需 Tushare token；如需 Tushare 补缺，再设置 TUSHARE_TOKEN 和 MARKET_ENABLE_TUSHARE_SECONDARY=1
 uv sync
 uv run uvicorn main:app --port 8001 --reload
 ```

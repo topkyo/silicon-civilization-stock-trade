@@ -17,7 +17,7 @@
 
 ## 刷新快照
 
-完整刷新需要先启动 pyserver，并配置 Tushare 与 LLM key：
+完整刷新需要先启动 pyserver，并配置 LLM key。行情与基本面默认走 AkShare/Eastmoney + BaoStock 免费源；只有需要 Tushare 付费/权限接口补缺时，才设置 `TUSHARE_TOKEN` 和 `MARKET_ENABLE_TUSHARE_SECONDARY=1`。
 
 ```bash
 cd pyserver && uv run uvicorn main:app --port 8001

@@ -20,6 +20,9 @@ export interface Fundamental {
   pe_ttm?: number | null;
   pb?: number | null;
   market_cap?: number | null;
+  latest_close?: number | null;
+  latest_date?: string | null;
+  change_pct?: number | null;
   revenue_yoy?: number | null;
   profit_yoy?: number | null;
   source?: string | null;
