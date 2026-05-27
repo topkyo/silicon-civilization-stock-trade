@@ -54,9 +54,13 @@ const CURATOR_SYSTEM = `你是中国 A 股的硅基文明消费股研究员。
 }
 不要输出其他文本。`;
 
+function envPositiveInt(name: string, fallback: number): number {
+  const value = Number(process.env[name]);
+  return Number.isFinite(value) && value > 0 ? Math.floor(value) : fallback;
+}
+
 export async function proposeRefresh(
   current: UniverseFile,
-  opts: { allowFallback?: boolean } = {},
 ): Promise<RefreshProposal> {
   const userPayload = {
     current_entries: current.entries.map((e) => ({
@@ -66,24 +70,13 @@ export async function proposeRefresh(
     })),
     distinct_themes: [...new Set(current.entries.map((e) => e.theme))],
   };
-  let raw: string;
-  try {
-    raw = await chat(
-      [
-        { role: "system", content: CURATOR_SYSTEM },
-        { role: "user", content: JSON.stringify(userPayload) },
-      ],
-      { responseFormat: "json_object", temperature: 0.3, bypassCache: true },
-    );
-  } catch (e) {
-    if (!opts.allowFallback) throw e;
-    return {
-      adds: [],
-      removes: [],
-      reclassifies: [],
-      rationale: `LLM暂不可用，保持股票池不变：${e instanceof Error ? e.message : String(e)}`,
-    };
-  }
+  const raw = await chat(
+    [
+      { role: "system", content: CURATOR_SYSTEM },
+      { role: "user", content: JSON.stringify(userPayload) },
+    ],
+    { responseFormat: "json_object", temperature: 0.3, bypassCache: true },
+  );
   const parsed = JSON.parse(raw) as Partial<RefreshProposal>;
   return {
     adds: parsed.adds ?? [],
@@ -101,7 +94,8 @@ function isHongKongSymbol(symbol: string): boolean {
 
 async function validateSymbol(symbol: string): Promise<{ ok: boolean; reason?: string }> {
   try {
-    const f = await fetchFundamental(symbol);
+    const timeoutMs = envPositiveInt("UNIVERSE_REFRESH_VALIDATE_TIMEOUT_MS", 20_000);
+    const f = await fetchFundamental(symbol, timeoutMs);
     // Even if fields are null, pyserver returned 200 -> symbol parses + tushare didn't 502.
     if (!f) return { ok: false, reason: "pyserver returned empty" };
     return { ok: true };
@@ -164,13 +158,16 @@ export async function applyRefresh(
   }
   newEntries.push(...added);
 
-  const next: UniverseFile = {
-    ...current,
-    updated_at: new Date().toISOString().slice(0, 10),
-    updated_by: "deepseek-refresh",
-    entries: newEntries,
-  };
-  writeUniverse(next);
+  const changed = added.length > 0 || removeSet.size > 0 || reclassified.length > 0;
+  if (changed) {
+    const next: UniverseFile = {
+      ...current,
+      updated_at: new Date().toISOString().slice(0, 10),
+      updated_by: "deepseek-refresh",
+      entries: newEntries,
+    };
+    writeUniverse(next);
+  }
 
   return {
     proposal,

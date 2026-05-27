@@ -33,6 +33,7 @@ export default function RefreshUniverseButton() {
       const reader = r.body.getReader();
       const decoder = new TextDecoder();
       let buf = "";
+      let changed = false;
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
@@ -45,11 +46,18 @@ export default function RefreshUniverseButton() {
           const evt = JSON.parse(line);
           if (evt.type === "log") setLogs((p) => [...p, evt.message]);
           else if (evt.type === "progress") setProgress({ done: evt.done, total: evt.total });
-          else if (evt.type === "result") setResult(evt.result);
+          else if (evt.type === "result") {
+            setResult(evt.result);
+            changed = (
+              evt.result.applied.added.length > 0
+              || evt.result.applied.removed.length > 0
+              || evt.result.applied.reclassified.length > 0
+            );
+          }
           else if (evt.type === "error") setError(evt.message);
         }
       }
-      router.refresh();
+      if (changed) router.refresh();
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -90,7 +98,7 @@ export default function RefreshUniverseButton() {
           {error && <div style={{ color: "var(--danger)", marginTop: 8 }}>{error}</div>}
           {result && (
             <div style={{ marginTop: 10 }}>
-              <strong>变更已应用</strong> · 当前 {result.finalCount} 只
+              <strong>刷新完成</strong> · 当前 {result.finalCount} 只
               <div style={{ marginTop: 4 }}>
                 新增 {result.applied.added.length} · 移除 {result.applied.removed.length} · 改类 {result.applied.reclassified.length} · 拒绝 {result.applied.rejected.length}
               </div>

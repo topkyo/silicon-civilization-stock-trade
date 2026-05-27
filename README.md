@@ -13,7 +13,7 @@
 |---|---|
 | AI 基建股票池 | 按子主题维护 A 股标的，数据在 [web/data/universe.json](web/data/universe.json)。 |
 | 行情与一致预期 | FastAPI sidecar 拉取现价、估值、分析师评级和隐含目标参考。 |
-| LLM 策略信号 | 规则特征先做候选预筛，入围标的由 LLM 决定 buy / hold / sell；同步页面超时时保守 hold。 |
+| LLM 策略信号 | 全股票池由 LLM 决定 buy / hold / sell；LLM 或关键数据失败时显式不可用，不生成伪信号。 |
 | 严格回测 | 按调仓周期严格重配，支持基准指数、单边费率、信号缓存和结果存档。 |
 | 多层缓存 | 浏览器、Python sidecar、LLM 响应、回测结果分层缓存。 |
 | 静态快照 | 可生成 `docs/data/*.json`，用于 GitHub Pages 展示。 |
@@ -50,25 +50,23 @@ flowchart LR
 - 现价口径：Eastmoney 可用时显示实时/准实时价；不可用时返回 AkShare `stock_value_em` 或日线最近收盘，不伪装成实时价。
 - 基本面与分析师数据：AkShare `stock_value_em`、研报/盈利预测和 BaoStock 成长字段优先；Tushare 只在 `MARKET_ENABLE_TUSHARE_SECONDARY=1` 时补充缺字段，部分字段可能缺失。
 - 隐含目标口径：页面中的“隐含目标/一致预期参考”不是确定预测。
-- 策略决策：规则特征只负责排序和预筛，入围候选的 buy / hold / sell 由 LLM 决定。
+- 策略决策：规则特征只负责给 LLM 提供可审计特征，buy / hold / sell 必须来自 LLM 输出。
 - 输出校验：未知代码、缺失代码、重复代码、非法 action 会被拒绝。
-- 数据质量：K 线不足、benchmark 缺失等硬依赖失败会显式报错；LLM 超时或异常会在页面/API 容错路径生成 `llm-fallback` 保守 hold，并在 `dataQuality` 标出错误。
-- 实时信号：`/signals` 页面由客户端触发 `/api/signals` NDJSON 流式任务，先显示进度，再展示 LLM live/cache、规则预筛 hold 或 LLM fallback 结果。
-- 股票池刷新：DeepSeek 提议超时时返回“无变更、保持当前股票池”的结果，避免按钮失败；真实新增仍会逐只通过 pyserver 基本面接口验证。
+- 数据质量：K 线不足、benchmark 缺失、LLM 超时或异常等硬依赖失败会显式报错，不生成保守 hold。
+- 实时信号：`/signals` 页面由客户端触发 `/api/signals` NDJSON 流式任务，先显示进度；LLM 成功时展示 live/cache 结果，失败时显示“信号不可用”。
+- 股票池刷新：DeepSeek 提议失败时返回 error 且不写股票池文件；正常返回空变更是合法结果，但只有实际新增、移除或改类时才更新 `updated_at`。真实新增仍会逐只通过 pyserver 基本面接口验证，验证失败只拒绝该新增项并列明原因。
 
 ## LLM 同步任务调优
 
-OpenCode Go / DeepSeek 对大股票池的同步 JSON 生成延迟较高。默认配置会把规则特征排名靠前的候选送进 LLM，其余标的输出 `rule-prefilter` 保守 hold，避免实时信号和回测因为 70+ 标的全量打分而超时。
+OpenCode Go / DeepSeek 对大股票池的同步 JSON 生成延迟较高。默认信号和回测都要求 LLM 覆盖请求内全部标的；如果任一批次失败、缺失、重复或输出非法 action，任务会失败并在 UI/API 显式暴露原因。
 
 | 变量 | 默认 | 说明 |
 |---|---:|---|
-| `LLM_CANDIDATE_LIMIT` | `8` | 信号和回测共用的候选上限。 |
-| `SIGNALS_LLM_CANDIDATE_LIMIT` | 继承 `LLM_CANDIDATE_LIMIT` | 实时信号候选上限。 |
-| `BACKTEST_LLM_CANDIDATE_LIMIT` | 继承 `LLM_CANDIDATE_LIMIT` | 每个调仓日的回测候选上限。 |
 | `SIGNALS_LLM_TIMEOUT_MS` | `90000` | 实时信号单次 LLM 请求超时。 |
 | `BACKTEST_LLM_TIMEOUT_MS` | `90000` | 回测单次 LLM 请求超时。 |
+| `UNIVERSE_REFRESH_VALIDATE_TIMEOUT_MS` | `20000` | 股票池刷新时单个新增标的的 pyserver 校验超时。 |
 
-底层 `scoreSymbols` 默认仍保持严格模式：未显式开启容错时，LLM 不可用会抛错，便于测试和离线诊断。
+底层 `scoreSymbols` 保持严格模式：LLM 不可用、空响应、输出不完整或输出非法时抛错；非 bypass 请求会做有限技术重试，但不会合成交易结论。
 
 ## 缓存
 

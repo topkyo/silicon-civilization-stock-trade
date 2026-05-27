@@ -106,6 +106,7 @@ export default function BacktestPage() {
           } else if (evt.type === "result") {
             setResult(evt.result);
           } else if (evt.type === "error") {
+            setResult(null);
             setError(evt.message);
           }
         }
@@ -126,7 +127,7 @@ export default function BacktestPage() {
         <div>
           <div className="eyebrow">{SITE_EYEBROW}</div>
           <h1>策略回测</h1>
-          <p>按固定周期严格重配，使用单边费率、最大持仓数与基准指数对比，信号由 LLM 生成，行情与信号按缓存层复用。</p>
+          <p>按固定周期严格重配，使用单边费率、最大持仓数与基准指数对比。任一调仓日信号失败时回测终止，不生成权益曲线。</p>
         </div>
       </header>
 

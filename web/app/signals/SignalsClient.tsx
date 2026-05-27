@@ -100,6 +100,7 @@ export default function SignalsClient() {
           } else if (evt.type === "result") {
             setRows(evt.rows);
           } else {
+            setRows([]);
             setError(evt.message);
           }
         }
@@ -128,7 +129,7 @@ export default function SignalsClient() {
         <div>
           <div className="eyebrow">{SITE_EYEBROW}</div>
           <h1>实时信号</h1>
-          <p>LLM 统一输出 buy / hold / sell；AkShare 优先，Tushare 作为可审计次级源。K 线失败会终止，基本面缺失会作为数据错误进入特征。</p>
+          <p>LLM 统一输出 buy / hold / sell；AkShare 优先，Tushare 作为可审计次级源。K 线或 LLM 失败会显示信号不可用。</p>
         </div>
         <div className="header-actions">
           <button onClick={run} disabled={loading}>{loading ? "运行中…" : "重新生成"}</button>
@@ -152,7 +153,7 @@ export default function SignalsClient() {
 
       {error && (
         <div className="card" style={{ borderColor: "var(--danger)", marginBottom: 14 }}>
-          <strong>加载失败：</strong> {error}
+          <strong>信号不可用：</strong> {error}
         </div>
       )}
 

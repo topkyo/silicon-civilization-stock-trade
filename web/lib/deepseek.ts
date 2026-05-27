@@ -6,7 +6,7 @@
 //   3. Deterministic code validates LLM output and enforces portfolio rules.
 import { cachedWithMeta } from "./cache";
 import { llmApiKeyConfigured, resolveLlmConfig } from "./llm/config";
-import { buildRuleFeatures, rankByFeatures } from "./scoring/rules";
+import { buildRuleFeatures } from "./scoring/rules";
 
 export interface ChatMessage {
   role: "system" | "user" | "assistant";
@@ -106,7 +106,11 @@ export async function chatDetailed(
     const j = (await r.json()) as {
       choices?: { message?: Record<string, unknown> }[];
     };
-    return extractMessageContent(j.choices?.[0]?.message);
+    const content = extractMessageContent(j.choices?.[0]?.message);
+    if (!content.trim()) {
+      throw new Error(`${cfg.provider} returned empty content`);
+    }
+    return content;
   };
 
   if (opts.bypassCache) {
@@ -138,7 +142,7 @@ export interface SymbolSnapshot {
   };
 }
 
-export type SignalSource = "llm-live" | "llm-cache" | "rule-prefilter" | "llm-fallback";
+export type SignalSource = "llm-live" | "llm-cache";
 
 export interface Signal {
   symbol: string;
@@ -199,28 +203,12 @@ function chunks<T>(items: T[], size: number): T[][] {
   return out;
 }
 
-function signalSource(cacheHit: boolean): SignalSource {
-  return cacheHit ? "llm-cache" : "llm-live";
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function fallbackSignals(
-  snapshots: SymbolSnapshot[],
-  source: SignalSource,
-  rationale: string,
-  extraDataQuality: string[] = [],
-): Signal[] {
-  return snapshots.map((snapshot) => ({
-    symbol: snapshot.symbol,
-    action: "hold",
-    confidence: 0.35,
-    size: 0,
-    rationale,
-    source,
-    dataQuality: [
-      ...buildRuleFeatures(snapshot).dataMissingFlags,
-      ...extraDataQuality,
-    ],
-  }));
+function signalSource(cacheHit: boolean): SignalSource {
+  return cacheHit ? "llm-cache" : "llm-live";
 }
 
 function normalizeLlmSignals(
@@ -288,7 +276,6 @@ async function scoreSymbolsBatchLlm(
     asOf?: string;
     bypassCache?: boolean;
     mode?: "live" | "backtest";
-    allowLlmFallback?: boolean;
   } = {},
 ): Promise<Signal[]> {
   if (snapshots.length === 0) return [];
@@ -328,7 +315,7 @@ async function scoreSymbolsBatchLlm(
     ? envPositiveNumber("BACKTEST_LLM_TIMEOUT_MS", 90_000)
     : envPositiveNumber("SIGNALS_LLM_TIMEOUT_MS", 90_000);
   let lastError: unknown;
-  const attempts = opts.bypassCache || opts.allowLlmFallback ? 1 : 3;
+  const attempts = opts.bypassCache ? 1 : 3;
   for (let attempt = 0; attempt < attempts; attempt++) {
     try {
       const result = await chatDetailed(messages, {
@@ -338,18 +325,16 @@ async function scoreSymbolsBatchLlm(
         bypassCache: opts.bypassCache || attempt > 0,
         timeoutMs,
       });
+      if (!result.content.trim()) {
+        throw new Error("LLM returned empty content");
+      }
       return normalizeLlmSignals(result.content, snapshots, signalSource(result.cacheHit));
     } catch (e) {
       lastError = e;
+      if (attempt < attempts - 1) {
+        await sleep(500 * (attempt + 1));
+      }
     }
-  }
-  if (opts.allowLlmFallback) {
-    return fallbackSignals(
-      snapshots,
-      "llm-fallback",
-      "LLM超时或返回异常，保守持有",
-      [`llm_error:${lastError instanceof Error ? lastError.message : String(lastError)}`],
-    );
   }
   throw lastError;
 }
@@ -363,8 +348,6 @@ export async function scoreSymbols(
     bypassCache?: boolean;
     mode?: "live" | "backtest";
     batchSize?: number;
-    candidateLimit?: number;
-    allowLlmFallback?: boolean;
   } = {},
 ): Promise<Signal[]> {
   if (snapshots.length === 0) return [];
@@ -376,30 +359,23 @@ export async function scoreSymbols(
     );
   }
 
-  const candidateLimit = opts.candidateLimit ?? envPositiveNumber(
-    opts.mode === "backtest" ? "BACKTEST_LLM_CANDIDATE_LIMIT" : "SIGNALS_LLM_CANDIDATE_LIMIT",
-    envPositiveNumber("LLM_CANDIDATE_LIMIT", 8),
-  );
-  const candidateSymbols = new Set(
-    candidateLimit && snapshots.length > candidateLimit
-      ? rankByFeatures(snapshots).slice(0, candidateLimit).map((f) => f.symbol)
-      : snapshots.map((s) => s.symbol),
-  );
-  const candidates = snapshots.filter((snapshot) => candidateSymbols.has(snapshot.symbol));
-  const prefiltered = snapshots.filter((snapshot) => !candidateSymbols.has(snapshot.symbol));
+  const seen = new Set<string>();
+  const duplicateInput = snapshots
+    .map((s) => s.symbol)
+    .filter((symbol) => {
+      if (seen.has(symbol)) return true;
+      seen.add(symbol);
+      return false;
+    });
+  if (duplicateInput.length > 0) {
+    throw new Error(`duplicate input symbols for LLM scoring: ${duplicateInput.join(",")}`);
+  }
 
   const batchSize = opts.batchSize ?? Number(process.env.LLM_SCORE_BATCH_SIZE ?? DEFAULT_SCORE_BATCH_SIZE);
   const scored = (
-    await Promise.all(chunks(candidates, batchSize).map((batch) => scoreSymbolsBatchLlm(batch, opts)))
+    await Promise.all(chunks(snapshots, batchSize).map((batch) => scoreSymbolsBatchLlm(batch, opts)))
   ).flat();
 
-  const bySymbol = new Map([
-    ...scored.map((signal) => [signal.symbol, signal] as const),
-    ...fallbackSignals(
-      prefiltered,
-      "rule-prefilter",
-      "规则特征预筛未入围，保守持有",
-    ).map((signal) => [signal.symbol, signal] as const),
-  ]);
+  const bySymbol = new Map(scored.map((signal) => [signal.symbol, signal] as const));
   return snapshots.map((snapshot) => bySymbol.get(snapshot.symbol)!);
 }

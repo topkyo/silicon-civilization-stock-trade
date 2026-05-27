@@ -70,7 +70,7 @@ tbody tr:hover { background: #fbfdff; }
 .badge.buy, .badge.llm-live, .badge.llm-cache { background: var(--accent-weak); color: var(--accent); border-color: #bfebd6; }
 .badge.sell { background: var(--danger-weak); color: var(--danger); border-color: #ffd1cc; }
 .badge.snapshot { background: #eef4ff; color: var(--info); border-color: #cddcff; }
-.badge.unscorable, .badge.rule-prefilter, .badge.llm-fallback { background: #fff8e6; color: var(--warn); border-color: #f4dc9f; }
+.badge.unscorable { background: #fff8e6; color: var(--warn); border-color: #f4dc9f; }
 
 button, .button {
   display: inline-flex;

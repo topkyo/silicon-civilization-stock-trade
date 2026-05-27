@@ -36,3 +36,11 @@ Recent history uses concise imperative commit subjects, for example `Replace aks
 ## Security & Configuration Tips
 
 Copy `pyserver/env.example` to `pyserver/.env` and set `TUSHARE_TOKEN`. Copy `web/env.example.txt` to `web/.env.local` and set `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`, and `PYSERVER_URL` as needed. Keep API keys local only.
+
+## 严肃看盘数据完整性规则
+
+- 禁止业务兜底：LLM、API 或关键数据失败时，不得生成 `buy` / `hold` / `sell` 交易结论，不得存回测结果，不得写股票池“无变更成功”。
+- 禁止静默降级：任何降级都必须在 API/UI 中显式暴露为 `error`、`unavailable` 或 `warning`，并保留可审计原因。
+- 允许技术重试、缓存命中、可审计次级数据源；但这些机制不能合成业务结论，也不能把失败伪装成成功。
+- 股票池刷新只有在真实新增、移除或改类时才更新 `updated_at`；LLM 正常返回空 proposal 可以成功返回，但不得改写文件。
+- 新增 fallback/兜底逻辑前必须先获得明确用户同意，并配套覆盖失败语义的测试。

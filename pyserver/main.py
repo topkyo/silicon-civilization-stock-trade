@@ -2,7 +2,7 @@
 
 Data-source split:
 - A-share (sh/sz/bj): AkShare/Eastmoney for current price/basic metrics;
-  BaoStock for historical daily bars and growth fallback; Tushare Pro is an
+  BaoStock for historical daily bars and growth fields; Tushare Pro is an
   explicit secondary source only.
 - HK: akshare's stock_hk_hist — Tushare's hk_daily is hard-capped at
   10 calls/day on the free Pro tier (and 2/min within that), making it

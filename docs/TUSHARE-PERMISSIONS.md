@@ -6,11 +6,11 @@
 
 | 接口 | 用途 |
 |------|------|
-| `daily` | A 股最近日收盘兜底（免费源都失败时，不是实时价） |
-| `daily_basic` | PE/PB/市值兜底 |
-| `pro_bar` / 通用行情 | K 线兜底、回测 |
+| `daily` | A 股最近日收盘次级源（免费源都失败时，不是实时价） |
+| `daily_basic` | PE/PB/市值次级源 |
+| `pro_bar` / 通用行情 | K 线次级源、回测 |
 | `fina_indicator` | 利润同比（PEG） |
-| `report_rc` | 卖方一致预期兜底 |
+| `report_rc` | 卖方一致预期次级源 |
 
 **默认免费路径**：不需要 Tushare token，也不需要充值。
 
