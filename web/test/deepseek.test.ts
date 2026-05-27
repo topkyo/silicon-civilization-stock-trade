@@ -134,6 +134,51 @@ test("scoreSymbols clamps numeric fields and truncates rationale", async () => {
   assert.equal(result[0].rationale.length, 60);
 });
 
+test("scoreSymbols prefilters large universes before calling the LLM", async () => {
+  const { scoreSymbols } = await import("../lib/deepseek");
+  const input = [
+    snapshot("A"),
+    snapshot("B"),
+    { ...snapshot("C"), closes: Array.from({ length: 30 }, (_, i) => 100 - i) },
+  ];
+  const { result, calls } = await withMockedLlm(
+    (symbols) => ({
+      signals: symbols.map((symbol) => ({
+        symbol,
+        action: "buy",
+        confidence: 0.8,
+        size: 0.3,
+        rationale: "candidate",
+      })),
+    }),
+    () => scoreSymbols(input, { bypassCache: true, batchSize: 2, candidateLimit: 2 }),
+  );
+  assert.deepEqual(calls, [["A", "B"]]);
+  assert.equal(result.find((s) => s.symbol === "C")?.source, "rule-prefilter");
+  assert.equal(result.find((s) => s.symbol === "C")?.action, "hold");
+});
+
+test("scoreSymbols can explicitly fail soft when LLM scoring fails", async () => {
+  const { scoreSymbols } = await import("../lib/deepseek");
+  const originalFetch = globalThis.fetch;
+  process.env.LLM_PROVIDER = "deepseek";
+  process.env.DEEPSEEK_API_KEY = "sk-test";
+  globalThis.fetch = (async () => new Response("bad gateway", { status: 502 })) as typeof fetch;
+  try {
+    const result = await scoreSymbols([snapshot("A")], {
+      bypassCache: true,
+      allowLlmFallback: true,
+    });
+    assert.equal(result[0].source, "llm-fallback");
+    assert.equal(result[0].action, "hold");
+    assert.match(result[0].dataQuality?.join(";") ?? "", /llm_error:deepseek 502/);
+  } finally {
+    globalThis.fetch = originalFetch;
+    delete process.env.LLM_PROVIDER;
+    delete process.env.DEEPSEEK_API_KEY;
+  }
+});
+
 test("scoreSymbols does not fall back to rule-driven trading when the LLM is unavailable", async () => {
   const { scoreSymbols } = await import("../lib/deepseek");
   const originalFetch = globalThis.fetch;

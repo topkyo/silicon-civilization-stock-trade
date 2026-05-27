@@ -54,7 +54,10 @@ const CURATOR_SYSTEM = `你是中国 A 股的硅基文明消费股研究员。
 }
 不要输出其他文本。`;
 
-export async function proposeRefresh(current: UniverseFile): Promise<RefreshProposal> {
+export async function proposeRefresh(
+  current: UniverseFile,
+  opts: { allowFallback?: boolean } = {},
+): Promise<RefreshProposal> {
   const userPayload = {
     current_entries: current.entries.map((e) => ({
       symbol: e.symbol,
@@ -63,13 +66,24 @@ export async function proposeRefresh(current: UniverseFile): Promise<RefreshProp
     })),
     distinct_themes: [...new Set(current.entries.map((e) => e.theme))],
   };
-  const raw = await chat(
-    [
-      { role: "system", content: CURATOR_SYSTEM },
-      { role: "user", content: JSON.stringify(userPayload) },
-    ],
-    { responseFormat: "json_object", temperature: 0.3, bypassCache: true },
-  );
+  let raw: string;
+  try {
+    raw = await chat(
+      [
+        { role: "system", content: CURATOR_SYSTEM },
+        { role: "user", content: JSON.stringify(userPayload) },
+      ],
+      { responseFormat: "json_object", temperature: 0.3, bypassCache: true },
+    );
+  } catch (e) {
+    if (!opts.allowFallback) throw e;
+    return {
+      adds: [],
+      removes: [],
+      reclassifies: [],
+      rationale: `LLM暂不可用，保持股票池不变：${e instanceof Error ? e.message : String(e)}`,
+    };
+  }
   const parsed = JSON.parse(raw) as Partial<RefreshProposal>;
   return {
     adds: parsed.adds ?? [],

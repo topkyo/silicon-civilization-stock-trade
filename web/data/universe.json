@@ -1,6 +1,6 @@
 {
   "$schema_note": "topkyo 个人 AI 基建主题 A 股 watchlist。可通过 UI 或 DeepSeek 刷新维护。",
-  "updated_at": "2026-05-26",
+  "updated_at": "2026-05-27",
   "updated_by": "deepseek-refresh",
   "entries": [
     {
@@ -504,6 +504,34 @@
       "name": "宝信软件",
       "theme": "IDC",
       "note": "上海IDC龙头，宝武集团旗下，提供批发型数据中心服务。",
+      "global_supply": false
+    },
+    {
+      "symbol": "688521",
+      "name": "芯原股份",
+      "theme": "算力/AI芯片",
+      "note": "AI芯片设计服务与IP授权龙头，为全球客户提供NPU IP和定制服务，进入国际AI供应链",
+      "global_supply": true
+    },
+    {
+      "symbol": "688347",
+      "name": "华虹公司",
+      "theme": "晶圆代工",
+      "note": "全球领先的特色工艺晶圆代工厂，为英飞凌等IDM代工功率及模拟芯片，间接供应AI服务器产业链",
+      "global_supply": true
+    },
+    {
+      "symbol": "688200",
+      "name": "华峰测控",
+      "theme": "半导体设备",
+      "note": "国产模拟测试机龙头，产品进入全球IDM和封测厂，为AI芯片测试提供保障",
+      "global_supply": true
+    },
+    {
+      "symbol": "300054",
+      "name": "鼎龙股份",
+      "theme": "半导体材料",
+      "note": "CMP抛光垫龙头，打破国外垄断，用于晶圆制造先进制程，受益AI芯片制造需求",
       "global_supply": false
     }
   ]

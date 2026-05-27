@@ -169,7 +169,7 @@ export async function runBacktest(
     envPositiveInt("LLM_SCORE_BATCH_SIZE", 40),
   );
   const scorer: Scorer = opts.scorer ?? ((snapshots, scoreOpts) =>
-    scoreSymbols(snapshots, { ...scoreOpts, batchSize: backtestBatchSize }));
+    scoreSymbols(snapshots, { ...scoreOpts, batchSize: backtestBatchSize, allowLlmFallback: true }));
   const dates = alignedTradingDates(series).filter(
     (d) => d >= cfg.startDate && d <= cfg.endDate,
   );

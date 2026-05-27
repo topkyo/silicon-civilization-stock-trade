@@ -82,7 +82,7 @@ export async function POST(_req: NextRequest) {
         }
 
         send({ type: "progress", phase: "scoring", done: 0, total: snapshots.length });
-        const signals = await scoreSymbols(snapshots);
+        const signals = await scoreSymbols(snapshots, { allowLlmFallback: true });
         send({ type: "progress", phase: "scoring", done: snapshots.length, total: snapshots.length });
         const signalBySymbol = new Map(signals.map((signal) => [signal.symbol, signal]));
         const snapshotBySymbol = new Map(snapshots.map((snapshot) => [snapshot.symbol, snapshot]));

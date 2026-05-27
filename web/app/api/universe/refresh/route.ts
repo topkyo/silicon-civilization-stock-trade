@@ -17,7 +17,7 @@ export async function POST(_req: NextRequest) {
         const current = readUniverse();
         send({ type: "log", message: `当前股票池 ${current.entries.length} 只，请求 DeepSeek 提议变更…` });
 
-        const proposal = await proposeRefresh(current);
+        const proposal = await proposeRefresh(current, { allowFallback: true });
         send({
           type: "log",
           message: `提议: +${proposal.adds.length} / -${proposal.removes.length} / 改类 ${proposal.reclassifies.length}`,
