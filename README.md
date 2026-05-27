@@ -22,7 +22,7 @@
 
 ```text
 web/       Next.js 15 App Router、页面、API routes、LLM 策略、回测和测试
-pyserver/  FastAPI sidecar，封装 Tushare Pro + AkShare，并做 SQLite 缓存
+pyserver/  FastAPI sidecar，AkShare/Eastmoney 优先，Tushare 显式次级源，并做 SQLite 缓存
 docs/      GitHub Pages 静态快照页面和数据
 scripts/   本地运维脚本
 ```
@@ -34,7 +34,7 @@ scripts/   本地运维脚本
 ```mermaid
 flowchart LR
   web["Next.js App<br/>股票池 / 信号 / 回测"]
-  py["FastAPI sidecar<br/>Tushare Pro + AkShare"]
+  py["FastAPI sidecar<br/>AkShare first + Tushare secondary"]
   cache["SQLite / localStorage<br/>行情 + LLM + 回测缓存"]
   docs["docs/ 静态快照<br/>GitHub Pages"]
 
@@ -46,12 +46,14 @@ flowchart LR
 
 ## 数据与策略边界
 
-- A 股行情：优先 AkShare 东方财富接口，必要时回退新浪/Tushare。
-- 基本面与分析师数据：Tushare/AkShare 组合获取，部分字段可能缺失。
+- A 股数据源：AkShare/Eastmoney 优先，Tushare 只作为显式次级源；返回值通过 `source`、`warnings`、`field_sources` 标明来源。
+- 现价口径：Eastmoney 可用时显示实时/准实时价；Tushare daily 只作为“最近日收盘”次级源，不伪装成实时价。
+- 基本面与分析师数据：AkShare 研报/盈利预测和 Eastmoney 基础字段优先；Tushare 补充缺字段，部分字段可能缺失。
 - 隐含目标口径：页面中的“隐含目标/一致预期参考”不是确定预测。
 - 策略决策：LLM 是唯一 buy / hold / sell 来源；规则特征只进入提示词。
 - 输出校验：未知代码、缺失代码、重复代码、非法 action 会被拒绝。
-- 数据质量：K 线不足的标的会标记为 `unscorable`，不伪装成持有建议。
+- 数据质量：K 线不足、LLM 失败、benchmark 缺失等硬依赖失败会显式报错；不生成 `hold`、snapshot 或规则兜底信号。
+- 实时信号：`/signals` 页面由客户端触发 `/api/signals` NDJSON 流式任务，先显示进度，再展示真实 LLM live/cache 结果。
 
 ## 缓存
 
@@ -70,7 +72,7 @@ flowchart LR
 ```bash
 cd pyserver
 cp env.example .env
-# 设置 TUSHARE_TOKEN；也可用 TUSHARE_TOKEN=mock 跑离线示例
+# 设置 TUSHARE_TOKEN；严肃实盘/真实测试使用 STRICT_LIVE_DATA=1，避免误进 mock
 uv sync
 uv run uvicorn main:app --port 8001 --reload
 ```
