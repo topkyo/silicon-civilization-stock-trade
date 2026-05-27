@@ -12,7 +12,7 @@ chmod +x scripts/macos/install-launchd.sh scripts/macos/uninstall-launchd.sh
 前提：
 
 - `pyserver/.env` 含 `TUSHARE_TOKEN`
-- `web/.env.local` 含 `PYSERVER_URL` 与 LLM 相关变量
+- `web/.env.local` 从 `web/env.example.txt` 复制，含 `PYSERVER_URL`、LLM key，以及信号/回测超时与并发（见根目录 README「LLM 同步任务调优」）
 - 已执行 `cd pyserver && uv sync`、`cd web && npm install`
 
 Web 以 **生产模式**（`npm run start`）运行；首次安装若缺少 `web/.next` 会自动 `npm run build`。

@@ -35,7 +35,13 @@ Recent history uses concise imperative commit subjects, for example `Replace aks
 
 ## Security & Configuration Tips
 
-Copy `pyserver/env.example` to `pyserver/.env` and set `TUSHARE_TOKEN`. Copy `web/env.example.txt` to `web/.env.local` and set `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`, and `PYSERVER_URL` as needed. Keep API keys local only.
+Copy `pyserver/env.example` to `pyserver/.env` and set `TUSHARE_TOKEN`. Copy `web/env.example.txt` to `web/.env.local` and set `OPENCODE_GO_API_KEY` or `DEEPSEEK_API_KEY`, `PYSERVER_URL`, and LLM tuning vars as needed. Keep API keys local only.
+
+**LLM workflows (do not drift from README):**
+
+- **Live signals** (`web/app/api/signals/route.ts`): one LLM call for the full universe (`batchSize = pool size`), `LLM_MODEL`, `SIGNALS_LLM_TIMEOUT_MS` (900000 for pro), route `maxDuration = 900`.
+- **Backtest** (`web/app/api/backtest/route.ts`): per rebalance day, batched LLM inside each day, `BACKTEST_SIGNAL_CONCURRENCY` parallel days, `LLM_MODEL_BACKTEST`, route `maxDuration = 3600`.
+- Strict mode: no synthetic hold on LLM failure; see README “LLM 同步任务调优”.
 
 ## 严肃看盘数据完整性规则
 

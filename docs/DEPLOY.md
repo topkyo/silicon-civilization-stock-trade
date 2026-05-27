@@ -26,18 +26,34 @@ OPENCODE_GO_BASE_URL=https://opencode.ai/zen/go/v1
 LLM_PROVIDER=opencode-go
 LLM_MODEL=deepseek-v4-pro
 LLM_MODEL_BACKTEST=deepseek-v4-flash
-LLM_SCORE_BATCH_SIZE=40
+PYSERVER_URL=http://pyserver:8001
+
+# Live signals: one LLM call for the full universe (~15m for pro on OpenCode Go).
+SIGNALS_LLM_TIMEOUT_MS=900000
+SIGNALS_LOAD_CONCURRENCY=3
+SIGNALS_PYSERVER_TIMEOUT_MS=120000
+
+# Backtest: parallel rebalance days + serial LLM batches per day.
+BACKTEST_SIGNAL_CONCURRENCY=8
+BACKTEST_LLM_SCORE_BATCH_SIZE=10
+BACKTEST_LLM_TIMEOUT_MS=300000
+BACKTEST_LLM_MAX_ATTEMPTS=2
+BACKTEST_LOAD_CONCURRENCY=10
+BACKTEST_PYSERVER_TIMEOUT_MS=60000
 ```
 
-可选项：
+可选项（完整列表见 [web/env.example.txt](../web/env.example.txt)）：
 
 ```bash
 PYSERVER_CACHE_DB=/app/data/cache.db
 TUSHARE_TOKEN=your-tushare-token
 MARKET_ENABLE_TUSHARE_SECONDARY=1
-SIGNALS_LOAD_CONCURRENCY=6
-SIGNALS_LIVE_TIMEOUT_MS=25000
+SIGNALS_FUNDAMENTAL_TIMEOUT_MS=8000
+SIGNALS_LLM_MAX_ATTEMPTS=1
+LLM_SCORE_BATCH_SIZE=10
 ```
+
+`docker-compose.yml` 仅透传部分变量；若在 compose 中跑信号/回测，请将上表变量加入 `web.environment`，或与根目录 `.env` 一并传入。
 
 ## 3. 启动服务
 
@@ -68,6 +84,8 @@ docker compose down   # 停止
 | 现象 | 检查 |
 |---|---|
 | 首页无行情 | `docker compose ps`；`curl http://127.0.0.1:8001/health`；确认 `PYSERVER_URL` 指向 pyserver |
-| 信号/回测失败 | LLM key、模型名、`docker compose logs web` |
+| 信号不可用 / 超时 | `LLM_MODEL`、`SIGNALS_LLM_TIMEOUT_MS`（整池单次，pro 建议 ≥900000）；`docker compose logs web` |
+| 回测失败 / 超时 | `LLM_MODEL_BACKTEST`、`BACKTEST_LLM_TIMEOUT_MS`、`BACKTEST_LLM_SCORE_BATCH_SIZE`、`BACKTEST_SIGNAL_CONCURRENCY`；日志中 `[backtest] fetched` |
+| 其他 LLM 失败 | LLM key、provider、`docker compose logs web` |
 | pyserver 无数据 | `curl http://127.0.0.1:8001/health`；AkShare/BaoStock 网络是否可达；如启用 Tushare 次级源，再检查 `TUSHARE_TOKEN` 权限和积分；`docker compose logs pyserver` |
 | 静态页数据旧 | 是否重新运行 `web/scripts/snapshot.ts` 并提交 `docs/data/` |

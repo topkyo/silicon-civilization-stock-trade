@@ -58,21 +58,45 @@ flowchart LR
 
 ## LLM 同步任务调优
 
-OpenCode Go / DeepSeek 对大股票池的同步 JSON 生成延迟较高。默认信号和回测都要求 LLM 覆盖请求内全部标的；如果任一批次失败、缺失、重复或输出非法 action，任务会失败并在 UI/API 显式暴露原因。
+OpenCode Go / DeepSeek 对大股票池的同步 JSON 生成延迟较高。信号与回测均要求 LLM **覆盖请求内全部标的**；输出缺失、重复、未知代码或非法 `action` 时任务失败，UI/API 显式报错（无伪 hold）。
+
+### 实时信号（`/api/signals`）
+
+| 行为 | 说明 |
+|---|---|
+| 调用方式 | **整池 1 次** LLM（上游 fork 风格），`batchSize = 股票池数量 |
+| 模型 | `LLM_MODEL`（示例部署常用 `deepseek-v4-pro`） |
+| 路由时限 | `maxDuration = 900` 秒（15 分钟） |
+
+### 回测（`/api/backtest`）
+
+| 行为 | 说明 |
+|---|---|
+| 调用方式 | 每个**调仓日**对全池打分；日内按 `BACKTEST_LLM_SCORE_BATCH_SIZE` **串行**分批 |
+| 并行 | `BACKTEST_SIGNAL_CONCURRENCY` 个调仓日同时进行（默认 `8`） |
+| 模型 | `LLM_MODEL_BACKTEST`（默认 `deepseek-v4-flash`） |
+| 路由时限 | `maxDuration = 3600` 秒 |
+
+### 环境变量（见 [web/env.example.txt](web/env.example.txt)）
 
 | 变量 | 默认 | 说明 |
 |---|---:|---|
-| `LLM_SCORE_BATCH_SIZE` | `10` | LLM 打分默认批大小；批次越小越稳，批次越大调用次数越少但更容易超时。 |
-| `BACKTEST_LLM_SCORE_BATCH_SIZE` | `10` | 回测调仓日 LLM 批大小。 |
-| `SIGNALS_LLM_TIMEOUT_MS` | `900000` | 实时信号整池单次 LLM 请求超时（全市场一个 prompt；`deepseek-v4-pro` 建议 15 分钟）。 |
-| `BACKTEST_LLM_TIMEOUT_MS` | `90000` | 回测单次 LLM 请求超时。 |
-| `SIGNALS_LLM_MAX_ATTEMPTS` | `1` | 实时信号单批 LLM 最大尝试次数；提高会增加等待时间。 |
-| `BACKTEST_LLM_MAX_ATTEMPTS` | `1` | 回测单批 LLM 最大尝试次数；失败仍会中止回测。 |
-| `UNIVERSE_REFRESH_VALIDATE_TIMEOUT_MS` | `20000` | 股票池刷新时单个新增标的的 pyserver 校验超时。 |
+| `LLM_MODEL` | `deepseek-v4-pro` | 实时信号整池单次 LLM 模型 |
+| `LLM_MODEL_BACKTEST` | `deepseek-v4-flash` | 回测调仓日 LLM 模型 |
+| `SIGNALS_LLM_TIMEOUT_MS` | `900000` | 信号整池单次请求超时（pro + OpenCode 建议 15 分钟） |
+| `SIGNALS_LLM_MAX_ATTEMPTS` | `1` | 信号 LLM 技术重试次数 |
+| `SIGNALS_LOAD_CONCURRENCY` | `3` | 信号页加载 K 线/基本面的并发数 |
+| `SIGNALS_PYSERVER_TIMEOUT_MS` | `120000` | 信号页单只 K 线请求超时 |
+| `BACKTEST_LLM_SCORE_BATCH_SIZE` | `10` | 回测每个调仓日内 LLM 批大小（越小越稳） |
+| `BACKTEST_SIGNAL_CONCURRENCY` | `8` | 并行处理的调仓日数量（OpenCode 建议 6–8） |
+| `BACKTEST_LLM_TIMEOUT_MS` | `300000` | 回测**单批** LLM 请求超时 |
+| `BACKTEST_LLM_MAX_ATTEMPTS` | `2` | 回测单批 LLM 技术重试次数 |
+| `BACKTEST_LOAD_CONCURRENCY` | `10` | 回测加载 K 线/基本面的并发数 |
+| `BACKTEST_PYSERVER_TIMEOUT_MS` | `60000` | 回测单只 K 线请求超时 |
+| `LLM_SCORE_BATCH_SIZE` | `10` | 其他调用 `scoreSymbols` 时的默认批大小 |
+| `UNIVERSE_REFRESH_VALIDATE_TIMEOUT_MS` | `20000` | 股票池刷新单只新增校验超时 |
 
-底层 `scoreSymbols` 保持严格模式：LLM 不可用、空响应、输出不完整或输出非法时抛错；非 bypass 请求会做有限技术重试，但不会合成交易结论。实时信号页对整池 **一次** LLM 调用；回测仍按调仓日分批。
-
-默认交互式模型使用 `deepseek-v4-flash`，原因是实时信号和短窗回测需要稳定返回完整 JSON；如需更慢的高推理模型，可通过 `LLM_MODEL` 显式覆盖，但失败仍会中止任务。
+底层 `scoreSymbols` 为严格模式：失败即抛错，不合成交易结论。LLM 响应按 prompt 哈希缓存（`web/.cache/web.db`，约 12 小时）；同参数重复跑信号/回测会明显加速。
 
 ## 缓存
 
