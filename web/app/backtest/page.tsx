@@ -126,7 +126,7 @@ export default function BacktestPage() {
         <div>
           <div className="eyebrow">{SITE_EYEBROW}</div>
           <h1>策略回测</h1>
-          <p>在个人 AI 基建股票池上滚动生成 DeepSeek 信号并按调仓周期撮合，行情与信号会被缓存。</p>
+          <p>按固定周期严格重配，使用单边费率、最大持仓数与基准指数对比，信号由 LLM 生成，行情与信号按缓存层复用。</p>
         </div>
       </header>
 
@@ -224,16 +224,17 @@ export default function BacktestPage() {
                 const bench = result.benchmark?.equityCurve.find((x) => x.date === b.date);
                 return { date: b.date, equity: b.equity, benchmark: bench?.equity };
               })}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
-                <XAxis dataKey="date" stroke="#8b96a8" minTickGap={40} />
-                <YAxis stroke="#8b96a8" domain={["auto", "auto"]} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#d9e2ec" />
+                <XAxis dataKey="date" stroke="#667085" minTickGap={40} />
+                <YAxis stroke="#667085" domain={["auto", "auto"]} />
                 <Tooltip
-                  contentStyle={{ background: "#131a26", border: "1px solid #1f2937" }}
+                  contentStyle={{ background: "#ffffff", border: "1px solid #d9e2ec", color: "#172033" }}
+                  labelStyle={{ color: "#667085" }}
                   formatter={(v: number) => v.toFixed(0)}
                 />
-                <Line type="monotone" dataKey="equity" name="策略" stroke="#7cf0a0" dot={false} strokeWidth={2} />
+                <Line type="monotone" dataKey="equity" name="策略" stroke="#0f8f5f" dot={false} strokeWidth={2} />
                 {result.benchmark && (
-                  <Line type="monotone" dataKey="benchmark" name={result.benchmark.name} stroke="#6b9dff" dot={false} strokeWidth={1.5} strokeDasharray="4 4" />
+                  <Line type="monotone" dataKey="benchmark" name={result.benchmark.name} stroke="#2563eb" dot={false} strokeWidth={1.5} strokeDasharray="4 4" />
                 )}
               </LineChart>
             </ResponsiveContainer>

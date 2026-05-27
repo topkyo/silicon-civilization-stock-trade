@@ -77,7 +77,9 @@ else:
     ts.set_token(TUSHARE_TOKEN)
     _pro = ts.pro_api()
 
-DB_PATH = Path(__file__).parent / "cache.db"
+DB_PATH = Path(os.environ.get("PYSERVER_CACHE_DB", Path(__file__).parent / "cache.db"))
+DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+NEGATIVE_CACHE = {"__negative_cache__": True}
 
 # Bypass broken shell proxies (e.g. 127.0.0.1:7890) for Eastmoney spot quotes.
 _EM_SESSION: requests.Session | None = None
@@ -460,6 +462,8 @@ def _ak_a_spot_rows(ts_code: str, market: str) -> dict[str, Any] | None:
     key = f"ak:a:spot:em:{code}"
     cached = cache_get(key)
     if cached is not None:
+        if isinstance(cached, dict) and cached.get("__negative_cache__"):
+            return None
         return cached
     url = "https://push2.eastmoney.com/api/qt/stock/get"
     params = {
@@ -473,10 +477,10 @@ def _ak_a_spot_rows(ts_code: str, market: str) -> dict[str, Any] | None:
         response.raise_for_status()
         data = response.json().get("data")
     except Exception:
-        cache_put(key, None, 10)
+        cache_put(key, NEGATIVE_CACHE, 10)
         return None
     if not data:
-        cache_put(key, None, 10)
+        cache_put(key, NEGATIVE_CACHE, 10)
         return None
     row = {
         "代码": data.get("f57") or code,

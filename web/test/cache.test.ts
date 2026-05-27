@@ -9,6 +9,7 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "scc-cache-"));
 process.chdir(tmp);
 
 let cached: typeof import("../lib/cache").cached;
+let cachedWithMeta: typeof import("../lib/cache").cachedWithMeta;
 let cacheGet: typeof import("../lib/cache").cacheGet;
 let cachePut: typeof import("../lib/cache").cachePut;
 let hashKey: typeof import("../lib/cache").hashKey;
@@ -19,6 +20,7 @@ let saveBacktestResult: typeof import("../lib/cache").saveBacktestResult;
 before(async () => {
   const mod = await import("../lib/cache");
   cached = mod.cached;
+  cachedWithMeta = mod.cachedWithMeta;
   cacheGet = mod.cacheGet;
   cachePut = mod.cachePut;
   hashKey = mod.hashKey;
@@ -66,6 +68,19 @@ test("cached() calls fetcher only on miss", async () => {
   const b = await cached(["k-once", 1], 60, fetcher);
   assert.deepEqual(a, { v: 1 });
   assert.deepEqual(b, { v: 1 });
+  assert.equal(calls, 1);
+});
+
+test("cachedWithMeta reports cache hits", async () => {
+  let calls = 0;
+  const fetcher = async () => {
+    calls++;
+    return { v: calls };
+  };
+  const first = await cachedWithMeta(["k-meta", 1], 60, fetcher);
+  const second = await cachedWithMeta(["k-meta", 1], 60, fetcher);
+  assert.deepEqual(first, { value: { v: 1 }, cacheHit: false });
+  assert.deepEqual(second, { value: { v: 1 }, cacheHit: true });
   assert.equal(calls, 1);
 });
 

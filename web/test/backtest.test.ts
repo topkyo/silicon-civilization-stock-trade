@@ -109,3 +109,66 @@ test("runBacktest attaches benchmark curve when provided", async () => {
   assert.equal(r.benchmark!.equityCurve.length, r.equityCurve.length);
   assert.ok(typeof r.stats.excessReturnPct === "number");
 });
+
+test("strict rebalance sells stale holdings before buying the new top signal", async () => {
+  const rotatingScorer: Scorer = async (snapshots, opts) =>
+    snapshots.map((s) => ({
+      symbol: s.symbol,
+      action: s.symbol === (opts.asOf < "2025-01-08" ? "A" : "B") ? "buy" : "hold",
+      confidence: 1,
+      size: s.symbol === (opts.asOf < "2025-01-08" ? "A" : "B") ? 1 : 0,
+      rationale: "rotate",
+    }));
+  const r = await runBacktest(makeSeries(), cfg, { scorer: rotatingScorer });
+  const jan8Trades = r.trades.filter((t) => t.date === "2025-01-08");
+  assert.ok(jan8Trades.some((t) => t.side === "sell" && t.symbol === "A"), "expected A to be sold");
+  assert.ok(jan8Trades.some((t) => t.side === "buy" && t.symbol === "B"), "expected B to be bought");
+});
+
+test("strict rebalance keeps maxPositions as a hard cap", async () => {
+  const manySeries: SymbolSeries[] = ["A", "B", "C"].map((symbol, offset) => ({
+    entry: { symbol, name: symbol, theme: "T" },
+    klines: makeKlines("2025-01-01", Array.from({ length: 80 }, (_, i) => 100 + i + offset)),
+  }));
+  const allBuyScorer: Scorer = async (snapshots) =>
+    snapshots.map((s, i) => ({
+      symbol: s.symbol,
+      action: "buy",
+      confidence: 1 - i * 0.1,
+      size: 1,
+      rationale: "buy",
+    }));
+  const r = await runBacktest(
+    manySeries,
+    { ...cfg, maxPositions: 1 },
+    { scorer: allBuyScorer },
+  );
+  assert.ok(
+    r.equityCurve.every((bar) => Object.keys(bar.positions).length <= 1),
+    "expected no bar to exceed maxPositions",
+  );
+});
+
+test("feeBps is applied as a one-way trading fee on buys", async () => {
+  const flatSeries: SymbolSeries[] = [
+    {
+      entry: { symbol: "A", name: "Flat", theme: "T" },
+      klines: makeKlines("2025-01-01", Array.from({ length: 10 }, () => 100)),
+    },
+  ];
+  const buyScorer: Scorer = async (snapshots) =>
+    snapshots.map((s) => ({
+      symbol: s.symbol,
+      action: "buy",
+      confidence: 1,
+      size: 1,
+      rationale: "buy",
+    }));
+  const r = await runBacktest(
+    flatSeries,
+    { ...cfg, rebalanceEveryNDays: 100, feeBps: 100 },
+    { scorer: buyScorer },
+  );
+  assert.equal(r.equityCurve[0].positions.A.shares, 9900);
+  assert.equal(r.equityCurve[0].cash, 100);
+});

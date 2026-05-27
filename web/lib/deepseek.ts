@@ -1,16 +1,12 @@
-// DeepSeek v4 client with aggressive caching.
+// DeepSeek v4 client with strict strategy-output validation.
 //
-// API-frugality strategy:
-//   1. SQLite-cache every (model, messages) tuple for 12h by default.
-//   2. Batch multi-symbol scoring into ONE prompt with JSON-array output.
-//   3. Stable system prompt sits at messages[0] so DeepSeek's own server-side
-//      KV-cache (free) hits on every rebalance during a backtest.
-//   4. Backtest mode: never set bypassCache — historical bars are deterministic,
-//      so the first run pays the token cost and every subsequent run is free.
-//   5. `DEEPSEEK_MODEL_BACKTEST` overrides the model for backtest sweeps —
-//      default to v4-flash there to halve token spend on large windows.
-import { cached } from "./cache";
+// Strategy boundary:
+//   1. LLM is the only buy/hold/sell decision source.
+//   2. Rule code only creates numeric features and data-quality flags.
+//   3. Deterministic code validates LLM output and enforces portfolio rules.
+import { cachedWithMeta } from "./cache";
 import { llmApiKeyConfigured, resolveLlmConfig } from "./llm/config";
+import { buildRuleFeatures } from "./scoring/rules";
 
 export interface ChatMessage {
   role: "system" | "user" | "assistant";
@@ -23,6 +19,11 @@ export interface ChatOptions {
   responseFormat?: "json_object" | "text";
   ttlSeconds?: number;
   bypassCache?: boolean;
+}
+
+export interface ChatResult {
+  content: string;
+  cacheHit: boolean;
 }
 
 function extractMessageContent(message: Record<string, unknown> | undefined): string {
@@ -41,10 +42,10 @@ function extractMessageContent(message: Record<string, unknown> | undefined): st
   return "";
 }
 
-export async function chat(
+export async function chatDetailed(
   messages: ChatMessage[],
   opts: ChatOptions = {},
-): Promise<string> {
+): Promise<ChatResult> {
   const cfg = resolveLlmConfig();
   if (!llmApiKeyConfigured(cfg)) {
     throw new Error(
@@ -107,8 +108,18 @@ export async function chat(
     return extractMessageContent(j.choices?.[0]?.message);
   };
 
-  if (opts.bypassCache) return doFetch();
-  return cached(cacheParts, ttl, doFetch);
+  if (opts.bypassCache) {
+    return { content: await doFetch(), cacheHit: false };
+  }
+  const result = await cachedWithMeta(cacheParts, ttl, doFetch);
+  return { content: result.value, cacheHit: result.cacheHit };
+}
+
+export async function chat(
+  messages: ChatMessage[],
+  opts: ChatOptions = {},
+): Promise<string> {
+  return (await chatDetailed(messages, opts)).content;
 }
 
 // ----- Strategy-specific helpers ------------------------------------------
@@ -126,19 +137,16 @@ export interface SymbolSnapshot {
   };
 }
 
+export type SignalSource = "llm-live" | "llm-cache" | "snapshot" | "unscorable";
+
 export interface Signal {
   symbol: string;
   action: "buy" | "hold" | "sell";
   confidence: number;    // 0..1
   size: number;          // 0..1 fraction of available capital
   rationale: string;
-}
-
-function calcPeg(pe?: number | null, profitYoyPct?: number | null): number | null {
-  if (pe == null || profitYoyPct == null || pe <= 0 || profitYoyPct <= 0) {
-    return null;
-  }
-  return Number((pe / profitYoyPct).toFixed(3));
+  source?: SignalSource;
+  dataQuality?: string[];
 }
 
 const STRATEGY_SYSTEM = `你是一名专注于"硅基文明消费"主题的中国市场量化策略师。
@@ -159,10 +167,107 @@ const STRATEGY_SYSTEM = `你是一名专注于"硅基文明消费"主题的中�
 PEG 显著恶化、或主题景气度反转、或价格跌破关键均线且伴随成交萎缩。
 
 严格输出 JSON：{"signals":[{"symbol":"...","action":"buy|hold|sell","confidence":0..1,"size":0..1,"rationale":"中文,<=60字"}]}
+必须覆盖输入中的每一个 symbol，且每个 symbol 只能出现一次。
 不要输出任何其他文本。`;
 
-/** Score a batch of symbols in ONE DeepSeek call (token-efficient). */
-export async function scoreSymbolsLlm(
+const MIN_SCORABLE_KLINES = 10;
+const DEFAULT_SCORE_BATCH_SIZE = 40;
+const VALID_ACTIONS = new Set(["buy", "hold", "sell"]);
+
+function clamp01(value: unknown): number {
+  const n = typeof value === "number" && Number.isFinite(value) ? value : 0;
+  return Number(Math.min(1, Math.max(0, n)).toFixed(3));
+}
+
+function normalizeRationale(value: unknown): string {
+  const text = typeof value === "string" && value.trim() ? value.trim() : "LLM未提供理由";
+  return text.slice(0, 60);
+}
+
+function chunks<T>(items: T[], size: number): T[][] {
+  const safeSize = Math.max(1, Math.floor(size));
+  const out: T[][] = [];
+  for (let i = 0; i < items.length; i += safeSize) out.push(items.slice(i, i + safeSize));
+  return out;
+}
+
+function unscorableSignal(snapshot: SymbolSnapshot): Signal {
+  const features = buildRuleFeatures(snapshot);
+  return {
+    symbol: snapshot.symbol,
+    action: "hold",
+    confidence: 0,
+    size: 0,
+    rationale: "K线不足,不参与LLM评分",
+    source: "unscorable",
+    dataQuality: features.dataMissingFlags,
+  };
+}
+
+function signalSource(cacheHit: boolean): SignalSource {
+  return cacheHit ? "llm-cache" : "llm-live";
+}
+
+function normalizeLlmSignals(
+  raw: string,
+  batch: SymbolSnapshot[],
+  source: SignalSource,
+): Signal[] {
+  let parsed: { signals?: unknown };
+  try {
+    parsed = JSON.parse(raw) as { signals?: unknown };
+  } catch (e) {
+    throw new Error(`LLM returned invalid JSON: ${e instanceof Error ? e.message : String(e)}`);
+  }
+  if (!Array.isArray(parsed.signals)) {
+    throw new Error("LLM response missing signals array");
+  }
+
+  const expected = new Set(batch.map((s) => s.symbol));
+  const featuresBySymbol = new Map(batch.map((s) => [s.symbol, buildRuleFeatures(s)]));
+  const seen = new Set<string>();
+  const out: Signal[] = [];
+
+  for (const item of parsed.signals) {
+    if (!item || typeof item !== "object") {
+      throw new Error("LLM signal item must be an object");
+    }
+    const candidate = item as Record<string, unknown>;
+    const symbol = typeof candidate.symbol === "string" ? candidate.symbol.trim() : "";
+    if (!expected.has(symbol)) {
+      throw new Error(`LLM returned unknown symbol ${symbol || "<empty>"}`);
+    }
+    if (seen.has(symbol)) {
+      throw new Error(`LLM returned duplicate symbol ${symbol}`);
+    }
+    seen.add(symbol);
+
+    const action = typeof candidate.action === "string" ? candidate.action : "";
+    if (!VALID_ACTIONS.has(action)) {
+      throw new Error(`LLM returned invalid action for ${symbol}: ${action || "<empty>"}`);
+    }
+
+    out.push({
+      symbol,
+      action: action as Signal["action"],
+      confidence: clamp01(candidate.confidence),
+      size: clamp01(candidate.size),
+      rationale: normalizeRationale(candidate.rationale),
+      source,
+      dataQuality: featuresBySymbol.get(symbol)?.dataMissingFlags ?? [],
+    });
+  }
+
+  const missing = [...expected].filter((symbol) => !seen.has(symbol));
+  if (missing.length > 0) {
+    throw new Error(`LLM response missing symbols: ${missing.join(",")}`);
+  }
+
+  const bySymbol = new Map(out.map((signal) => [signal.symbol, signal]));
+  return batch.map((snapshot) => bySymbol.get(snapshot.symbol)!);
+}
+
+async function scoreSymbolsBatchLlm(
   snapshots: SymbolSnapshot[],
   opts: { asOf?: string; bypassCache?: boolean; mode?: "live" | "backtest" } = {},
 ): Promise<Signal[]> {
@@ -180,29 +285,61 @@ export async function scoreSymbolsLlm(
       pb: s.fundamental?.pb ?? null,
       market_cap_yi: s.fundamental?.market_cap ?? null,
       profit_yoy_pct: s.fundamental?.profit_yoy ?? null,
-      peg: calcPeg(s.fundamental?.pe_ttm, s.fundamental?.profit_yoy),
+      features: (() => {
+        const f = buildRuleFeatures(s);
+        return {
+          peg: f.peg,
+          peg_score: Number(f.pegScore.toFixed(3)),
+          momentum_20d_pct: f.momentum20dPct,
+          momentum_score: Number(f.momentumScore.toFixed(3)),
+          theme_score: Number(f.themeScore.toFixed(3)),
+          data_missing_flags: f.dataMissingFlags,
+        };
+      })(),
     })),
   };
 
-  const raw = await chat(
-    [
-      { role: "system", content: STRATEGY_SYSTEM },
-      { role: "user", content: JSON.stringify(userPayload) },
-    ],
-    {
-      model: opts.mode === "backtest" ? resolveLlmConfig().backtestModel : resolveLlmConfig().model,
+  const messages = [
+    { role: "system" as const, content: STRATEGY_SYSTEM },
+    { role: "user" as const, content: JSON.stringify(userPayload) },
+  ];
+  const model = opts.mode === "backtest" ? resolveLlmConfig().backtestModel : resolveLlmConfig().model;
+  let lastError: unknown;
+  const attempts = opts.bypassCache ? 1 : 3;
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    const result = await chatDetailed(messages, {
+      model,
       responseFormat: "json_object",
-      temperature: 0.2,
-      bypassCache: opts.bypassCache,
-    },
-  );
-
-  try {
-    const parsed = JSON.parse(raw) as { signals?: Signal[] };
-    return parsed.signals ?? [];
-  } catch {
-    return [];
+      temperature: attempt === 0 ? 0.2 : 0,
+      bypassCache: opts.bypassCache || attempt > 0,
+    });
+    try {
+      return normalizeLlmSignals(result.content, snapshots, signalSource(result.cacheHit));
+    } catch (e) {
+      lastError = e;
+    }
   }
+  throw lastError;
 }
 
-export { scoreSymbolsHybrid as scoreSymbols } from "./scoring/hybrid";
+export const scoreSymbolsLlm = scoreSymbolsBatchLlm;
+
+export async function scoreSymbols(
+  snapshots: SymbolSnapshot[],
+  opts: { asOf?: string; bypassCache?: boolean; mode?: "live" | "backtest"; batchSize?: number } = {},
+): Promise<Signal[]> {
+  if (snapshots.length === 0) return [];
+
+  const scorable = snapshots.filter((s) => s.closes.length >= MIN_SCORABLE_KLINES);
+  const unscorable = snapshots.filter((s) => s.closes.length < MIN_SCORABLE_KLINES);
+  const batchSize = opts.batchSize ?? Number(process.env.LLM_SCORE_BATCH_SIZE ?? DEFAULT_SCORE_BATCH_SIZE);
+  const scored = (
+    await Promise.all(chunks(scorable, batchSize).map((batch) => scoreSymbolsBatchLlm(batch, opts)))
+  ).flat();
+
+  const bySymbol = new Map([
+    ...scored.map((signal) => [signal.symbol, signal] as const),
+    ...unscorable.map((snapshot) => [snapshot.symbol, unscorableSignal(snapshot)] as const),
+  ]);
+  return snapshots.map((snapshot) => bySymbol.get(snapshot.symbol)!);
+}

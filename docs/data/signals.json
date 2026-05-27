@@ -1,956 +1,1526 @@
 {
-  "generated_at": "2026-05-26T14:31:16.873Z",
+  "generated_at": "2026-05-27T03:24:34.654Z",
   "fundamentals": [
     {
       "symbol": "688256",
-      "pe_ttm": 42,
-      "pb": 5.2,
-      "market_cap": 2242
+      "pe_ttm": 213.09,
+      "pb": 70.56,
+      "market_cap": 8636.3266639833,
+      "profit_yoy": null
     },
     {
       "symbol": "688041",
-      "pe_ttm": 19,
-      "pb": 3.9,
-      "market_cap": 3979
+      "pe_ttm": 275.7,
+      "pb": 32.25,
+      "market_cap": 7577.34217666,
+      "profit_yoy": null
     },
     {
       "symbol": "300474",
-      "pe_ttm": 88,
-      "pb": 4.8,
-      "market_cap": 4088
+      "pe_ttm": -151.07,
+      "pb": 4.97,
+      "market_cap": 338.91856611549997,
+      "profit_yoy": null
     },
     {
       "symbol": "002049",
-      "pe_ttm": 35,
-      "pb": 2.5,
-      "market_cap": 4115
+      "pe_ttm": 54.82,
+      "pb": 5.26,
+      "market_cap": 733.0593075936,
+      "profit_yoy": null
     },
     {
       "symbol": "688385",
-      "pe_ttm": 13,
-      "pb": 4.3,
-      "market_cap": 4733
+      "pe_ttm": 97.13,
+      "pb": 9.17,
+      "market_cap": 576.191615375,
+      "profit_yoy": null
     },
     {
       "symbol": "300308",
-      "pe_ttm": 47,
-      "pb": 1.7,
-      "market_cap": 4407
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "300502",
-      "pe_ttm": 17,
-      "pb": 4.7,
-      "market_cap": 937
+      "pe_ttm": 62.65,
+      "pb": 34.14,
+      "market_cap": 6966.801884656,
+      "profit_yoy": null
     },
     {
       "symbol": "300394",
-      "pe_ttm": 29,
-      "pb": 4.9,
-      "market_cap": 189
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "000988",
-      "pe_ttm": 40,
-      "pb": 3,
-      "market_cap": 3520
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "002281",
-      "pe_ttm": 76,
-      "pb": 3.6,
-      "market_cap": 876
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "603083",
-      "pe_ttm": 88,
-      "pb": 3.8,
-      "market_cap": 1528
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "301205",
-      "pe_ttm": 30,
-      "pb": 1,
-      "market_cap": 2350
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "601138",
-      "pe_ttm": 18,
-      "pb": 2.8,
-      "market_cap": 2018
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "000977",
-      "pe_ttm": 10,
-      "pb": 1,
-      "market_cap": 2650
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "603019",
-      "pe_ttm": 15,
-      "pb": 4.5,
-      "market_cap": 4535
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "000938",
-      "pe_ttm": 13,
-      "pb": 2.3,
-      "market_cap": 1213
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "000063",
-      "pe_ttm": 61,
-      "pb": 4.1,
-      "market_cap": 4581
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "002837",
-      "pe_ttm": 33,
-      "pb": 2.3,
-      "market_cap": 313
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "301018",
-      "pe_ttm": 11,
-      "pb": 5.1,
-      "market_cap": 1291
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "300499",
-      "pe_ttm": 27,
-      "pb": 2.7,
-      "market_cap": 3067
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "300602",
-      "pe_ttm": 38,
-      "pb": 5.8,
-      "market_cap": 1398
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "600900",
-      "pe_ttm": 59,
-      "pb": 2.9,
-      "market_cap": 4619
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "601985",
-      "pe_ttm": 52,
-      "pb": 5.2,
-      "market_cap": 3092
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "003816",
-      "pe_ttm": 11,
-      "pb": 5.1,
-      "market_cap": 4491
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "600905",
-      "pe_ttm": 32,
-      "pb": 2.2,
-      "market_cap": 1712
+      "pe_ttm": 28.1,
+      "pb": 1.3,
+      "market_cap": 1169.2348908078,
+      "profit_yoy": null
     },
     {
       "symbol": "600886",
-      "pe_ttm": 85,
-      "pb": 3.5,
-      "market_cap": 4925
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "600011",
-      "pe_ttm": 48,
-      "pb": 5.8,
-      "market_cap": 2648
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "300442",
-      "pe_ttm": 55,
-      "pb": 3.5,
-      "market_cap": 3575
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "300383",
-      "pe_ttm": 79,
-      "pb": 5.9,
-      "market_cap": 1199
+      "pe_ttm": 290.86,
+      "pb": 2.21,
+      "market_cap": 261.36999995379995,
+      "profit_yoy": null
     },
     {
       "symbol": "603881",
-      "pe_ttm": 18,
-      "pb": 4.8,
-      "market_cap": 3938
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "300738",
-      "pe_ttm": 52,
-      "pb": 1.2,
-      "market_cap": 1452
+      "pe_ttm": 61.65,
+      "pb": 5.96,
+      "market_cap": 228.6627241019,
+      "profit_yoy": null
     },
     {
       "symbol": "002335",
-      "pe_ttm": 25,
-      "pb": 5.5,
-      "market_cap": 2345
+      "pe_ttm": 101.67,
+      "pb": 5.09,
+      "market_cap": 317.23734223549997,
+      "profit_yoy": null
     },
     {
       "symbol": "603290",
-      "pe_ttm": 38,
-      "pb": 5.8,
-      "market_cap": 398
+      "pe_ttm": 304.66,
+      "pb": 4.66,
+      "market_cap": 324.48654643,
+      "profit_yoy": null
     },
     {
       "symbol": "688187",
-      "pe_ttm": 15,
-      "pb": 3.5,
-      "market_cap": 3375
+      "pe_ttm": 31.95,
+      "pb": 1.91,
+      "market_cap": 822.09871532,
+      "profit_yoy": null
     },
     {
       "symbol": "688711",
-      "pe_ttm": 66,
-      "pb": 2.6,
-      "market_cap": 66
+      "pe_ttm": 2246.72,
+      "pb": 7.77,
+      "market_cap": 81.6997902552,
+      "profit_yoy": null
     },
     {
       "symbol": "605111",
-      "pe_ttm": 56,
-      "pb": 5.6,
-      "market_cap": 4096
+      "pe_ttm": 76,
+      "pb": 6.62,
+      "market_cap": 287.41013636400004,
+      "profit_yoy": null
     },
     {
       "symbol": "600460",
-      "pe_ttm": 56,
-      "pb": 2.6,
-      "market_cap": 1016
+      "pe_ttm": 71.62,
+      "pb": 4.9,
+      "market_cap": 598.2338282775,
+      "profit_yoy": null
     },
     {
       "symbol": "688396",
-      "pe_ttm": 37,
-      "pb": 5.7,
-      "market_cap": 4797
+      "pe_ttm": 66.46,
+      "pb": 3.79,
+      "market_cap": 877.28315414,
+      "profit_yoy": null
     },
     {
       "symbol": "600745",
-      "pe_ttm": 36,
-      "pb": 4.6,
-      "market_cap": 4036
+      "pe_ttm": -30.82,
+      "pb": 1.02,
+      "market_cap": 233.375659125,
+      "profit_yoy": null
     },
     {
       "symbol": "603986",
-      "pe_ttm": 77,
-      "pb": 2.7,
-      "market_cap": 4517
+      "pe_ttm": 63.33,
+      "pb": 14.96,
+      "market_cap": 3701.8910515251,
+      "profit_yoy": null
     },
     {
       "symbol": "688008",
-      "pe_ttm": 88,
-      "pb": 2.8,
-      "market_cap": 4168
+      "pe_ttm": 98.18,
+      "pb": 15.96,
+      "market_cap": 3327.9284371809003,
+      "profit_yoy": null
     },
     {
       "symbol": "300223",
-      "pe_ttm": 76,
-      "pb": 4.6,
-      "market_cap": 5036
+      "pe_ttm": 62.26,
+      "pb": 6.28,
+      "market_cap": 794.3585382026001,
+      "profit_yoy": null
     },
     {
       "symbol": "301308",
-      "pe_ttm": 10,
-      "pb": 3,
-      "market_cap": 1970
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "002156",
-      "pe_ttm": 61,
-      "pb": 5.1,
-      "market_cap": 3941
+      "pe_ttm": 85.24,
+      "pb": 7.22,
+      "market_cap": 1121.9593970416001,
+      "profit_yoy": null
     },
     {
       "symbol": "600584",
-      "pe_ttm": 12,
-      "pb": 5.2,
-      "market_cap": 3292
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "002185",
-      "pe_ttm": 74,
-      "pb": 1.4,
-      "market_cap": 1154
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "002371",
-      "pe_ttm": 71,
-      "pb": 1.1,
-      "market_cap": 1351
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "688012",
-      "pe_ttm": 81,
-      "pb": 4.1,
-      "market_cap": 681
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "688072",
-      "pe_ttm": 75,
-      "pb": 5.5,
-      "market_cap": 395
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "688126",
-      "pe_ttm": 10,
-      "pb": 2,
-      "market_cap": 210
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "300476",
-      "pe_ttm": 13,
-      "pb": 4.3,
-      "market_cap": 733
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "002463",
-      "pe_ttm": 60,
-      "pb": 1,
-      "market_cap": 2900
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "002916",
-      "pe_ttm": 20,
-      "pb": 5,
-      "market_cap": 3540
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "002938",
-      "pe_ttm": 44,
-      "pb": 2.4,
-      "market_cap": 4364
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "600183",
-      "pe_ttm": 32,
-      "pb": 2.2,
-      "market_cap": 1712
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "002436",
-      "pe_ttm": 51,
-      "pb": 3.1,
-      "market_cap": 971
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "688261",
-      "pe_ttm": 42,
-      "pb": 3.2,
-      "market_cap": 922
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "688019",
-      "pe_ttm": 10,
-      "pb": 3,
-      "market_cap": 2770
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "002409",
-      "pe_ttm": 54,
-      "pb": 3.4,
-      "market_cap": 4974
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "688981",
-      "pe_ttm": 72,
-      "pb": 1.2,
-      "market_cap": 752
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "600941",
-      "pe_ttm": 72,
-      "pb": 1.2,
-      "market_cap": 752
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "601728",
-      "pe_ttm": 30,
-      "pb": 5,
-      "market_cap": 3390
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "688082",
-      "pe_ttm": 17,
-      "pb": 2.7,
-      "market_cap": 2017
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "300346",
-      "pe_ttm": 30,
-      "pb": 4,
-      "market_cap": 2230
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "600703",
-      "pe_ttm": 42,
-      "pb": 1.2,
-      "market_cap": 1402
+      "pe_ttm": null,
+      "pb": null,
+      "market_cap": null,
+      "profit_yoy": null
     },
     {
       "symbol": "300666",
-      "pe_ttm": 79,
-      "pb": 4.9,
-      "market_cap": 1439
+      "pe_ttm": 60.75,
+      "pb": 10.03,
+      "market_cap": 509.68103204299996,
+      "profit_yoy": null
     },
     {
       "symbol": "600050",
-      "pe_ttm": 36,
-      "pb": 4.6,
-      "market_cap": 1036
+      "pe_ttm": 15.84,
+      "pb": 0.79,
+      "market_cap": 1353.7496166591,
+      "profit_yoy": null
     },
     {
       "symbol": "600667",
-      "pe_ttm": 89,
-      "pb": 2.9,
-      "market_cap": 369
+      "pe_ttm": 57.75,
+      "pb": 3.41,
+      "market_cap": 298.2539145828,
+      "profit_yoy": null
     },
     {
       "symbol": "688120",
-      "pe_ttm": 10,
-      "pb": 4,
-      "market_cap": 3730
+      "pe_ttm": 102.84,
+      "pb": 13.18,
+      "market_cap": 1017.2799521114999,
+      "profit_yoy": null
     },
     {
       "symbol": "688037",
-      "pe_ttm": 55,
-      "pb": 3.5,
-      "market_cap": 1975
+      "pe_ttm": 3881.84,
+      "pb": 19.45,
+      "market_cap": 544.8372792512,
+      "profit_yoy": null
     },
     {
       "symbol": "603228",
-      "pe_ttm": 83,
-      "pb": 3.3,
-      "market_cap": 123
+      "pe_ttm": 88.69,
+      "pb": 6.47,
+      "market_cap": 825.5071818245999,
+      "profit_yoy": null
     },
     {
       "symbol": "000021",
-      "pe_ttm": 21,
-      "pb": 4.1,
-      "market_cap": 1581
+      "pe_ttm": 73.15,
+      "pb": 5.3,
+      "market_cap": 708.580088258,
+      "profit_yoy": null
     },
     {
       "symbol": "600845",
-      "pe_ttm": 60,
-      "pb": 3,
-      "market_cap": 1820
+      "pe_ttm": 39.27,
+      "pb": 5.56,
+      "market_cap": 598.8444580972,
+      "profit_yoy": null
     }
   ],
   "signals": [
     {
-      "symbol": "300308",
+      "symbol": "688256",
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.6,
+      "rationale": "动量强劲52%，主题景气高，AI芯片龙头，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "688041",
+      "action": "buy",
+      "confidence": 0.7,
+      "size": 0.5,
+      "rationale": "动量上涨，主题景气，算力芯片需求旺盛，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "300474",
       "action": "hold",
-      "confidence": 0.6,
+      "confidence": 0.5,
       "size": 0,
-      "rationale": "PE适中，PB低，股价横盘整理，等待突破信号。"
+      "rationale": "基本面亏损，动量一般，暂观望。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "002049",
+      "action": "buy",
+      "confidence": 0.85,
+      "size": 0.7,
+      "rationale": "动量突破，估值合理，AI芯片受益，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "688385",
+      "action": "hold",
+      "confidence": 0.5,
+      "size": 0,
+      "rationale": "动量偏弱，估值偏高，暂持观望。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "300308",
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "动量强劲33%，光模块景气高，算力互联核心，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "300502",
       "action": "buy",
-      "confidence": 0.85,
-      "size": 0.25,
-      "rationale": "低PE+光模块景气回升，价格突破均线多头排列。"
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "动量升31%，PE合理，光模块龙头，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "300394",
-      "action": "hold",
-      "confidence": 0.6,
-      "size": 0,
-      "rationale": "估值中性，横盘整理，需等待放量突破。"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "动量强37%，光模块高景气，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "000988",
       "action": "buy",
-      "confidence": 0.8,
-      "size": 0.2,
-      "rationale": "上升通道完美，AI算力驱动光模块需求，顺势做多。"
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "动量涨42%，光模块受益算力，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "002281",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "高PE压制估值吸引力，暂持观望，若不能新高则考虑减持。"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "动量飙升56%，光模块需求旺盛，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "603083",
-      "action": "hold",
-      "confidence": 0.5,
-      "size": 0,
-      "rationale": "PE奇高，股价方向不明，不宜参与。"
+      "action": "buy",
+      "confidence": 0.85,
+      "size": 0.7,
+      "rationale": "光模块主题高景气，20日涨幅28%，动量极强，建议买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "301205",
-      "action": "buy",
-      "confidence": 0.9,
-      "size": 0.25,
-      "rationale": "PE适度+PB极低，底部稳步抬升，安全边际与动能兼备。"
+      "action": "hold",
+      "confidence": 0.5,
+      "size": 0,
+      "rationale": "光模块主题景气，但动量中性，等待趋势确认，暂持。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "601138",
       "action": "buy",
-      "confidence": 0.75,
-      "size": 0.2,
-      "rationale": "低估值AI服务器龙头，趋势稳健，短期回调提供买点。"
+      "confidence": 0.8,
+      "size": 0.6,
+      "rationale": "AI服务器景气，动量正向，趋势向上，建议买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "000977",
-      "action": "buy",
-      "confidence": 0.85,
-      "size": 0.25,
-      "rationale": "极低PE+AI服务器龙头，股价底部抬升，安全边际高。"
+      "action": "sell",
+      "confidence": 0.7,
+      "size": 0,
+      "rationale": "动量显著走弱，跌破均线，短期风险加大，建议卖出。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "603019",
-      "action": "buy",
-      "confidence": 0.8,
-      "size": 0.2,
-      "rationale": "低PE+算力核心标的，均线多头排列，上行动能积蓄。"
+      "action": "hold",
+      "confidence": 0.5,
+      "size": 0,
+      "rationale": "AI服务器主题景气，但动量中性，关注后续方向，暂持。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "000938",
-      "action": "buy",
-      "confidence": 0.8,
-      "size": 0.2,
-      "rationale": "低估值AI基础设施，上升通道完好，持有待涨。"
+      "action": "sell",
+      "confidence": 0.7,
+      "size": 0,
+      "rationale": "动量走弱，价格跌破支撑，主题虽好但技术面恶化，卖出。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "000063",
       "action": "hold",
       "confidence": 0.5,
       "size": 0,
-      "rationale": "高PE压制空间，股价窄幅波动，等待催化剂或切换至低PE标的。"
-    },
-    {
-      "symbol": "603986",
-      "action": "hold",
-      "confidence": 0.5,
-      "size": 0,
-      "rationale": "存储景气但PE偏高，股价无趋势，暂持观察。"
-    },
-    {
-      "symbol": "688008",
-      "action": "hold",
-      "confidence": 0.4,
-      "size": 0,
-      "rationale": "估值奇高，股价停滞，虽主题热但缺乏安全边际，减仓为宜。"
-    },
-    {
-      "symbol": "300223",
-      "action": "sell",
-      "confidence": 0.75,
-      "size": 0.2,
-      "rationale": "高PE+股价跌破均线转入空头，及时止损。"
-    },
-    {
-      "symbol": "301308",
-      "action": "sell",
-      "confidence": 0.8,
-      "size": 0.25,
-      "rationale": "虽PE低但趋势破位，无底部信号，先行离场规避风险。"
-    },
-    {
-      "symbol": "002156",
-      "action": "sell",
-      "confidence": 0.7,
-      "size": 0.2,
-      "rationale": "PE高且下跌破位，建议减仓。"
-    },
-    {
-      "symbol": "600584",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "低PE提供部分防御，但下跌趋势未改，观望等待企稳。"
-    },
-    {
-      "symbol": "002185",
-      "action": "hold",
-      "confidence": 0.5,
-      "size": 0,
-      "rationale": "高PE+方向不明，观望。"
-    },
-    {
-      "symbol": "002371",
-      "action": "buy",
-      "confidence": 0.9,
-      "size": 0.25,
-      "rationale": "半导体设备景气高涨，趋势强劲突破，顺势而为。"
-    },
-    {
-      "symbol": "688256",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
-    },
-    {
-      "symbol": "688041",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
-    },
-    {
-      "symbol": "300474",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
-    },
-    {
-      "symbol": "002049",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
-    },
-    {
-      "symbol": "688385",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "rationale": "AI服务器主题，动量温和，无明显信号，建议持有。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "002837",
       "action": "hold",
-      "confidence": 0.55,
+      "confidence": 0.5,
       "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "rationale": "液冷主题景气，动量中性，等待放量突破，暂持。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "301018",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "液冷主题高景气，20日涨幅26.5%，动量极强，积极买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "300499",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.6,
+      "rationale": "液冷主题景气，动量正向，趋势向好，建议买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "300602",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.8,
+      "rationale": "动量极强，主题景气度高，综合评分高，强势买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600900",
       "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "confidence": 0.6,
+      "size": 0.5,
+      "rationale": "基本面平稳，主题中性，动量一般，建议持有。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "601985",
       "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "confidence": 0.6,
+      "size": 0.5,
+      "rationale": "估值合理，主题景气，动量偏弱，建议持有。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "003816",
       "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "confidence": 0.6,
+      "size": 0.5,
+      "rationale": "估值合理，主题稳定，动量中性，建议持有。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600905",
       "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "confidence": 0.6,
+      "size": 0.5,
+      "rationale": "PE合理但缺乏增长，主题中性，动量平淡，持有。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600886",
       "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "confidence": 0.6,
+      "size": 0.5,
+      "rationale": "电力板块，估值合理，主题中性，动量缓慢，持有。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600011",
-      "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "action": "buy",
+      "confidence": 0.7,
+      "size": 0.6,
+      "rationale": "动量较强，主题景气，综合向好，建议买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "300442",
       "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "confidence": 0.6,
+      "size": 0.5,
+      "rationale": "IDC主题景气高但价格回调，等待企稳，建议持有。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "300383",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "action": "sell",
+      "confidence": 0.7,
+      "size": 0.3,
+      "rationale": "价格大幅下跌跌破均线，主题景气虽高但动量极弱，减仓。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "603881",
       "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "confidence": 0.6,
+      "size": 0.5,
+      "rationale": "IDC主题景气，但价格震荡，动量中性，建议持有。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "300738",
       "action": "hold",
-      "confidence": 0.55,
+      "confidence": 0.5,
       "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "rationale": "动量中性，主题中等，PE偏高，暂无强烈信号。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "002335",
       "action": "hold",
-      "confidence": 0.55,
+      "confidence": 0.5,
       "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "rationale": "动量微跌，主题中等，PE高，建议持有观望。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "603290",
-      "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.5,
+      "rationale": "动量强势突破，但PE极高，谨慎买入小仓位。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688187",
-      "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.7,
+      "rationale": "动量强劲，PE较低估值合理，功率半导体景气，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688711",
-      "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "action": "buy",
+      "confidence": 0.7,
+      "size": 0.4,
+      "rationale": "动量暴涨，PE极高风险大，轻仓参与。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "605111",
-      "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.6,
+      "rationale": "动量飙升，功率半导体景气，PE适中，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600460",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量75 主题55"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.6,
+      "rationale": "动量强势，PE尚可，功率半导体主题，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688396",
-      "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.6,
+      "rationale": "动量强，估值合理，功率半导体，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600745",
-      "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "action": "sell",
+      "confidence": 0.9,
+      "size": 1,
+      "rationale": "持续下跌，动量极弱，PE亏损，建议全卖。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "603986",
+      "action": "buy",
+      "confidence": 0.95,
+      "size": 0.8,
+      "rationale": "动量极强，存储高景气，估值匹配，重仓买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "688008",
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.8,
+      "rationale": "20日涨幅55%，主题景气高，动量强，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "300223",
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.8,
+      "rationale": "20日涨幅36%，主题景气高，动量向好，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "301308",
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.8,
+      "rationale": "20日涨幅47%，主题景气高，动量强势，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "002156",
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.8,
+      "rationale": "20日涨幅45%，主题景气高，动量强，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "600584",
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.9,
+      "rationale": "20日涨幅98%，主题景气高，极强动量，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "002185",
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.8,
+      "rationale": "20日涨幅58%，主题景气高，动量强劲，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
+    },
+    {
+      "symbol": "002371",
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.8,
+      "rationale": "20日涨幅42%，主题景气高，动量向上，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688012",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.8,
+      "rationale": "20日涨幅43%，主题景气高，动量强，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688072",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.9,
+      "rationale": "20日涨幅95%，主题景气高，极强动量，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688126",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.7,
+      "size": 0.7,
+      "rationale": "20日涨幅29%，主题景气高，动量仍强但略有回调，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "300476",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.1,
+      "rationale": "AI-PCB主题强+动量突破，走势强劲，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "002463",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.1,
+      "rationale": "AI-PCB主题景气+价格创新高，动量强，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "002916",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.1,
+      "rationale": "AI-PCB主题强势，20日涨幅39%，动量积极，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "002938",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.1,
+      "rationale": "AI-PCB主题景气，62%涨幅，动量极强，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600183",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.1,
+      "rationale": "AI-PCB主题强，76%领涨，动量强劲，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "002436",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.1,
+      "rationale": "AI-PCB主题景气，33%涨幅，动量趋势好，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688261",
-      "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "action": "buy",
+      "confidence": 0.7,
+      "size": 0.08,
+      "rationale": "动量强势但主题景气一般，谨慎买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688019",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.1,
+      "rationale": "半导体材料主题强，动量持续，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "002409",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.1,
+      "rationale": "半导体材料景气，37%涨幅，动量好，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688981",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.1,
+      "rationale": "晶圆代工主题强，34%涨幅，动量破位，买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600941",
       "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "confidence": 0.5,
+      "size": 0.3,
+      "rationale": "基本面数据缺失，主题与动量一般，暂时持有观察。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "601728",
       "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "confidence": 0.5,
+      "size": 0.3,
+      "rationale": "基本面数据缺失，主题与动量一般，暂时持有观察。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688082",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "动量强势(49%)，主题景气度高，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "300346",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.7,
+      "rationale": "动量与主题优异，基本面中性，建议买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600703",
-      "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.7,
+      "rationale": "价格动量非常强，主题尚可，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_pe_ttm",
+        "missing_profit_yoy",
+        "missing_pb",
+        "missing_market_cap",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "300666",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "动量与主题双强，高PE但无碍，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600050",
       "action": "hold",
-      "confidence": 0.495,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题55"
+      "confidence": 0.5,
+      "size": 0.3,
+      "rationale": "动量稍弱，主题一般，估值合理，持有。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600667",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "动量主题强劲，受益算力需求，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688120",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "半导体设备景气好，动量极强，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "688037",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.7,
+      "rationale": "动量主题强，但PE极高需谨慎，买入。",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "603228",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.8,
+      "size": 0.7,
+      "rationale": "主题高景气，动量强势突破，AI-PCB受益算力扩张，建议买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "000021",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题85"
+      "action": "buy",
+      "confidence": 0.9,
+      "size": 0.8,
+      "rationale": "存储/HBM主题景气高，动量极强，趋势买入",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     },
     {
       "symbol": "600845",
-      "action": "hold",
-      "confidence": 0.55,
-      "size": 0,
-      "rationale": "预筛未进Top20:规则:PEG缺失 动量50 主题75"
+      "action": "sell",
+      "confidence": 0.7,
+      "size": 1,
+      "rationale": "价格跌破关键均线，动能转弱，主题景气尚可但趋势走坏，建议卖出",
+      "source": "llm-live",
+      "dataQuality": [
+        "missing_profit_yoy",
+        "missing_peg"
+      ]
     }
   ]
 }

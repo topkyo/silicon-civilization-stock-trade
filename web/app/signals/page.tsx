@@ -47,7 +47,10 @@ function snapshotRows(universe: ReturnType<typeof loadEntries>) {
           : undefined;
       })(),
     },
-    signal: signals.get(e.symbol),
+    signal: (() => {
+      const signal = signals.get(e.symbol);
+      return signal ? { ...signal, source: "snapshot" as const } : undefined;
+    })(),
   }));
 }
 
@@ -90,9 +93,8 @@ async function loadLiveSignals(universe: ReturnType<typeof loadEntries>) {
     };
   });
 
-  const usable = snapshots.filter((s) => s.closes.length >= 10);
-  if (usable.length === 0) throw new Error("no live signal data loaded");
-  const signals = await scoreSymbols(usable);
+  if (snapshots.every((s) => s.closes.length < 10)) throw new Error("no live signal data loaded");
+  const signals = await scoreSymbols(snapshots);
   const byId = new Map(signals.map((s) => [s.symbol, s]));
 
   return universe.map((e) => ({
@@ -132,7 +134,7 @@ export default async function SignalsPage() {
         <div>
           <div className="eyebrow">{SITE_EYEBROW}</div>
           <h1>实时信号</h1>
-          <p>基于 AI 基建主题池，以 PEG 与利润增速/估值匹配为主，生成 5–20 个交易日的动作建议。</p>
+          <p>LLM 统一输出 buy / hold / sell，规则层只提供价格、估值、增速、PEG 与数据质量特征；来源列标记 live、cache 或 snapshot。</p>
         </div>
       </header>
       {error && (
@@ -164,6 +166,7 @@ export default async function SignalsPage() {
                   <th className="num">PE(TTM)</th>
                   <th className="num">利润同比</th>
                   <th className="num">PEG</th>
+                  <th>来源</th>
                   <th>理由</th>
                 </tr>
               </thead>
@@ -186,6 +189,7 @@ export default async function SignalsPage() {
                     <td className="num">{snapshot?.fundamental?.pe_ttm?.toFixed(1) ?? "—"}</td>
                     <td className="num">{snapshot?.fundamental?.profit_yoy != null ? `${snapshot.fundamental.profit_yoy.toFixed(1)}%` : "—"}</td>
                     <td className="num">{calcPeg(snapshot?.fundamental?.pe_ttm, snapshot?.fundamental?.profit_yoy)?.toFixed(2) ?? "—"}</td>
+                    <td><span className={`badge ${signal?.source ?? ""}`}>{signal?.source ?? "—"}</span></td>
                     <td className="muted signal-reason">{signal?.rationale ?? "—"}</td>
                   </tr>
                 ))}

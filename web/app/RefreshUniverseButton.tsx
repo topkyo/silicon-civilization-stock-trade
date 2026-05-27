@@ -62,7 +62,7 @@ export default function RefreshUniverseButton() {
   return (
     <div>
       <button onClick={run} disabled={busy}>
-        {busy ? "刷新中…" : "✨ DeepSeek 刷新股票池"}
+        {busy ? "刷新中…" : "DeepSeek 刷新股票池"}
       </button>
 
       {(busy || logs.length > 0 || result || error) && (
@@ -74,7 +74,7 @@ export default function RefreshUniverseButton() {
                 <span style={{ color: "var(--muted)" }}>{(pct * 100).toFixed(0)}%</span>
               </div>
               <div style={{
-                height: 6, marginTop: 6, background: "#0d1320",
+                height: 6, marginTop: 6, background: "var(--subtle)",
                 borderRadius: 3, overflow: "hidden", border: "1px solid var(--border)",
               }}>
                 <div style={{
@@ -101,7 +101,7 @@ export default function RefreshUniverseButton() {
               )}
               {result.applied.rejected.length > 0 && (
                 <div style={{ marginTop: 6, color: "var(--danger)" }}>
-                  ✗ {result.applied.rejected.map((r) => `${r.symbol}: ${r.reason}`).join("; ")}
+                  拒绝：{result.applied.rejected.map((r) => `${r.symbol}: ${r.reason}`).join("; ")}
                 </div>
               )}
             </div>

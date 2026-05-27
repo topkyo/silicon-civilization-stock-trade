@@ -23,7 +23,8 @@ type Row = UniverseEntry & { analyst?: Analyst | null; loading?: boolean };
 const ANALYST_BATCH_SIZE = 8;
 const SPOT_BATCH_SIZE = 12;
 const EMPTY_SPOTS: Spot[] = [];
-const BROWSER_CACHE_TTL_MS = 15 * 60 * 1000;
+export const SPOT_BROWSER_CACHE_TTL_MS = 15 * 60 * 1000;
+export const ANALYST_BROWSER_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const SPOT_CACHE_KEY = "silicon-civ:spot:v3";
 const ANALYST_CACHE_KEY = "silicon-civ:analyst:v3";
 
@@ -59,7 +60,7 @@ function writeCache<T>(key: string, cache: CacheMap<T>): void {
   }
 }
 
-function readFreshCacheValues<T>(key: string, symbols: string[]): T[] {
+function readFreshCacheValues<T>(key: string, symbols: string[], ttlMs: number): T[] {
   const now = Date.now();
   const cache = readCache<T>(key);
   let changed = false;
@@ -67,7 +68,7 @@ function readFreshCacheValues<T>(key: string, symbols: string[]): T[] {
   for (const symbol of symbols) {
     const hit = cache[symbol];
     if (!hit) continue;
-    if (now - hit.fetchedAt <= BROWSER_CACHE_TTL_MS) {
+    if (now - hit.fetchedAt <= ttlMs) {
       values.push(hit.value);
     } else {
       delete cache[symbol];
@@ -197,8 +198,8 @@ export default function UniverseTable({
       return;
     }
 
-    const cachedSpots = readFreshCacheValues<Spot>(SPOT_CACHE_KEY, symbols);
-    const cachedAnalysts = readFreshCacheValues<Analyst>(ANALYST_CACHE_KEY, symbols);
+    const cachedSpots = readFreshCacheValues<Spot>(SPOT_CACHE_KEY, symbols, SPOT_BROWSER_CACHE_TTL_MS);
+    const cachedAnalysts = readFreshCacheValues<Analyst>(ANALYST_CACHE_KEY, symbols, ANALYST_BROWSER_CACHE_TTL_MS);
     const cachedSpotSymbols = new Set(cachedSpots.map((s) => s.symbol));
     const cachedAnalystSymbols = new Set(cachedAnalysts.map((a) => a.symbol));
     setRows((prev) =>
@@ -314,10 +315,10 @@ export default function UniverseTable({
         </label>
         <label className="check">
           <input type="checkbox" checked={onlyUpside} onChange={(e) => setOnlyUpside(e.target.checked)} />
-          <span>目标价高于现价</span>
+          <span>隐含目标高于现价</span>
         </label>
         <div className="toolbar-status">
-          显示 {filtered.length}/{rows.length} · 价格 {priceCount}/{rows.length} · 评级 {ratedCount} · 上行 {upsideCount}
+          显示 {filtered.length}/{rows.length} · 价格 {priceCount}/{rows.length} · 一致预期 {ratedCount} · 上行 {upsideCount}
         </div>
         <div className="fetch-progress" aria-label="pyserver 数据加载进度">
           <div className="fetch-progress-meta">
@@ -328,7 +329,7 @@ export default function UniverseTable({
             <div className="fetch-progress-bar" style={{ width: `${progressPct}%` }} />
           </div>
           <div className="fetch-progress-detail">
-            现价 {progress.spotDone}/{progress.total} · 目标价/评级 {progress.analystDone}/{progress.total}
+            现价 {progress.spotDone}/{progress.total} · 一致预期 {progress.analystDone}/{progress.total}
           </div>
         </div>
       </div>
@@ -348,9 +349,9 @@ export default function UniverseTable({
                     <th>名称</th>
                     <th>全球链</th>
                     <th className="num">现价</th>
-                    <th className="num">目标价</th>
+                    <th className="num">隐含目标</th>
                     <th className="num">上行</th>
-                    <th className="num">买入评级</th>
+                    <th className="num">买入一致</th>
                   </tr>
                 </thead>
                 <tbody>

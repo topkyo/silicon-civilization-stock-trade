@@ -52,7 +52,7 @@ export default function Home() {
       <div className="section-heading">
         <div>
           <h2>股票池</h2>
-          <p>筛选、查看评级、目标价和上行空间。</p>
+          <p>筛选主题标的，查看现价、分析师一致预期与数据加载状态。</p>
         </div>
         <RefreshUniverseButton />
       </div>

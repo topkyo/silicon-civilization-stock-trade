@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { rankByRules, rulesToSignals } from "../lib/scoring/rules";
+import { buildRuleFeatures, rankByRules } from "../lib/scoring/rules";
 import type { SymbolSnapshot } from "../lib/deepseek";
 
 const up: SymbolSnapshot = {
@@ -23,8 +23,11 @@ test("rankByRules orders stronger fundamentals+momentum first", () => {
   assert.ok(ranked[0].score > ranked[1].score);
 });
 
-test("rulesToSignals produces buy/hold/sell actions", () => {
-  const signals = rulesToSignals(rankByRules([up, down]));
-  assert.equal(signals.length, 2);
-  assert.ok(["buy", "hold", "sell"].includes(signals[0].action));
+test("rule features do not produce trading actions", () => {
+  const features = buildRuleFeatures(up);
+  assert.equal(features.symbol, "UP");
+  assert.equal(features.peg, 0.5);
+  assert.ok(features.momentum20dPct != null);
+  assert.ok(!("action" in features));
+  assert.ok(!("suggestedAction" in features));
 });

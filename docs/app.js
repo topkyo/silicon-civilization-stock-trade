@@ -47,7 +47,7 @@ function renderKpis({ universe, analyst, signals, backtest, meta }) {
   const cards = [
     ["股票池", `${universe.entries.length}`, `${themes.size} 个子主题`],
     ["全球供应链", `${globalCount}`, `${globalPct}% 覆盖`],
-    ["上行空间 > 0", `${upsideCount}`, `按分析师目标价`],
+    ["上行空间 > 0", `${upsideCount}`, `按隐含目标参考`],
     ["DeepSeek 信号", `${buys} 买 / ${sells} 卖`, `共 ${signals?.signals?.length ?? 0} 条`],
   ];
   for (const [label, value, sub] of cards) {
@@ -117,8 +117,8 @@ function renderUniverse({ universe, analyst }) {
         el("div", { class: "table-wrap" }, el("table", {}, [
           el("thead", {}, el("tr", {}, [
             el("th", {}, "代码"), el("th", {}, "名称"), el("th", {}, "全球链"),
-            el("th", { class: "num" }, "现价"), el("th", { class: "num" }, "目标价"),
-            el("th", { class: "num" }, "上行"), el("th", { class: "num" }, "买入评级"),
+            el("th", { class: "num" }, "现价"), el("th", { class: "num" }, "隐含目标"),
+            el("th", { class: "num" }, "上行"), el("th", { class: "num" }, "买入一致"),
           ])),
           tbody,
         ])),
@@ -135,7 +135,7 @@ function renderSignals({ universe, signals }) {
   const tbody = $("#signals-table tbody");
   tbody.innerHTML = "";
   if (!signals) {
-    tbody.appendChild(el("tr", {}, el("td", { colspan: 8, class: "muted" }, "无信号快照")));
+    tbody.appendChild(el("tr", {}, el("td", { colspan: 9, class: "muted" }, "无信号快照")));
     return;
   }
   const sigBySym = new Map((signals.signals ?? []).map((s) => [s.symbol, s]));
@@ -161,6 +161,7 @@ function renderSignals({ universe, signals }) {
       el("td", { class: "num" }, s ? `${(s.confidence * 100).toFixed(0)}%` : "—"),
       el("td", { class: "num" }, s ? `${(s.size * 100).toFixed(0)}%` : "—"),
       el("td", { class: "num" }, fmt.num(f?.pe_ttm, 1)),
+      el("td", {}, el("span", { class: `badge ${s?.source ?? ""}` }, s?.source ?? "—")),
       el("td", { class: "muted signal-reason" }, s?.rationale ?? "—"),
     ]));
   }
@@ -236,8 +237,8 @@ function drawEquityChart(curve, baseline) {
 
     // grid + y axis labels
     ctx.font = "11px ui-sans-serif, -apple-system, sans-serif";
-    ctx.fillStyle = "#9ca39a";
-    ctx.strokeStyle = "#30343b";
+    ctx.fillStyle = "#667085";
+    ctx.strokeStyle = "#d9e2ec";
     ctx.lineWidth = 1;
     for (let i = 0; i <= 4; i++) {
       const v = min + (range * i) / 4;
@@ -252,7 +253,7 @@ function drawEquityChart(curve, baseline) {
     }
 
     // baseline line
-    ctx.strokeStyle = "rgba(242,184,75,0.6)";
+    ctx.strokeStyle = "rgba(183,121,31,0.55)";
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
     ctx.moveTo(pad.l, yAt(baseline));
@@ -262,8 +263,8 @@ function drawEquityChart(curve, baseline) {
 
     // equity line + fill
     const last = curve[curve.length - 1].equity;
-    const color = last >= baseline ? "#63d471" : "#ff6b6b";
-    ctx.fillStyle = last >= baseline ? "rgba(99,212,113,0.15)" : "rgba(255,107,107,0.15)";
+    const color = last >= baseline ? "#0f8f5f" : "#d92d20";
+    ctx.fillStyle = last >= baseline ? "rgba(15,143,95,0.12)" : "rgba(217,45,32,0.10)";
     ctx.beginPath();
     ctx.moveTo(xAt(0), yAt(curve[0].equity));
     for (let i = 1; i < curve.length; i++) ctx.lineTo(xAt(i), yAt(curve[i].equity));
@@ -280,7 +281,7 @@ function drawEquityChart(curve, baseline) {
     ctx.stroke();
 
     // x labels: first, middle, last
-    ctx.fillStyle = "#9ca39a";
+    ctx.fillStyle = "#667085";
     ctx.textBaseline = "top";
     const ticks = [0, Math.floor(curve.length / 2), curve.length - 1];
     for (const i of ticks) {

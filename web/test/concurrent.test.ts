@@ -34,6 +34,13 @@ test("mapPool handles empty input", async () => {
   assert.deepEqual(out, []);
 });
 
+test("mapPool rejects invalid concurrency limits", async () => {
+  await assert.rejects(
+    () => mapPool([1], 0, async (n) => n),
+    /limit must be >= 1/,
+  );
+});
+
 test("mapPool propagates errors", async () => {
   await assert.rejects(
     () => mapPool([1, 2, 3], 2, async (n) => {

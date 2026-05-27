@@ -12,6 +12,8 @@
 | `GET /analysts` | 24 小时 | 批量包装 `GET /analyst`，避免前端逐行请求 |
 | `GET /spot` | 30 秒 | A 股优先 AkShare 东方财富全市场快照；港股 `ak.stock_hk_hist`；缺失回退 Tushare daily |
 
+默认缓存文件为 `pyserver/cache.db`；部署时可用 `PYSERVER_CACHE_DB=/path/to/cache.db` 指定持久化路径。
+
 ## Token
 
 需要 [Tushare Pro 账号](https://tushare.pro/register)。把 token 放进 `pyserver/.env`（已 gitignore）：

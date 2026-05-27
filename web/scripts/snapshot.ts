@@ -93,13 +93,13 @@ async function main() {
         theme: e.theme,
         closes: klines.map((k) => k.close),
         fundamental: fund
-          ? { pe_ttm: fund.pe_ttm, pb: fund.pb, market_cap: fund.market_cap }
+          ? { pe_ttm: fund.pe_ttm, pb: fund.pb, market_cap: fund.market_cap, profit_yoy: fund.profit_yoy }
           : undefined,
       };
     });
     const usable = snapshots.filter((s) => s.closes.length >= 10);
-    console.log(`[signals] scoring ${usable.length} symbols with DeepSeek…`);
-    const signals = await scoreSymbols(usable);
+    console.log(`[signals] scoring ${usable.length} usable symbols with DeepSeek…`);
+    const signals = await scoreSymbols(snapshots);
     write("signals.json", {
       generated_at: new Date().toISOString(),
       fundamentals: snapshots.map((s) => ({
@@ -107,6 +107,7 @@ async function main() {
         pe_ttm: s.fundamental?.pe_ttm ?? null,
         pb: s.fundamental?.pb ?? null,
         market_cap: s.fundamental?.market_cap ?? null,
+        profit_yoy: s.fundamental?.profit_yoy ?? null,
       })),
       signals,
     });
@@ -141,7 +142,7 @@ async function main() {
           entry,
           klines: klRes.value,
           fundamental: fd
-            ? { pe_ttm: fd.pe_ttm ?? null, pb: fd.pb ?? null, market_cap: fd.market_cap ?? null }
+            ? { pe_ttm: fd.pe_ttm ?? null, pb: fd.pb ?? null, market_cap: fd.market_cap ?? null, profit_yoy: fd.profit_yoy ?? null }
             : undefined,
         };
       })

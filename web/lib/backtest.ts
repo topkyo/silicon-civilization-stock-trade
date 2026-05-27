@@ -13,7 +13,7 @@ export interface BacktestConfig {
   rebalanceEveryNDays: number;
   startDate: string;         // YYYY-MM-DD
   endDate: string;
-  feeBps: number;            // round-trip in basis points
+  feeBps: number;            // one-way trading fee in basis points
   maxPositions: number;
 }
 
@@ -228,21 +228,19 @@ export async function runBacktest(
     if (i % cfg.rebalanceEveryNDays === 0) {
       const signals = signalsByDate[date] ?? [];
 
-      // Sells first to free cash
-      for (const sig of signals) {
-        if (sig.action !== "sell") continue;
-        const held = shares[sig.symbol] ?? 0;
-        if (held > 0) {
-          const px = prices[sig.symbol];
-          cash += held * px * (1 - fee);
-          trades.push({ date, symbol: sig.symbol, side: "sell", shares: held, price: px });
-          shares[sig.symbol] = 0;
-        }
+      // Strict rebalance: liquidate current holdings, then rebuild only from
+      // the current buy TopN. This keeps maxPositions as a hard constraint.
+      for (const sym of symbols) {
+        const held = shares[sym] ?? 0;
+        if (held <= 0) continue;
+        const px = prices[sym];
+        cash += held * px * (1 - fee);
+        trades.push({ date, symbol: sym, side: "sell", shares: held, price: px });
+        shares[sym] = 0;
       }
 
-      // Rank buys by confidence*size, cap at maxPositions
       const buys = signals
-        .filter((s) => s.action === "buy" && s.size > 0)
+        .filter((s) => s.action === "buy" && s.size > 0 && prices[s.symbol] > 0)
         .sort((a, b) => b.confidence * b.size - a.confidence * a.size)
         .slice(0, cfg.maxPositions);
 

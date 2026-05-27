@@ -116,12 +116,21 @@ export async function cached<T>(
   ttlSeconds: number,
   fetcher: () => Promise<T>,
 ): Promise<T> {
+  const result = await cachedWithMeta(parts, ttlSeconds, fetcher);
+  return result.value;
+}
+
+export async function cachedWithMeta<T>(
+  parts: unknown,
+  ttlSeconds: number,
+  fetcher: () => Promise<T>,
+): Promise<{ value: T; cacheHit: boolean }> {
   const key = hashKey(parts);
   const hit = cacheGet<T>(key);
-  if (hit !== null) return hit;
+  if (hit !== null) return { value: hit, cacheHit: true };
   const value = await fetcher();
   cachePut(key, value, ttlSeconds);
-  return value;
+  return { value, cacheHit: false };
 }
 
 export interface StoredBacktestSummary {
