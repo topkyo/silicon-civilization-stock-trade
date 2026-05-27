@@ -26,14 +26,14 @@ export interface Fundamental {
 
 const inflight = new Map<string, Promise<unknown>>();
 
-async function get<T>(path: string, params: Record<string, string>): Promise<T> {
+async function get<T>(path: string, params: Record<string, string>, timeoutMs = TIMEOUT_MS): Promise<T> {
   const qs = new URLSearchParams(params).toString();
-  const key = `${path}?${qs}`;
+  const key = `${path}?${qs}:timeout=${timeoutMs}`;
   const existing = inflight.get(key);
   if (existing) return existing as Promise<T>;
   const p = (async () => {
     const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
     try {
       const r = await fetch(`${BASE}${path}?${qs}`, { cache: "no-store", signal: ctrl.signal });
       if (!r.ok) throw new Error(`pyserver ${path} ${r.status}: ${await r.text()}`);
@@ -51,14 +51,14 @@ async function get<T>(path: string, params: Record<string, string>): Promise<T> 
   }
 }
 
-export function fetchKlines(symbol: string, start = "20230101", end?: string) {
+export function fetchKlines(symbol: string, start = "20230101", end?: string, timeoutMs?: number) {
   const params: Record<string, string> = { symbol, start, adjust: "qfq" };
   if (end) params.end = end;
-  return get<Kline[]>("/klines", params);
+  return get<Kline[]>("/klines", params, timeoutMs);
 }
 
-export function fetchFundamental(symbol: string) {
-  return get<Fundamental>("/fundamental", { symbol });
+export function fetchFundamental(symbol: string, timeoutMs?: number) {
+  return get<Fundamental>("/fundamental", { symbol }, timeoutMs);
 }
 
 export interface Analyst {
@@ -72,20 +72,21 @@ export interface Analyst {
   upside_pct?: number | null;
 }
 
-export function fetchAnalyst(symbol: string) {
-  return get<Analyst>("/analyst", { symbol });
+export function fetchAnalyst(symbol: string, timeoutMs?: number) {
+  return get<Analyst>("/analyst", { symbol }, timeoutMs);
 }
 
-export function fetchAnalysts(symbols: string[]) {
+export function fetchAnalysts(symbols: string[], timeoutMs?: number) {
   const uniq = [...new Set(symbols.map((s) => s.trim()).filter(Boolean))];
   if (uniq.length === 0) return Promise.resolve([] as Analyst[]);
-  return get<Analyst[]>("/analysts", { symbols: uniq.join(",") });
+  return get<Analyst[]>("/analysts", { symbols: uniq.join(",") }, timeoutMs);
 }
 
-export function fetchSpot(symbol: string) {
+export function fetchSpot(symbol: string, timeoutMs?: number) {
   return get<{ symbol: string; name: string; price: number; change_pct: number }>(
     "/spot",
     { symbol },
+    timeoutMs,
   );
 }
 
@@ -103,10 +104,11 @@ export function fetchBenchmarkKlines(
   index = "csi300",
   start = "20230101",
   end?: string,
+  timeoutMs?: number,
 ) {
   const params: Record<string, string> = { index, start };
   if (end) params.end = end;
-  return get<Kline[]>("/benchmark/klines", params);
+  return get<Kline[]>("/benchmark/klines", params, timeoutMs);
 }
 
 export function fetchBenchmarks() {

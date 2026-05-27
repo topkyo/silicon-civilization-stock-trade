@@ -183,6 +183,14 @@ class _TokenBucket:
 # Tushare free tier caps hk_daily at 2/minute. Self-throttle to avoid 502s.
 _HK_DAILY_LIMITER = _TokenBucket(n=2, window_s=65)
 _REPORT_RC_LIMITER = _TokenBucket(n=2, window_s=65)
+_AK_LOCK = threading.Lock()
+
+
+def _ak_call(fn, *args, **kwargs):
+    # Some AkShare paths use native JavaScript runtimes that are not safe when
+    # entered concurrently from FastAPI's worker threads.
+    with _AK_LOCK:
+        return fn(*args, **kwargs)
 
 
 def _with_retries(fn, *args, attempts: int = 3, base_delay: float = 0.5, **kwargs):
@@ -281,6 +289,13 @@ class Analyst(BaseModel):
 def _to_ts_code(symbol: str) -> tuple[str, str]:
     """Convert internal symbol -> (ts_code, market). market in {sh, sz, bj, hk}."""
     s = symbol.lower().strip()
+    if "." in s:
+        code, suffix = s.split(".", 1)
+        mkt = suffix[:2]
+        if mkt in {"sh", "sz", "bj"}:
+            return code + {"sh": ".SH", "sz": ".SZ", "bj": ".BJ"}[mkt], mkt
+        if mkt == "hk":
+            return code.zfill(5) + ".HK", "hk"
     if s.startswith(("sh", "sz", "bj")):
         code, mkt = s[2:], s[:2]
     elif s.startswith("hk"):
@@ -355,9 +370,16 @@ _AK_HIST_RENAME = {
 
 
 def _ak_a_hist_df(code: str, start: str, end: str, adjust: str = "qfq") -> pd.DataFrame | None:
-    """A-share daily bars via AkShare (push2his) — works when Tushare pro_bar is denied."""
+    """A-share daily bars via AkShare.
+
+    Eastmoney's push2his endpoint is fast but can disconnect/IP-throttle.
+    Sina's daily endpoint is slower and less feature-rich, but has been more
+    reliable for this watchlist, so use it as the second AkShare path before
+    falling back to Tushare.
+    """
     try:
         df = _with_retries(
+            _ak_call,
             ak.stock_zh_a_hist,
             symbol=code,
             period="daily",
@@ -366,10 +388,33 @@ def _ak_a_hist_df(code: str, start: str, end: str, adjust: str = "qfq") -> pd.Da
             adjust=adjust or "",
         )
     except Exception:
+        df = None
+    if df is not None and not df.empty:
+        return df
+    try:
+        df = _with_retries(
+            _ak_call,
+            ak.stock_zh_a_daily,
+            symbol=f"{_infer_market_prefix(code)}{code}",
+            start_date=start,
+            end_date=end,
+            adjust=adjust or "",
+            attempts=2,
+            base_delay=0.2,
+        )
+    except Exception:
         return None
     if df is None or df.empty:
         return None
     return df
+
+
+def _infer_market_prefix(code: str) -> str:
+    if code.startswith(("60", "68", "9")):
+        return "sh"
+    if code.startswith(("8", "4")):
+        return "bj"
+    return "sz"
 
 
 def _rows_from_ak_hist(df: pd.DataFrame) -> list[dict[str, Any]]:
@@ -471,6 +516,7 @@ def _ak_consensus_eps(symbol: str) -> tuple[float | None, int | None]:
     """Fetch nearest annual EPS forecast from 同花顺 via akshare."""
     try:
         df = _with_retries(
+            _ak_call,
             ak.stock_profit_forecast_ths,
             symbol=symbol,
             indicator="预测年报每股收益",
@@ -502,6 +548,7 @@ def _ak_research_consensus(symbol: str) -> dict[str, Any]:
     """Fetch per-stock research reports from Eastmoney via akshare."""
     try:
         df = _with_retries(
+            _ak_call,
             ak.stock_research_report_em,
             symbol=symbol,
             attempts=2,
@@ -596,6 +643,7 @@ def klines(
             # akshare for HK — Tushare's hk_daily is capped at 10/day.
             ak_code = ts_code.split(".")[0]  # "00700"
             df = _with_retries(
+                _ak_call,
                 ak.stock_hk_hist,
                 symbol=ak_code, period="daily",
                 start_date=start, end_date=end, adjust=(adjust or ""),
@@ -694,6 +742,9 @@ def fundamental(symbol: str):
             # daily_basic is A-share only; for HK we leave fundamentals blank.
             cache_put(key, out, 24 * 3600)
             return out
+        if _pro is None:
+            cache_put(key, out, 30)
+            return out
         # Latest trading day's basic metrics. Pull last 5 days then take tail.
         today = date.today().strftime("%Y%m%d")
         start = (date.today() - timedelta(days=10)).strftime("%Y%m%d")
@@ -702,8 +753,11 @@ def fundamental(symbol: str):
             ts_code=ts_code, start_date=start, end_date=today,
             fields="ts_code,trade_date,close,pe_ttm,pb,total_mv",
         )
-    except Exception as e:
-        raise HTTPException(502, f"tushare error: {e}") from e
+    except Exception:
+        # daily_basic requires higher Tushare permissions. Keep the partial
+        # AkShare/name response usable instead of failing the whole page.
+        cache_put(key, out, 60)
+        return out
 
     if df is not None and not df.empty:
         latest = df.sort_values("trade_date").iloc[-1]
@@ -753,6 +807,10 @@ def analyst(symbol: str):
         if price is not None:
             out["current_price"] = round(price, 3)
         pe_ttm = _num_or_none(_ak_col(pd.Series(ak_spot), "市盈率-动态", "市盈率", "PE"))
+    if out.get("current_price") is None and market in {"sh", "sz", "bj"}:
+        hist_spot = _ak_a_spot_from_hist(ts_code, market, symbol)
+        if hist_spot is not None:
+            out["current_price"] = round(float(hist_spot["price"]), 3)
     try:
         if out.get("current_price") is None or pe_ttm is None:
             today = date.today().strftime("%Y%m%d")
@@ -898,13 +956,10 @@ def spot(symbol: str):
                 }
                 cache_put(key, out, 30)
                 return out
-            hist_spot = _ak_a_spot_from_hist(ts_code, market, symbol)
-            if hist_spot is not None:
-                cache_put(key, hist_spot, 30)
-                return hist_spot
         if market == "hk":
             ak_code = ts_code.split(".")[0]
             df = _with_retries(
+                _ak_call,
                 ak.stock_hk_hist,
                 symbol=ak_code, period="daily", start_date=start, end_date=end, adjust="",
             )
@@ -961,33 +1016,57 @@ def benchmark_klines(
         cache_put(key, rows, 3600)
         return rows
 
+    ak_symbol = ts_code.split(".")[0]
+    if ts_code.endswith(".SH"):
+        ak_symbol = f"sh{ak_symbol}"
+    elif ts_code.endswith(".SZ"):
+        ak_symbol = f"sz{ak_symbol}"
     try:
         df = _with_retries(
-            _pro.index_daily,
-            ts_code=ts_code,
-            start_date=start,
-            end_date=end,
+            _ak_call,
+            ak.stock_zh_index_daily,
+            symbol=ak_symbol,
+            attempts=2,
+            base_delay=0.2,
         )
-    except Exception as e:
-        raise HTTPException(502, f"tushare index error: {e}") from e
+        if df is not None and not df.empty:
+            df = df[(pd.to_datetime(df["date"]) >= pd.to_datetime(start)) & (pd.to_datetime(df["date"]) <= pd.to_datetime(end))]
+    except Exception:
+        df = None
+
+    if (df is None or df.empty) and _pro is not None:
+        try:
+            df = _with_retries(
+                _pro.index_daily,
+                ts_code=ts_code,
+                start_date=start,
+                end_date=end,
+            )
+        except Exception as e:
+            raise HTTPException(502, f"index upstream error: {e}") from e
 
     if df is None or df.empty:
         cache_put(key, [], 3600)
         return []
 
-    df = df.sort_values("trade_date")
-    rows = [
-        {
-            "date": f"{d[:4]}-{d[4:6]}-{d[6:]}",
-            "open": float(r.open),
-            "high": float(r.high),
-            "low": float(r.low),
-            "close": float(r.close),
-            "volume": float(r.vol),
-        }
-        for r in df.itertuples()
-        for d in [str(r.trade_date)]
-    ]
+    if "trade_date" in df.columns:
+        df = df.sort_values("trade_date")
+        rows = [
+            {
+                "date": f"{d[:4]}-{d[4:6]}-{d[6:]}",
+                "open": float(r.open),
+                "high": float(r.high),
+                "low": float(r.low),
+                "close": float(r.close),
+                "volume": float(r.vol),
+            }
+            for r in df.itertuples()
+            for d in [str(r.trade_date)]
+        ]
+    else:
+        out = df.sort_values("date").copy()
+        out["date"] = pd.to_datetime(out["date"]).dt.strftime("%Y-%m-%d")
+        rows = out[["date", "open", "high", "low", "close", "volume"]].to_dict(orient="records")
     cache_put(key, rows, seconds_until_next_trading_close())
     return rows
 
@@ -995,4 +1074,3 @@ def benchmark_klines(
 @app.get("/benchmarks")
 def list_benchmarks():
     return [{"id": k, "ts_code": v[0], "name": v[1]} for k, v in BENCHMARKS.items()]
-

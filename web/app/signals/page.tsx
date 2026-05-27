@@ -4,11 +4,14 @@ import { mapPool } from "@/lib/concurrent";
 import { fetchKlines, fetchFundamental, fetchSpot } from "@/lib/pyserver";
 import { SITE_EYEBROW } from "@/lib/site";
 import { loadEntries } from "@/lib/universe";
+import { snapshotSignals } from "@/lib/snapshot";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 const LOAD_CONCURRENCY = Number(process.env.SIGNALS_LOAD_CONCURRENCY ?? 6);
+const SIGNALS_PYSERVER_TIMEOUT_MS = Number(process.env.SIGNALS_PYSERVER_TIMEOUT_MS ?? 12_000);
+const SIGNALS_LIVE_TIMEOUT_MS = Number(process.env.SIGNALS_LIVE_TIMEOUT_MS ?? 25_000);
 
 type LiveSnapshot = SymbolSnapshot & { spotPrice?: number };
 
@@ -19,8 +22,45 @@ function calcPeg(pe?: number | null, profitYoyPct?: number | null) {
   return pe / profitYoyPct;
 }
 
-async function loadSignals() {
-  const universe = loadEntries();
+function snapshotRows(universe: ReturnType<typeof loadEntries>) {
+  const snap = snapshotSignals();
+  if (!snap?.signals && !snap?.fundamentals) return null;
+  const fundamentals = new Map((snap.fundamentals ?? []).map((f) => [f.symbol, f]));
+  const signals = new Map((snap.signals ?? []).map((s) => [s.symbol, s]));
+  return universe.map((e) => ({
+    entry: e,
+    snapshot: {
+      symbol: e.symbol,
+      name: e.name,
+      theme: e.theme,
+      spotPrice: undefined,
+      closes: [] as number[],
+      fundamental: (() => {
+        const f = fundamentals.get(e.symbol);
+        return f
+          ? {
+              pe_ttm: f.pe_ttm,
+              pb: f.pb,
+              market_cap: f.market_cap,
+              profit_yoy: f.profit_yoy,
+            }
+          : undefined;
+      })(),
+    },
+    signal: signals.get(e.symbol),
+  }));
+}
+
+function timeout<T>(ms: number): Promise<T> {
+  return new Promise((_, reject) => {
+    setTimeout(() => reject(new Error(`signals live timeout after ${ms}ms`)), ms);
+  });
+}
+
+async function loadLiveSignals(universe: ReturnType<typeof loadEntries>) {
+  if (process.env.SIGNALS_SNAPSHOT_ONLY === "1") {
+    throw new Error("signals snapshot-only mode enabled");
+  }
   const start = (() => {
     const d = new Date();
     d.setDate(d.getDate() - 90);
@@ -29,9 +69,9 @@ async function loadSignals() {
 
   const snapshots: LiveSnapshot[] = await mapPool(universe, LOAD_CONCURRENCY, async (e) => {
     const [klines, fund, spot] = await Promise.all([
-      fetchKlines(e.symbol, start).catch(() => []),
-      fetchFundamental(e.symbol).catch(() => undefined),
-      fetchSpot(e.symbol).catch(() => undefined),
+      fetchKlines(e.symbol, start, undefined, SIGNALS_PYSERVER_TIMEOUT_MS).catch(() => []),
+      fetchFundamental(e.symbol, SIGNALS_PYSERVER_TIMEOUT_MS).catch(() => undefined),
+      fetchSpot(e.symbol, SIGNALS_PYSERVER_TIMEOUT_MS).catch(() => undefined),
     ]);
     return {
       symbol: e.symbol,
@@ -51,6 +91,7 @@ async function loadSignals() {
   });
 
   const usable = snapshots.filter((s) => s.closes.length >= 10);
+  if (usable.length === 0) throw new Error("no live signal data loaded");
   const signals = await scoreSymbols(usable);
   const byId = new Map(signals.map((s) => [s.symbol, s]));
 
@@ -59,6 +100,20 @@ async function loadSignals() {
     snapshot: snapshots.find((s) => s.symbol === e.symbol),
     signal: byId.get(e.symbol),
   }));
+}
+
+async function loadSignals() {
+  const universe = loadEntries();
+  try {
+    return await Promise.race([
+      loadLiveSignals(universe),
+      timeout<Awaited<ReturnType<typeof loadLiveSignals>>>(SIGNALS_LIVE_TIMEOUT_MS),
+    ]);
+  } catch {
+    const rows = snapshotRows(universe);
+    if (rows) return rows;
+    throw new Error("no live or snapshot signal data available");
+  }
 }
 
 export default async function SignalsPage() {

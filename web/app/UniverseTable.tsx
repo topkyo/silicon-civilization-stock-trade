@@ -23,9 +23,9 @@ type Row = UniverseEntry & { analyst?: Analyst | null; loading?: boolean };
 const ANALYST_BATCH_SIZE = 8;
 const SPOT_BATCH_SIZE = 12;
 const EMPTY_SPOTS: Spot[] = [];
-const BROWSER_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
-const SPOT_CACHE_KEY = "silicon-civ:spot:v1";
-const ANALYST_CACHE_KEY = "silicon-civ:analyst:v1";
+const BROWSER_CACHE_TTL_MS = 15 * 60 * 1000;
+const SPOT_CACHE_KEY = "silicon-civ:spot:v3";
+const ANALYST_CACHE_KEY = "silicon-civ:analyst:v3";
 
 interface CacheEntry<T> {
   value: T;
@@ -154,7 +154,7 @@ function mergeAnalysts(rows: Row[], analysts: Analyst[], batch: string[]): Row[]
       ...r,
       analyst: {
         ...analyst,
-        current_price: analyst.current_price ?? currentPrice,
+        current_price: currentPrice ?? analyst.current_price,
       },
       loading: false,
     };

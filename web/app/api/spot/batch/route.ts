@@ -5,6 +5,7 @@ import { mapPool } from "@/lib/concurrent";
 export const runtime = "nodejs";
 
 const SPOT_CONCURRENCY = 8;
+const SPOT_TIMEOUT_MS = Number(process.env.SPOT_TIMEOUT_MS ?? 8_000);
 
 export async function POST(req: NextRequest) {
   const body = (await req.json().catch(() => ({}))) as { symbols?: unknown };
@@ -15,7 +16,7 @@ export async function POST(req: NextRequest) {
 
   const data = await mapPool(symbols, SPOT_CONCURRENCY, async (symbol): Promise<Spot | null> => {
     try {
-      return await fetchSpot(symbol);
+      return await fetchSpot(symbol, SPOT_TIMEOUT_MS);
     } catch {
       return null;
     }
