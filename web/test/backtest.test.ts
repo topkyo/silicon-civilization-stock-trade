@@ -92,6 +92,24 @@ test("progress callback fires for signals + simulating phases", async () => {
   assert.equal(sim.at(-1)!.done, sim.at(-1)!.total);
 });
 
+test("runBacktest falls back to hold signals when scorer fails", async () => {
+  const logs: string[] = [];
+  const failingScorer: Scorer = async () => {
+    throw new Error("opencode-go timed out after 120000ms");
+  };
+  const r = await runBacktest(makeSeries(), cfg, {
+    scorer: failingScorer,
+    onLog: (message) => logs.push(message),
+  });
+  assert.equal(r.trades.length, 0);
+  assert.ok(logs.some((message) => message.includes("opencode-go timed out")));
+  assert.ok(
+    Object.values(r.signalsByDate).every((signals) =>
+      signals.every((signal) => signal.action === "hold" && signal.source === "snapshot"),
+    ),
+  );
+});
+
 test("throws when window has too few aligned trading days", async () => {
   const tinyCfg = { ...cfg, startDate: "2025-12-29", endDate: "2025-12-31" };
   await assert.rejects(() => runBacktest(makeSeries(), tinyCfg, { scorer }), /aligned/i);

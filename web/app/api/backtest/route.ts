@@ -127,6 +127,7 @@ export async function POST(req: NextRequest) {
 
         const result = await runBacktest(series, cfg, {
           onProgress: (p) => send({ type: "progress", ...p }),
+          onLog: (message) => send({ type: "log", message }),
           benchmark: benchmarkOpt,
         });
         const stored = saveBacktestResult(result);

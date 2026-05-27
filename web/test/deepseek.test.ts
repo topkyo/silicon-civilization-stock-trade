@@ -151,3 +151,31 @@ test("scoreSymbols does not fall back to rule-driven trading when the LLM is una
     delete process.env.DEEPSEEK_API_KEY;
   }
 });
+
+test("scoreSymbols uses a shorter timeout for backtest mode", async () => {
+  const { scoreSymbols } = await import("../lib/deepseek");
+  const originalFetch = globalThis.fetch;
+  process.env.LLM_PROVIDER = "deepseek";
+  process.env.DEEPSEEK_API_KEY = "sk-test";
+  process.env.BACKTEST_LLM_TIMEOUT_MS = "5";
+  globalThis.fetch = (async (_input: string | URL | Request, init?: RequestInit) => {
+    return await new Promise<Response>((_resolve, reject) => {
+      init?.signal?.addEventListener("abort", () => {
+        const error = new Error("aborted");
+        error.name = "AbortError";
+        reject(error);
+      });
+    });
+  }) as typeof fetch;
+  try {
+    await assert.rejects(
+      () => scoreSymbols([snapshot("A")], { bypassCache: true, mode: "backtest" }),
+      /deepseek timed out after 5ms/,
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+    delete process.env.LLM_PROVIDER;
+    delete process.env.DEEPSEEK_API_KEY;
+    delete process.env.BACKTEST_LLM_TIMEOUT_MS;
+  }
+});

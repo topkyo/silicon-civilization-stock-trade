@@ -19,6 +19,7 @@ export interface ChatOptions {
   responseFormat?: "json_object" | "text";
   ttlSeconds?: number;
   bypassCache?: boolean;
+  timeoutMs?: number;
 }
 
 export interface ChatResult {
@@ -66,7 +67,7 @@ export async function chatDetailed(
     responseFormat,
     messages,
   };
-  const llmTimeoutMs = Number(process.env.LLM_TIMEOUT_MS ?? 120_000);
+  const llmTimeoutMs = opts.timeoutMs ?? Number(process.env.LLM_TIMEOUT_MS ?? 120_000);
 
   const doFetch = async () => {
     const body: Record<string, unknown> = {
@@ -173,6 +174,13 @@ PEG 显著恶化、或主题景气度反转、或价格跌破关键均线且伴�
 const MIN_SCORABLE_KLINES = 10;
 const DEFAULT_SCORE_BATCH_SIZE = 40;
 const VALID_ACTIONS = new Set(["buy", "hold", "sell"]);
+
+function envPositiveNumber(name: string, fallback?: number): number | undefined {
+  const raw = process.env[name];
+  if (raw == null || raw.trim() === "") return fallback;
+  const value = Number(raw);
+  return Number.isFinite(value) && value > 0 ? value : fallback;
+}
 
 function clamp01(value: unknown): number {
   const n = typeof value === "number" && Number.isFinite(value) ? value : 0;
@@ -304,6 +312,9 @@ async function scoreSymbolsBatchLlm(
     { role: "user" as const, content: JSON.stringify(userPayload) },
   ];
   const model = opts.mode === "backtest" ? resolveLlmConfig().backtestModel : resolveLlmConfig().model;
+  const timeoutMs = opts.mode === "backtest"
+    ? envPositiveNumber("BACKTEST_LLM_TIMEOUT_MS", 30_000)
+    : undefined;
   let lastError: unknown;
   const attempts = opts.bypassCache ? 1 : 3;
   for (let attempt = 0; attempt < attempts; attempt++) {
@@ -312,6 +323,7 @@ async function scoreSymbolsBatchLlm(
       responseFormat: "json_object",
       temperature: attempt === 0 ? 0.2 : 0,
       bypassCache: opts.bypassCache || attempt > 0,
+      timeoutMs,
     });
     try {
       return normalizeLlmSignals(result.content, snapshots, signalSource(result.cacheHit));

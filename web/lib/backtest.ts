@@ -138,14 +138,33 @@ function computeBenchmarkResult(
 
 export type Scorer = (
   snapshots: SymbolSnapshot[],
-  opts: { asOf: string; mode: "backtest" },
+  opts: { asOf: string; mode: "backtest"; batchSize?: number },
 ) => Promise<Signal[]>;
 
 export interface RunBacktestOptions {
   onProgress?: (p: Progress) => void;
+  onLog?: (message: string) => void;
   /** Override the LLM scorer — used by tests to inject deterministic signals. */
   scorer?: Scorer;
   benchmark?: { id: string; name: string; klines: Kline[] };
+}
+
+function envPositiveInt(name: string, fallback: number): number {
+  const value = Number(process.env[name]);
+  return Number.isFinite(value) && value > 0 ? Math.floor(value) : fallback;
+}
+
+function fallbackHoldSignals(snapshots: SymbolSnapshot[], error: unknown): Signal[] {
+  const message = error instanceof Error ? error.message : String(error);
+  return snapshots.map((snapshot) => ({
+    symbol: snapshot.symbol,
+    action: "hold",
+    confidence: 0,
+    size: 0,
+    rationale: `LLM失败:${message}`.slice(0, 60),
+    source: "snapshot",
+    dataQuality: ["llm_error"],
+  }));
 }
 
 export async function runBacktest(
@@ -157,7 +176,13 @@ export async function runBacktest(
     ? { onProgress: optsOrOnProgress }
     : (optsOrOnProgress ?? {});
   const onProgress = opts.onProgress;
-  const scorer: Scorer = opts.scorer ?? scoreSymbols;
+  const onLog = opts.onLog;
+  const backtestBatchSize = envPositiveInt(
+    "BACKTEST_LLM_SCORE_BATCH_SIZE",
+    envPositiveInt("LLM_SCORE_BATCH_SIZE", 40),
+  );
+  const scorer: Scorer = opts.scorer ?? ((snapshots, scoreOpts) =>
+    scoreSymbols(snapshots, { ...scoreOpts, batchSize: backtestBatchSize }));
   const dates = alignedTradingDates(series).filter(
     (d) => d >= cfg.startDate && d <= cfg.endDate,
   );
@@ -174,7 +199,7 @@ export async function runBacktest(
   // Cached entries return instantly; uncached fire concurrently (bounded).
   const rebalanceDates = dates.filter((_, i) => i % cfg.rebalanceEveryNDays === 0);
   const signalsByDate: Record<string, Signal[]> = {};
-  const CONCURRENCY = 6;
+  const CONCURRENCY = envPositiveInt("BACKTEST_SIGNAL_CONCURRENCY", 1);
   let signalsDone = 0;
   onProgress?.({ phase: "signals", done: 0, total: rebalanceDates.length });
   for (let i = 0; i < rebalanceDates.length; i += CONCURRENCY) {
@@ -191,7 +216,14 @@ export async function runBacktest(
             fundamental: s.fundamental,
           };
         });
-        const sigs = await scorer(snapshots, { asOf: d, mode: "backtest" });
+        let sigs: Signal[];
+        try {
+          sigs = await scorer(snapshots, { asOf: d, mode: "backtest", batchSize: backtestBatchSize });
+        } catch (e) {
+          const message = e instanceof Error ? e.message : String(e);
+          onLog?.(`signal fallback ${d}: ${message.slice(0, 160)}`);
+          sigs = fallbackHoldSignals(snapshots, e);
+        }
         signalsDone++;
         onProgress?.({ phase: "signals", done: signalsDone, total: rebalanceDates.length });
         return [d, sigs] as const;
