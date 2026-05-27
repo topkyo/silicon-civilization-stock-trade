@@ -99,7 +99,7 @@ async function main() {
     });
     const usable = snapshots.filter((s) => s.closes.length >= 10);
     console.log(`[signals] scoring ${usable.length} usable symbols with DeepSeek…`);
-    const signals = await scoreSymbols(snapshots);
+    const signals = await scoreSymbols(usable);
     write("signals.json", {
       generated_at: new Date().toISOString(),
       fundamentals: snapshots.map((s) => ({

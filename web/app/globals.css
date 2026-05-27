@@ -139,6 +139,7 @@ input:focus, select:focus { outline: 2px solid rgba(37, 99, 235, .18); border-co
 .table-wrap.compact-table { max-height: none; }
 .stock-name { font-weight: 650; }
 .stock-note { margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.35; max-width: 230px; }
+.stock-note.data-error { color: var(--danger); overflow-wrap: anywhere; }
 .pill { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; padding: 2px 7px; border-radius: 999px; color: var(--muted); background: var(--subtle); font-size: 12px; }
 .pill.good { color: var(--accent); background: var(--accent-weak); }
 .signal-reason { max-width: 380px; line-height: 1.45; }

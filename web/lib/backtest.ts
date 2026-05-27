@@ -154,19 +154,6 @@ function envPositiveInt(name: string, fallback: number): number {
   return Number.isFinite(value) && value > 0 ? Math.floor(value) : fallback;
 }
 
-function fallbackHoldSignals(snapshots: SymbolSnapshot[], error: unknown): Signal[] {
-  const message = error instanceof Error ? error.message : String(error);
-  return snapshots.map((snapshot) => ({
-    symbol: snapshot.symbol,
-    action: "hold",
-    confidence: 0,
-    size: 0,
-    rationale: `LLM失败:${message}`.slice(0, 60),
-    source: "snapshot",
-    dataQuality: ["llm_error"],
-  }));
-}
-
 export async function runBacktest(
   series: SymbolSeries[],
   cfg: BacktestConfig,
@@ -216,14 +203,7 @@ export async function runBacktest(
             fundamental: s.fundamental,
           };
         });
-        let sigs: Signal[];
-        try {
-          sigs = await scorer(snapshots, { asOf: d, mode: "backtest", batchSize: backtestBatchSize });
-        } catch (e) {
-          const message = e instanceof Error ? e.message : String(e);
-          onLog?.(`signal fallback ${d}: ${message.slice(0, 160)}`);
-          sigs = fallbackHoldSignals(snapshots, e);
-        }
+        const sigs = await scorer(snapshots, { asOf: d, mode: "backtest", batchSize: backtestBatchSize });
         signalsDone++;
         onProgress?.({ phase: "signals", done: signalsDone, total: rebalanceDates.length });
         return [d, sigs] as const;

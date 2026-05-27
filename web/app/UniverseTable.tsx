@@ -19,6 +19,14 @@ interface Spot {
 }
 
 type Row = UniverseEntry & { analyst?: Analyst | null; loading?: boolean };
+interface BatchError {
+  symbol: string;
+  message: string;
+}
+interface BatchResponse<T> {
+  items: T[];
+  errors: BatchError[];
+}
 
 const ANALYST_BATCH_SIZE = 8;
 const SPOT_BATCH_SIZE = 12;
@@ -89,32 +97,35 @@ function cacheValues<T extends { symbol: string }>(key: string, values: T[]): vo
   writeCache(key, cache);
 }
 
-async function fetchSpotsFor(symbols: string[]): Promise<Spot[]> {
+async function fetchBatchJson<T>(path: string, symbols: string[]): Promise<BatchResponse<T>> {
   try {
-    const r = await fetch("/api/spot/batch", {
+    const r = await fetch(path, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ symbols }),
     });
-    if (!r.ok) return [];
-    return (await r.json()) as Spot[];
+    const body = await r.json().catch(() => ({})) as Partial<BatchResponse<T>> | T[] | { error?: string };
+    if (Array.isArray(body)) return { items: body, errors: [] };
+    if (!r.ok && r.status !== 207) {
+      const message = "error" in body && body.error ? body.error : `${path} ${r.status}`;
+      return { items: [], errors: symbols.map((symbol) => ({ symbol, message })) };
+    }
+    const response = body as Partial<BatchResponse<T>>;
+    return {
+      items: Array.isArray(response.items) ? response.items : [],
+      errors: Array.isArray(response.errors) ? response.errors : [],
+    };
   } catch {
-    return [];
+    return { items: [], errors: symbols.map((symbol) => ({ symbol, message: `${path} request failed` })) };
   }
 }
 
-async function fetchAnalystsFor(symbols: string[]): Promise<Analyst[]> {
-  try {
-    const r = await fetch("/api/analyst/batch", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ symbols }),
-    });
-    if (!r.ok) return [];
-    return (await r.json()) as Analyst[];
-  } catch {
-    return [];
-  }
+async function fetchSpotsFor(symbols: string[]): Promise<BatchResponse<Spot>> {
+  return fetchBatchJson<Spot>("/api/spot/batch", symbols);
+}
+
+async function fetchAnalystsFor(symbols: string[]): Promise<BatchResponse<Analyst>> {
+  return fetchBatchJson<Analyst>("/api/analyst/batch", symbols);
 }
 
 function makeRows(entries: UniverseEntry[], spots: Spot[] = []): Row[] {
@@ -181,11 +192,13 @@ export default function UniverseTable({
     analystDone: 0,
     total: entries.length,
   }));
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Re-seed when entries prop changes (after refresh).
   useEffect(() => {
     setRows(makeRows(entries, initialSpots));
     setProgress({ spotDone: initialSpots.length, analystDone: 0, total: entries.length });
+    setErrors({});
   }, [entries, initialSpots]);
 
   // Fetch analyst data in small batches so the table paints prices
@@ -219,9 +232,15 @@ export default function UniverseTable({
       const pending = symbols.filter((symbol) => !cachedSpotSymbols.has(symbol));
       for (let i = 0; i < pending.length; i += SPOT_BATCH_SIZE) {
         const batch = pending.slice(i, i + SPOT_BATCH_SIZE);
-        const spots = await fetchSpotsFor(batch);
+        const { items: spots, errors: spotErrors } = await fetchSpotsFor(batch);
         if (cancelled) return;
         cacheValues(SPOT_CACHE_KEY, spots);
+        if (spotErrors.length > 0) {
+          setErrors((prev) => ({
+            ...prev,
+            ...Object.fromEntries(spotErrors.map((e) => [e.symbol, e.message])),
+          }));
+        }
         setProgress((prev) => ({
           ...prev,
           spotDone: Math.min(symbols.length, prev.spotDone + batch.length),
@@ -246,9 +265,15 @@ export default function UniverseTable({
       const pending = symbols.filter((symbol) => !cachedAnalystSymbols.has(symbol));
       for (let i = 0; i < pending.length; i += ANALYST_BATCH_SIZE) {
         const batch = pending.slice(i, i + ANALYST_BATCH_SIZE);
-        const analysts = await fetchAnalystsFor(batch);
+        const { items: analysts, errors: analystErrors } = await fetchAnalystsFor(batch);
         if (cancelled) return;
         cacheValues(ANALYST_CACHE_KEY, analysts);
+        if (analystErrors.length > 0) {
+          setErrors((prev) => ({
+            ...prev,
+            ...Object.fromEntries(analystErrors.map((e) => [e.symbol, e.message])),
+          }));
+        }
         setProgress((prev) => ({
           ...prev,
           analystDone: Math.min(symbols.length, prev.analystDone + batch.length),
@@ -357,23 +382,26 @@ export default function UniverseTable({
                 <tbody>
                   {items.map((r) => {
                     const u = r.analyst?.upside_pct;
+                    const rowError = errors[r.symbol];
+                    const pendingText = rowError ? "失败" : r.loading ? "…" : "无";
                     return (
                       <tr key={r.symbol}>
                         <td className="mono">{r.symbol}</td>
                         <td>
                           <div className="stock-name">{r.name}</div>
                           {r.note && <div className="stock-note">{r.note}</div>}
+                          {rowError && <div className="stock-note data-error">{rowError}</div>}
                         </td>
                         <td>{r.global_supply ? <span className="pill good">是</span> : <span className="pill">否</span>}</td>
-                        <td className="num">{r.analyst?.current_price?.toFixed(2) ?? (r.loading ? "…" : "无")}</td>
-                        <td className="num">{r.analyst?.implied_target?.toFixed(2) ?? (r.loading ? "…" : "无")}</td>
+                        <td className="num">{r.analyst?.current_price?.toFixed(2) ?? pendingText}</td>
+                        <td className="num">{r.analyst?.implied_target?.toFixed(2) ?? pendingText}</td>
                         <td className={`num ${u == null ? "muted" : u > 0 ? "pos" : "neg"}`}>
-                          {u == null ? (r.loading ? "…" : "无") : `${u > 0 ? "+" : ""}${u.toFixed(0)}%`}
+                          {u == null ? pendingText : `${u > 0 ? "+" : ""}${u.toFixed(0)}%`}
                         </td>
                         <td className="num muted">
                           {r.analyst?.buy_count != null && r.analyst?.total_count
                             ? `${r.analyst.buy_count}/${r.analyst.total_count}`
-                            : r.loading ? "…" : "无"}
+                            : pendingText}
                         </td>
                       </tr>
                     );

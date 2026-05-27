@@ -7,6 +7,11 @@ export const runtime = "nodejs";
 const SPOT_CONCURRENCY = 8;
 const SPOT_TIMEOUT_MS = Number(process.env.SPOT_TIMEOUT_MS ?? 8_000);
 
+interface BatchError {
+  symbol: string;
+  message: string;
+}
+
 export async function POST(req: NextRequest) {
   const body = (await req.json().catch(() => ({}))) as { symbols?: unknown };
   const symbols = Array.isArray(body.symbols)
@@ -14,13 +19,23 @@ export async function POST(req: NextRequest) {
     : [];
   if (symbols.length === 0) return NextResponse.json({ error: "symbols required" }, { status: 400 });
 
-  const data = await mapPool(symbols, SPOT_CONCURRENCY, async (symbol): Promise<Spot | null> => {
+  const results = await mapPool(symbols, SPOT_CONCURRENCY, async (symbol): Promise<{ item?: Spot; error?: BatchError }> => {
     try {
-      return await fetchSpot(symbol, SPOT_TIMEOUT_MS);
-    } catch {
-      return null;
+      return { item: await fetchSpot(symbol, SPOT_TIMEOUT_MS) };
+    } catch (e) {
+      return {
+        error: {
+          symbol,
+          message: e instanceof Error ? e.message : String(e),
+        },
+      };
     }
   });
 
-  return NextResponse.json(data.filter((s): s is Spot => s !== null));
+  const items = results.flatMap((r) => r.item ? [r.item] : []);
+  const errors = results.flatMap((r) => r.error ? [r.error] : []);
+  return NextResponse.json(
+    { items, errors, requested: symbols.length, returned: items.length },
+    { status: errors.length > 0 ? 207 : 200 },
+  );
 }

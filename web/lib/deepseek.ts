@@ -138,7 +138,7 @@ export interface SymbolSnapshot {
   };
 }
 
-export type SignalSource = "llm-live" | "llm-cache" | "snapshot" | "unscorable";
+export type SignalSource = "llm-live" | "llm-cache";
 
 export interface Signal {
   symbol: string;
@@ -197,19 +197,6 @@ function chunks<T>(items: T[], size: number): T[][] {
   const out: T[][] = [];
   for (let i = 0; i < items.length; i += safeSize) out.push(items.slice(i, i + safeSize));
   return out;
-}
-
-function unscorableSignal(snapshot: SymbolSnapshot): Signal {
-  const features = buildRuleFeatures(snapshot);
-  return {
-    symbol: snapshot.symbol,
-    action: "hold",
-    confidence: 0,
-    size: 0,
-    rationale: "K线不足,不参与LLM评分",
-    source: "unscorable",
-    dataQuality: features.dataMissingFlags,
-  };
 }
 
 function signalSource(cacheHit: boolean): SignalSource {
@@ -314,7 +301,7 @@ async function scoreSymbolsBatchLlm(
   const model = opts.mode === "backtest" ? resolveLlmConfig().backtestModel : resolveLlmConfig().model;
   const timeoutMs = opts.mode === "backtest"
     ? envPositiveNumber("BACKTEST_LLM_TIMEOUT_MS", 30_000)
-    : undefined;
+    : envPositiveNumber("SIGNALS_LLM_TIMEOUT_MS", 60_000);
   let lastError: unknown;
   const attempts = opts.bypassCache ? 1 : 3;
   for (let attempt = 0; attempt < attempts; attempt++) {
@@ -342,16 +329,18 @@ export async function scoreSymbols(
 ): Promise<Signal[]> {
   if (snapshots.length === 0) return [];
 
-  const scorable = snapshots.filter((s) => s.closes.length >= MIN_SCORABLE_KLINES);
   const unscorable = snapshots.filter((s) => s.closes.length < MIN_SCORABLE_KLINES);
+  if (unscorable.length > 0) {
+    throw new Error(
+      `insufficient live kline data for LLM scoring: ${unscorable.map((s) => s.symbol).join(",")}`,
+    );
+  }
+
   const batchSize = opts.batchSize ?? Number(process.env.LLM_SCORE_BATCH_SIZE ?? DEFAULT_SCORE_BATCH_SIZE);
   const scored = (
-    await Promise.all(chunks(scorable, batchSize).map((batch) => scoreSymbolsBatchLlm(batch, opts)))
+    await Promise.all(chunks(snapshots, batchSize).map((batch) => scoreSymbolsBatchLlm(batch, opts)))
   ).flat();
 
-  const bySymbol = new Map([
-    ...scored.map((signal) => [signal.symbol, signal] as const),
-    ...unscorable.map((snapshot) => [snapshot.symbol, unscorableSignal(snapshot)] as const),
-  ]);
+  const bySymbol = new Map(scored.map((signal) => [signal.symbol, signal] as const));
   return snapshots.map((snapshot) => bySymbol.get(snapshot.symbol)!);
 }

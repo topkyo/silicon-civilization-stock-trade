@@ -72,10 +72,10 @@ test("scoreSymbols sends every scorable symbol through the LLM pipeline in deter
   assert.ok(result.every((s) => s.source === "llm-live"));
 });
 
-test("scoreSymbols marks insufficient kline snapshots unscorable without LLM fallback actions", async () => {
+test("scoreSymbols rejects insufficient kline snapshots before calling the LLM", async () => {
   const { scoreSymbols } = await import("../lib/deepseek");
   const input = [snapshot("A"), snapshot("SHORT", 3)];
-  const { result, calls } = await withMockedLlm(
+  const { calls } = await withMockedLlm(
     (symbols) => ({
       signals: symbols.map((symbol) => ({
         symbol,
@@ -85,14 +85,14 @@ test("scoreSymbols marks insufficient kline snapshots unscorable without LLM fal
         rationale: "ok",
       })),
     }),
-    () => scoreSymbols(input, { bypassCache: true, batchSize: 40 }),
+    async () => {
+      await assert.rejects(
+        () => scoreSymbols(input, { bypassCache: true, batchSize: 40 }),
+        /insufficient live kline data.*SHORT/,
+      );
+    },
   );
-  assert.deepEqual(calls, [["A"]]);
-  const short = result.find((s) => s.symbol === "SHORT")!;
-  assert.equal(short.source, "unscorable");
-  assert.equal(short.action, "hold");
-  assert.equal(short.size, 0);
-  assert.ok(short.dataQuality?.includes("insufficient_klines"));
+  assert.deepEqual(calls, []);
 });
 
 test("scoreSymbols rejects missing duplicate unknown and invalid LLM outputs", async () => {

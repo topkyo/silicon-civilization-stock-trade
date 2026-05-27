@@ -1,9 +1,8 @@
 """FastAPI sidecar wrapping Tushare Pro + AkShare.
 
 Data-source split:
-- A-share (sh/sz/bj): AkShare market-wide spot snapshot for fast current
-  price/basic metrics; Tushare Pro remains the historical kline and fallback
-  source for daily_basic / report_rc.
+- A-share (sh/sz/bj): AkShare/Eastmoney for current price/basic metrics;
+  Tushare Pro remains the historical kline, daily_basic, and report_rc source.
 - HK: akshare's stock_hk_hist — Tushare's hk_daily is hard-capped at
   10 calls/day on the free Pro tier (and 2/min within that), making it
   unusable for a HK watchlist beyond the first ~10 requests of the day.
@@ -63,6 +62,10 @@ def _strip_proxy_env() -> None:
 _strip_proxy_env()
 TUSHARE_TOKEN = os.environ.get("TUSHARE_TOKEN", "").strip()
 MOCK_MODE = TUSHARE_TOKEN.lower() in {"", "mock", "your-tushare-pro-token-here"}
+STRICT_LIVE_DATA = os.environ.get("STRICT_LIVE_DATA", "0").strip() == "1"
+if STRICT_LIVE_DATA and MOCK_MODE:
+    raise RuntimeError("STRICT_LIVE_DATA=1 requires a real TUSHARE_TOKEN")
+CACHE_NAMESPACE = "mock" if MOCK_MODE else "live"
 from mock_data import BENCHMARKS  # noqa: E402
 if MOCK_MODE:
     from mock_data import (  # noqa: E402
@@ -124,10 +127,11 @@ def db():
 
 
 def cache_get(key: str) -> Any | None:
+    scoped_key = f"{CACHE_NAMESPACE}:{key}"
     with db() as conn:
         row = conn.execute(
             "SELECT payload, fetched_at, ttl_seconds FROM cache WHERE key = ?",
-            (key,),
+            (scoped_key,),
         ).fetchone()
     if not row:
         return None
@@ -138,10 +142,11 @@ def cache_get(key: str) -> Any | None:
 
 
 def cache_put(key: str, value: Any, ttl_seconds: int) -> None:
+    scoped_key = f"{CACHE_NAMESPACE}:{key}"
     with db() as conn:
         conn.execute(
             "REPLACE INTO cache (key, payload, fetched_at, ttl_seconds) VALUES (?, ?, ?, ?)",
-            (key, json.dumps(value, ensure_ascii=False), int(time.time()), ttl_seconds),
+            (scoped_key, json.dumps(value, ensure_ascii=False), int(time.time()), ttl_seconds),
         )
 
 
@@ -246,10 +251,27 @@ def _attach_profit_yoy(out: dict[str, Any], ts_code: str, market: str) -> None:
         return
     try:
         profit_yoy = _latest_profit_yoy(ts_code)
-    except Exception:
+    except Exception as e:
+        out.setdefault("warnings", []).append(f"tushare fina_indicator unavailable: {e}")
         return
     if profit_yoy is not None:
         out["profit_yoy"] = profit_yoy
+        out.setdefault("field_sources", {})["profit_yoy"] = "tushare_fina_indicator"
+
+
+def _source_summary(field_sources: dict[str, str]) -> str:
+    providers = {
+        source.split("_", 1)[0]
+        for source in field_sources.values()
+        if not source.startswith("derived_")
+    }
+    if providers == {"akshare"}:
+        return "akshare_primary"
+    if providers == {"tushare"}:
+        return "tushare_only"
+    if "akshare" in providers and "tushare" in providers:
+        return "akshare+tushare"
+    return "unknown"
 
 
 # ---------- models ---------------------------------------------------------
@@ -272,6 +294,11 @@ class Fundamental(BaseModel):
     market_cap: float | None = None  # 亿元
     revenue_yoy: float | None = None
     profit_yoy: float | None = None
+    source: str | None = None
+    fetched_at: str | None = None
+    error: str | None = None
+    warnings: list[str] | None = None
+    field_sources: dict[str, str] | None = None
 
 
 class Analyst(BaseModel):
@@ -283,6 +310,11 @@ class Analyst(BaseModel):
     implied_target: float | None = None
     current_price: float | None = None
     upside_pct: float | None = None
+    source: str | None = None
+    fetched_at: str | None = None
+    error: str | None = None
+    warnings: list[str] | None = None
+    field_sources: dict[str, str] | None = None
 
 
 # ---------- symbol normalization -------------------------------------------
@@ -700,18 +732,29 @@ def klines(
 
 @app.get("/fundamental", response_model=Fundamental)
 def fundamental(symbol: str):
-    key = f"fund:v2:{symbol}"
+    key = f"fund:v3:{symbol}"
     cached = cache_get(key)
     if cached is not None:
         return cached
 
     if MOCK_MODE:
         out = mock_fundamental(symbol)
+        out["source"] = "mock"
+        out["fetched_at"] = datetime.now().isoformat()
+        out["warnings"] = []
+        out["field_sources"] = {k: "mock" for k in ("pe_ttm", "pb", "market_cap", "profit_yoy") if out.get(k) is not None}
         cache_put(key, out, 3600)
         return out
 
     ts_code, market = _to_ts_code(symbol)
-    out: dict[str, Any] = {"symbol": symbol, "name": _resolve_name(ts_code, market)}
+    out: dict[str, Any] = {
+        "symbol": symbol,
+        "name": _resolve_name(ts_code, market),
+        "source": "akshare_primary",
+        "fetched_at": datetime.now().isoformat(),
+        "warnings": [],
+        "field_sources": {},
+    }
 
     hist_spot: dict[str, Any] | None = None
     ak_spot = _ak_a_spot(ts_code, market)
@@ -729,26 +772,24 @@ def fundamental(symbol: str):
         market_cap = _market_cap_to_yi(_num_or_none(_ak_col(pd.Series(ak_spot), "总市值")))
         if pe_ttm is not None:
             out["pe_ttm"] = pe_ttm
+            out["field_sources"]["pe_ttm"] = "akshare_eastmoney"
         if pb is not None:
             out["pb"] = pb
+            out["field_sources"]["pb"] = "akshare_eastmoney"
         if market_cap is not None:
             out["market_cap"] = market_cap
+            out["field_sources"]["market_cap"] = "akshare_eastmoney"
         _attach_profit_yoy(out, ts_code, market)
         if out.get("pe_ttm") is not None and out.get("pb") is not None and out.get("market_cap") is not None:
+            out["source"] = _source_summary(out["field_sources"])
             cache_put(key, out, 24 * 3600 if out.get("profit_yoy") is not None else 30)
-            return out
-        if hist_spot is not None and out.get("name"):
-            cache_put(key, out, 30)
             return out
 
     try:
         if market == "hk":
-            # daily_basic is A-share only; for HK we leave fundamentals blank.
-            cache_put(key, out, 24 * 3600)
-            return out
+            raise HTTPException(502, "fundamental data unavailable for HK symbols")
         if _pro is None:
-            cache_put(key, out, 30)
-            return out
+            raise HTTPException(502, "Tushare client is not initialized")
         # Latest trading day's basic metrics. Pull last 5 days then take tail.
         today = date.today().strftime("%Y%m%d")
         start = (date.today() - timedelta(days=10)).strftime("%Y%m%d")
@@ -757,23 +798,35 @@ def fundamental(symbol: str):
             ts_code=ts_code, start_date=start, end_date=today,
             fields="ts_code,trade_date,close,pe_ttm,pb,total_mv",
         )
-    except Exception:
-        # daily_basic requires higher Tushare permissions. Keep the partial
-        # AkShare/name response usable instead of failing the whole page.
-        cache_put(key, out, 60)
+    except HTTPException:
+        raise
+    except Exception as e:
+        missing = [field for field in ("pe_ttm", "pb", "market_cap") if out.get(field) is None]
+        if missing:
+            raise HTTPException(502, f"fundamental upstream error: {e}") from e
+        out["warnings"].append(f"tushare daily_basic unavailable: {e}")
+        cache_put(key, out, 24 * 3600 if out.get("profit_yoy") is not None else 30)
         return out
 
     if df is not None and not df.empty:
         latest = df.sort_values("trade_date").iloc[-1]
-        if pd.notna(latest.get("pe_ttm")):
+        if out.get("pe_ttm") is None and pd.notna(latest.get("pe_ttm")):
             out["pe_ttm"] = float(latest["pe_ttm"])
-        if pd.notna(latest.get("pb")):
+            out["field_sources"]["pe_ttm"] = "tushare_daily_basic"
+        if out.get("pb") is None and pd.notna(latest.get("pb")):
             out["pb"] = float(latest["pb"])
-        if pd.notna(latest.get("total_mv")):
+            out["field_sources"]["pb"] = "tushare_daily_basic"
+        if out.get("market_cap") is None and pd.notna(latest.get("total_mv")):
             # tushare returns 万元 -> convert to 亿元
             out["market_cap"] = float(latest["total_mv"]) / 1e4
+            out["field_sources"]["market_cap"] = "tushare_daily_basic"
         _attach_profit_yoy(out, ts_code, market)
 
+    missing = [field for field in ("pe_ttm", "pb", "market_cap") if out.get(field) is None]
+    if missing:
+        raise HTTPException(502, f"fundamental fields missing for {symbol}: {','.join(missing)}")
+
+    out["source"] = _source_summary(out["field_sources"])
     cache_put(key, out, 24 * 3600)
     return out
 
@@ -785,22 +838,33 @@ def analyst(symbol: str):
     Aggregates EPS forecasts for next fiscal year across recent analyst
     reports; implied target = consensus EPS * current PE(TTM).
     """
-    key = f"analyst:{symbol}"
+    key = f"analyst:v3:{symbol}"
     cached = cache_get(key)
     if cached is not None:
         return cached
 
     if MOCK_MODE:
         out = mock_analyst(symbol)
+        out["source"] = "mock"
+        out["fetched_at"] = datetime.now().isoformat()
+        out["warnings"] = []
+        out["field_sources"] = {k: "mock" for k in (
+            "buy_count", "total_count", "buy_ratio", "consensus_eps_next",
+            "implied_target", "current_price", "upside_pct",
+        ) if out.get(k) is not None}
         cache_put(key, out, 3600)
         return out
 
     ts_code, market = _to_ts_code(symbol)
-    out: dict[str, Any] = {"symbol": symbol}
+    out: dict[str, Any] = {
+        "symbol": symbol,
+        "source": "akshare_primary",
+        "fetched_at": datetime.now().isoformat(),
+        "warnings": [],
+        "field_sources": {},
+    }
     if market == "hk":
-        # report_rc covers A-share only.
-        cache_put(key, out, 24 * 3600)
-        return out
+        raise HTTPException(502, "analyst data unavailable for HK symbols")
 
     # Always fetch most-recent close first so the UI can show current price even
     # when sell-side reports are absent or Tushare report_rc is rate-limited.
@@ -810,11 +874,13 @@ def analyst(symbol: str):
         price = _spot_price_from_ak(ak_spot)
         if price is not None:
             out["current_price"] = round(price, 3)
+            out["field_sources"]["current_price"] = "akshare_eastmoney"
         pe_ttm = _num_or_none(_ak_col(pd.Series(ak_spot), "市盈率-动态", "市盈率", "PE"))
     if out.get("current_price") is None and market in {"sh", "sz", "bj"}:
         hist_spot = _ak_a_spot_from_hist(ts_code, market, symbol)
         if hist_spot is not None:
             out["current_price"] = round(float(hist_spot["price"]), 3)
+            out["field_sources"]["current_price"] = "akshare_daily_close"
     try:
         if out.get("current_price") is None or pe_ttm is None:
             today = date.today().strftime("%Y%m%d")
@@ -828,30 +894,46 @@ def analyst(symbol: str):
                 latest = db.sort_values("trade_date").iloc[-1]
                 if out.get("current_price") is None and pd.notna(latest.get("close")):
                     out["current_price"] = round(float(latest["close"]), 3)
+                    out["field_sources"]["current_price"] = "tushare_daily_basic"
                 if pe_ttm is None and pd.notna(latest.get("pe_ttm")):
                     pe_ttm = float(latest["pe_ttm"])
-    except Exception:
-        pass
+    except Exception as e:
+        out["warnings"].append(f"tushare daily_basic unavailable: {e}")
 
     compact_symbol = ts_code.split(".")[0]
     research = _ak_research_consensus(compact_symbol)
     out.update(research)
+    for key in ("buy_count", "total_count", "buy_ratio", "consensus_eps_next"):
+        if key in research and research.get(key) is not None:
+            out["field_sources"][key] = "akshare_research_report"
 
     if out.get("consensus_eps_next") is None:
         eps, forecast_count = _ak_consensus_eps(compact_symbol)
         if eps is not None:
             out["consensus_eps_next"] = eps
+            out["field_sources"]["consensus_eps_next"] = "akshare_profit_forecast"
             if forecast_count is not None and out.get("total_count") is None:
                 out["total_count"] = forecast_count
+                out["field_sources"]["total_count"] = "akshare_profit_forecast"
 
     if out.get("consensus_eps_next") is not None and pe_ttm is not None:
         out["implied_target"] = round(out["consensus_eps_next"] * pe_ttm, 3)
+        out["field_sources"]["implied_target"] = "derived_eps_pe"
         if out.get("current_price"):
             out["upside_pct"] = round(
                 (out["implied_target"] / out["current_price"] - 1) * 100, 2
             )
+            out["field_sources"]["upside_pct"] = "derived_target_price"
 
     if out.get("implied_target") is not None and out.get("buy_count") is not None:
+        out["source"] = _source_summary(out["field_sources"])
+        cache_put(key, out, 24 * 3600)
+        return out
+
+    if any(out.get(k) is not None for k in ("buy_count", "total_count", "consensus_eps_next")):
+        if pe_ttm is None:
+            out["warnings"].append("pe_ttm unavailable; implied target not calculated")
+        out["source"] = _source_summary(out["field_sources"])
         cache_put(key, out, 24 * 3600)
         return out
 
@@ -860,21 +942,28 @@ def analyst(symbol: str):
     try:
         rc = _with_retries(_report_rc, ts_code=ts_code, start_date=start)
     except Exception as e:
-        # Keep current_price usable; do not poison the cache for a full day
-        # because rate-limit errors are transient.
+        out["warnings"].append(f"tushare report_rc unavailable: {e}")
+        if not any(out.get(k) is not None for k in ("implied_target", "buy_count", "total_count", "consensus_eps_next", "upside_pct")):
+            out["error"] = f"report_rc unavailable: {e}"
         cache_put(key, out, 60)
         return out
 
     if rc is None or rc.empty:
+        out["warnings"].append("tushare report_rc returned no analyst reports")
+        if not any(out.get(k) is not None for k in ("implied_target", "buy_count", "total_count", "consensus_eps_next", "upside_pct")):
+            out["error"] = "report_rc returned no analyst reports"
         cache_put(key, out, 24 * 3600)
         return out
 
     out["total_count"] = int(len(rc))
+    out["field_sources"]["total_count"] = "tushare_report_rc"
     if "rating" in rc.columns:
         # tushare ratings: 买入/推荐/增持/中性/减持/卖出 etc.
         bullish = rc["rating"].isin(["买入", "推荐", "强烈推荐", "增持"]).sum()
         out["buy_count"] = int(bullish)
         out["buy_ratio"] = round(out["buy_count"] / out["total_count"], 3)
+        out["field_sources"]["buy_count"] = "tushare_report_rc"
+        out["field_sources"]["buy_ratio"] = "tushare_report_rc"
 
     # Consensus next-year EPS: pick the median forecast for the soonest
     # forward fiscal year present in the data.
@@ -891,6 +980,7 @@ def analyst(symbol: str):
     eps_series = pd.to_numeric(pool.get("eps"), errors="coerce").dropna() if not pool.empty else pd.Series(dtype=float)
     if not eps_series.empty:
         out["consensus_eps_next"] = round(float(eps_series.median()), 4)
+        out["field_sources"]["consensus_eps_next"] = "tushare_report_rc"
 
     # Prefer explicit sell-side target-price fields when Tushare provides them;
     # otherwise fall back to EPS * PE(TTM).
@@ -900,14 +990,18 @@ def analyst(symbol: str):
         targets.extend(x for x in (_num_or_none(v) for v in rc[col]) if x is not None and x > 0)
     if targets:
         out["implied_target"] = round(float(pd.Series(targets).median()), 3)
+        out["field_sources"]["implied_target"] = "tushare_report_rc"
     elif out.get("consensus_eps_next") is not None and pe_ttm is not None:
         out["implied_target"] = round(out["consensus_eps_next"] * pe_ttm, 3)
+        out["field_sources"]["implied_target"] = "derived_eps_pe"
 
     if out.get("implied_target") is not None and out.get("current_price"):
         out["upside_pct"] = round(
             (out["implied_target"] / out["current_price"] - 1) * 100, 2
         )
+        out["field_sources"]["upside_pct"] = "derived_target_price"
 
+    out["source"] = _source_summary(out["field_sources"])
     cache_put(key, out, 24 * 3600)
     return out
 
@@ -923,22 +1017,32 @@ def analysts(symbols: str = Query(..., description="comma-separated symbols")):
         seen.add(symbol)
         try:
             out.append(analyst(symbol))
-        except Exception:
-            # Keep a batch refresh useful even if one upstream symbol fails.
-            out.append({"symbol": symbol})
+        except Exception as e:
+            detail = getattr(e, "detail", None)
+            out.append({
+                "symbol": symbol,
+                "source": "akshare+tushare",
+                "fetched_at": datetime.now().isoformat(),
+                "error": str(detail if detail is not None else e),
+                "warnings": [str(detail if detail is not None else e)],
+                "field_sources": {},
+            })
     return out
 
 
 @app.get("/spot")
 def spot(symbol: str):
     """Most-recent close (Tushare Pro has no realtime quote). 30s cache."""
-    key = f"spot:{symbol}"
+    key = f"spot:v2:{symbol}"
     cached = cache_get(key)
     if cached is not None:
         return cached
 
     if MOCK_MODE:
         out = mock_spot(symbol)
+        out["source"] = "mock"
+        out["fetched_at"] = datetime.now().isoformat()
+        out["warnings"] = []
         cache_put(key, out, 30)
         return out
 
@@ -957,6 +1061,9 @@ def spot(symbol: str):
                     "change_pct": _spot_change_pct_from_ak(ak_spot) or 0,
                     "volume": _num_or_none(ak_spot.get("成交量")) or 0,
                     "turnover": _num_or_none(ak_spot.get("成交额")) or 0,
+                    "source": "eastmoney",
+                    "fetched_at": datetime.now().isoformat(),
+                    "warnings": [],
                 }
                 cache_put(key, out, 30)
                 return out
@@ -975,12 +1082,11 @@ def spot(symbol: str):
                 "成交额": "amount", "涨跌幅": "pct_chg",
             })
         else:
-            # Tushare daily only when AkShare realtime + hist both fail.
             if _pro is None:
-                raise HTTPException(404, f"symbol {symbol} not found")
+                raise HTTPException(502, f"spot quote unavailable for {symbol}")
             df = _with_retries(_pro.daily, ts_code=ts_code, start_date=start, end_date=end)
             if df is None or df.empty:
-                raise HTTPException(404, f"symbol {symbol} not found")
+                raise HTTPException(502, f"spot quote unavailable for {symbol}")
             df = df.sort_values("trade_date")
     except HTTPException:
         raise
@@ -994,6 +1100,9 @@ def spot(symbol: str):
         "change_pct": float(r.get("pct_chg", 0) or 0),
         "volume": float(r.get("vol", 0) or 0),
         "turnover": float(r.get("amount", 0) or 0),
+        "source": "akshare-hk-hist" if market == "hk" else "tushare-daily-close",
+        "fetched_at": datetime.now().isoformat(),
+        "warnings": [] if market == "hk" else ["Eastmoney realtime unavailable; returned Tushare latest daily close, not realtime"],
     }
     cache_put(key, out, 30)
     return out

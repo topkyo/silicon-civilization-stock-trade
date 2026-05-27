@@ -4,24 +4,12 @@ import { fetchBenchmarkKlines, fetchKlines, fetchFundamental } from "@/lib/pyser
 import { runBacktest, type BacktestConfig, type SymbolSeries } from "@/lib/backtest";
 import { mapPool } from "@/lib/concurrent";
 import { saveBacktestResult } from "@/lib/cache";
-import { snapshotBacktest } from "@/lib/snapshot";
 
 const LOAD_CONCURRENCY = Number(process.env.BACKTEST_LOAD_CONCURRENCY ?? 6);
 const BACKTEST_PYSERVER_TIMEOUT_MS = Number(process.env.BACKTEST_PYSERVER_TIMEOUT_MS ?? 20_000);
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
-
-function configMatchesSnapshot(snapshot: ReturnType<typeof snapshotBacktest>, cfg: BacktestConfig) {
-  if (!snapshot) return false;
-  const s = snapshot.config;
-  return s.startCash === cfg.startCash
-    && s.rebalanceEveryNDays === cfg.rebalanceEveryNDays
-    && s.startDate === cfg.startDate
-    && s.endDate === cfg.endDate
-    && s.feeBps === cfg.feeBps
-    && s.maxPositions === cfg.maxPositions;
-}
 
 // NDJSON streaming protocol. Each line is one JSON object, one of:
 //   { type: "progress", phase, done, total }
@@ -59,7 +47,8 @@ export async function POST(req: NextRequest) {
         const universe = loadEntries();
         send({ type: "progress", phase: "loading", done: 0, total: universe.length });
         let loaded = 0;
-        let failed = 0;
+        const loadErrors: string[] = [];
+        const loadWarnings: string[] = [];
         const loadedSeries = await mapPool(universe, LOAD_CONCURRENCY, async (entry): Promise<SymbolSeries | null> => {
           const [klinesRes, fundRes] = await Promise.allSettled([
             fetchKlines(entry.symbol, aksStart, aksEnd, BACKTEST_PYSERVER_TIMEOUT_MS),
@@ -68,14 +57,17 @@ export async function POST(req: NextRequest) {
           loaded++;
           send({ type: "progress", phase: "loading", done: loaded, total: universe.length });
           if (klinesRes.status !== "fulfilled" || klinesRes.value.length < 20) {
-            failed++;
             const why = klinesRes.status === "rejected"
               ? (klinesRes.reason instanceof Error ? klinesRes.reason.message : String(klinesRes.reason))
               : `only ${klinesRes.value.length} bars`;
-            send({ type: "log", message: `skip ${entry.symbol} ${entry.name}: ${why.slice(0, 120)}` });
+            loadErrors.push(`${entry.symbol} ${entry.name}: ${why.slice(0, 160)}`);
             return null;
           }
           const fund = fundRes.status === "fulfilled" ? fundRes.value : undefined;
+          if (fundRes.status !== "fulfilled") {
+            const why = fundRes.reason instanceof Error ? fundRes.reason.message : String(fundRes.reason);
+            loadWarnings.push(`${entry.symbol} ${entry.name} fundamental: ${why.slice(0, 160)}`);
+          }
           return {
             entry,
             klines: klinesRes.value,
@@ -91,39 +83,32 @@ export async function POST(req: NextRequest) {
         });
         const series: SymbolSeries[] = loadedSeries.filter((x): x is SymbolSeries => x !== null);
 
-        send({ type: "log", message: `${series.length} symbols loaded (${failed} failed/skipped)` });
-
-        if (series.length === 0) {
-          const fallback = snapshotBacktest();
-          if (configMatchesSnapshot(fallback, cfg)) {
-            send({ type: "log", message: "pyserver unavailable; using latest static backtest snapshot" });
-            send({ type: "result", result: fallback, stored: null });
-          } else {
-            send({
-              type: "error",
-              message: fallback
-                ? "no data loaded from pyserver; static backtest snapshot does not match requested config"
-                : "no data loaded from pyserver",
-            });
-          }
+        send({ type: "log", message: `${series.length} symbols loaded (${loadErrors.length} failed)` });
+        if (loadWarnings.length > 0) {
+          send({ type: "log", message: `${loadWarnings.length} fundamentals unavailable: ${loadWarnings.slice(0, 8).join("; ")}` });
+        }
+        if (loadErrors.length > 0) {
+          send({
+            type: "error",
+            message: `backtest data load failed for ${loadErrors.length} symbols: ${loadErrors.slice(0, 8).join("; ")}`,
+          });
           controller.close();
           return;
         }
 
         const benchmarkIndex = body.benchmarkIndex ?? "csi300";
         let benchmarkOpt: { id: string; name: string; klines: import("@/lib/pyserver").Kline[] } | undefined;
-        try {
-          const benchKlines = await fetchBenchmarkKlines(benchmarkIndex, aksStart, aksEnd, BACKTEST_PYSERVER_TIMEOUT_MS);
-          if (benchKlines.length >= 20) {
-            benchmarkOpt = {
-              id: benchmarkIndex,
-              name: benchmarkIndex === "star50" ? "科创50" : benchmarkIndex === "csi500" ? "中证500" : "沪深300",
-              klines: benchKlines,
-            };
-          }
-        } catch {
-          send({ type: "log", message: `benchmark ${benchmarkIndex} unavailable, skipping` });
+        const benchKlines = await fetchBenchmarkKlines(benchmarkIndex, aksStart, aksEnd, BACKTEST_PYSERVER_TIMEOUT_MS);
+        if (benchKlines.length < 20) {
+          send({ type: "error", message: `benchmark ${benchmarkIndex} has only ${benchKlines.length} bars` });
+          controller.close();
+          return;
         }
+        benchmarkOpt = {
+          id: benchmarkIndex,
+          name: benchmarkIndex === "star50" ? "科创50" : benchmarkIndex === "csi500" ? "中证500" : "沪深300",
+          klines: benchKlines,
+        };
 
         const result = await runBacktest(series, cfg, {
           onProgress: (p) => send({ type: "progress", ...p }),

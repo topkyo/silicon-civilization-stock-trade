@@ -22,6 +22,11 @@ export interface Fundamental {
   market_cap?: number | null;
   revenue_yoy?: number | null;
   profit_yoy?: number | null;
+  source?: string | null;
+  fetched_at?: string | null;
+  error?: string | null;
+  warnings?: string[] | null;
+  field_sources?: Record<string, string> | null;
 }
 
 const inflight = new Map<string, Promise<unknown>>();
@@ -70,6 +75,11 @@ export interface Analyst {
   implied_target?: number | null;
   current_price?: number | null;
   upside_pct?: number | null;
+  source?: string | null;
+  fetched_at?: string | null;
+  error?: string | null;
+  warnings?: string[] | null;
+  field_sources?: Record<string, string> | null;
 }
 
 export function fetchAnalyst(symbol: string, timeoutMs?: number) {
@@ -83,7 +93,7 @@ export function fetchAnalysts(symbols: string[], timeoutMs?: number) {
 }
 
 export function fetchSpot(symbol: string, timeoutMs?: number) {
-  return get<{ symbol: string; name: string; price: number; change_pct: number }>(
+  return get<Spot>(
     "/spot",
     { symbol },
     timeoutMs,
@@ -97,6 +107,10 @@ export interface Spot {
   change_pct: number;
   volume?: number;
   turnover?: number;
+  source?: string;
+  fetched_at?: string;
+  error?: string;
+  warnings?: string[];
 }
 
 
