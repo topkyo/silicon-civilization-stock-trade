@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T03:39:10.655Z",
+  "generated_at": "2026-05-28T12:02:50.858Z",
   "items": [
     {
       "symbol": "688256",
@@ -7,9 +7,25 @@
       "total_count": 40,
       "buy_ratio": 0.925,
       "consensus_eps_next": 8.51,
-      "implied_target": 1828.459,
-      "current_price": 1385.96,
-      "upside_pct": 31.93
+      "implied_target": 2738.35,
+      "current_price": 1391.5,
+      "upside_pct": 96.79,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:09.465022",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688041",
@@ -17,19 +33,51 @@
       "total_count": 110,
       "buy_ratio": 0.964,
       "consensus_eps_next": 1.81,
-      "implied_target": 501.171,
-      "current_price": 327.41,
-      "upside_pct": 53.07
+      "implied_target": 485.137,
+      "current_price": 314.36,
+      "upside_pct": 54.33,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:09.464684",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300474",
-      "buy_count": 3,
-      "total_count": 6,
-      "buy_ratio": 0.5,
-      "consensus_eps_next": 0.265,
-      "implied_target": 8050,
-      "current_price": 65.24,
-      "upside_pct": 12239.06
+      "buy_count": 51,
+      "total_count": 57,
+      "buy_ratio": 0.895,
+      "consensus_eps_next": 1.01,
+      "implied_target": -201.483,
+      "current_price": 63.31,
+      "upside_pct": -418.25,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:09.465152",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002049",
@@ -37,9 +85,25 @@
       "total_count": 112,
       "buy_ratio": 0.955,
       "consensus_eps_next": 4.01,
-      "implied_target": 221.994,
-      "current_price": 87.13,
-      "upside_pct": 154.78
+      "implied_target": 177.965,
+      "current_price": 86.3,
+      "upside_pct": 106.22,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:09.464455",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688385",
@@ -47,29 +111,77 @@
       "total_count": 39,
       "buy_ratio": 0.974,
       "consensus_eps_next": 1.265,
-      "implied_target": 122.503,
-      "current_price": 69.74,
-      "upside_pct": 75.66
+      "implied_target": 289.156,
+      "current_price": 67.84,
+      "upside_pct": 326.23,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:10.478425",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300308",
-      "buy_count": 273,
-      "total_count": 289,
+      "buy_count": 274,
+      "total_count": 290,
       "buy_ratio": 0.945,
-      "consensus_eps_next": 11.075,
-      "implied_target": 609.014,
-      "current_price": 1132.74,
-      "upside_pct": -46.24
+      "consensus_eps_next": 11.1125,
+      "implied_target": 991.712,
+      "current_price": 1197.99,
+      "upside_pct": -17.22,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:10.763046",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300502",
-      "buy_count": 94,
-      "total_count": 96,
+      "buy_count": 95,
+      "total_count": 97,
       "buy_ratio": 0.979,
-      "consensus_eps_next": 10.031,
-      "implied_target": 632.856,
-      "current_price": 704.56,
-      "upside_pct": -10.18
+      "consensus_eps_next": 10.102,
+      "implied_target": 672.92,
+      "current_price": 718.34,
+      "upside_pct": -6.32,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:11.049754",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300394",
@@ -77,9 +189,25 @@
       "total_count": 145,
       "buy_ratio": 0.945,
       "consensus_eps_next": 4.88,
-      "implied_target": 848.388,
-      "current_price": 439.31,
-      "upside_pct": 93.12
+      "implied_target": 783.55,
+      "current_price": 447.56,
+      "upside_pct": 75.07,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:11.488936",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "000988",
@@ -87,9 +215,25 @@
       "total_count": 59,
       "buy_ratio": 1,
       "consensus_eps_next": 2.17,
-      "implied_target": 144.392,
-      "current_price": 169,
-      "upside_pct": -14.56
+      "implied_target": 212.666,
+      "current_price": 165.63,
+      "upside_pct": 28.4,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:11.926333",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002281",
@@ -97,9 +241,25 @@
       "total_count": 112,
       "buy_ratio": 0.866,
       "consensus_eps_next": 1.805,
-      "implied_target": 316.777,
-      "current_price": 208.8,
-      "upside_pct": 51.71
+      "implied_target": 302.013,
+      "current_price": 214.9,
+      "upside_pct": 40.54,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:12.879498",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "603083",
@@ -107,9 +267,25 @@
       "total_count": 12,
       "buy_ratio": 0.917,
       "consensus_eps_next": 2.52,
-      "implied_target": 368.222,
-      "current_price": 196.12,
-      "upside_pct": 87.75
+      "implied_target": 514.975,
+      "current_price": 203.04,
+      "upside_pct": 153.63,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:13.214411",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "301205",
@@ -117,9 +293,25 @@
       "total_count": 1,
       "buy_ratio": 1,
       "consensus_eps_next": 1.28,
-      "implied_target": 3409.971,
-      "current_price": 250.16,
-      "upside_pct": 1263.12
+      "implied_target": 556.173,
+      "current_price": 292.8,
+      "upside_pct": 89.95,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:13.751650",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "601138",
@@ -127,9 +319,25 @@
       "total_count": 108,
       "buy_ratio": 0.963,
       "consensus_eps_next": 1.88,
-      "implied_target": 64.183,
-      "current_price": 72.91,
-      "upside_pct": -11.97
+      "implied_target": 68.833,
+      "current_price": 75,
+      "upside_pct": -8.22,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:14.125719",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "000977",
@@ -137,9 +345,25 @@
       "total_count": 172,
       "buy_ratio": 0.936,
       "consensus_eps_next": 2.365,
-      "implied_target": 95.735,
-      "current_price": 66.7,
-      "upside_pct": 43.53
+      "implied_target": 90.267,
+      "current_price": 66.41,
+      "upside_pct": 35.92,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:14.715306",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "603019",
@@ -147,9 +371,25 @@
       "total_count": 114,
       "buy_ratio": 0.912,
       "consensus_eps_next": 2.07,
-      "implied_target": 310.252,
-      "current_price": 93.36,
-      "upside_pct": 232.32
+      "implied_target": 124.62,
+      "current_price": 91.25,
+      "upside_pct": 36.57,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:14.994346",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "000938",
@@ -157,9 +397,25 @@
       "total_count": 121,
       "buy_ratio": 0.967,
       "consensus_eps_next": 1.005,
-      "implied_target": 26.2,
-      "current_price": 28.73,
-      "upside_pct": -8.81
+      "implied_target": 39.121,
+      "current_price": 28.92,
+      "upside_pct": 35.27,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:15.442870",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "000063",
@@ -167,9 +423,25 @@
       "total_count": 278,
       "buy_ratio": 0.888,
       "consensus_eps_next": 2.395,
-      "implied_target": 76.784,
-      "current_price": 35.13,
-      "upside_pct": 118.57
+      "implied_target": 98.052,
+      "current_price": 38.3,
+      "upside_pct": 156.01,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:15.986919",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002837",
@@ -177,9 +449,25 @@
       "total_count": 86,
       "buy_ratio": 0.988,
       "consensus_eps_next": 1.2805,
-      "implied_target": 3573.555,
-      "current_price": 98.59,
-      "upside_pct": 3524.66
+      "implied_target": 253.668,
+      "current_price": 97.52,
+      "upside_pct": 160.12,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:16.965837",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "301018",
@@ -187,9 +475,25 @@
       "total_count": 24,
       "buy_ratio": 1,
       "consensus_eps_next": 1.33,
-      "implied_target": 494.773,
-      "current_price": 157.55,
-      "upside_pct": 214.04
+      "implied_target": 288.349,
+      "current_price": 154.85,
+      "upside_pct": 86.21,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:17.386326",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300499",
@@ -197,9 +501,25 @@
       "total_count": 8,
       "buy_ratio": 1,
       "consensus_eps_next": 0.21,
-      "implied_target": 44.953,
-      "current_price": 42.47,
-      "upside_pct": 5.85
+      "implied_target": 88.198,
+      "current_price": 42.01,
+      "upside_pct": 109.95,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:17.999674",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300602",
@@ -207,9 +527,25 @@
       "total_count": 41,
       "buy_ratio": 1,
       "consensus_eps_next": 0.8,
-      "implied_target": 70.296,
-      "current_price": 46.73,
-      "upside_pct": 50.43
+      "implied_target": 59.472,
+      "current_price": 49.08,
+      "upside_pct": 21.17,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:18.908933",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600900",
@@ -217,9 +553,25 @@
       "total_count": 124,
       "buy_ratio": 0.968,
       "consensus_eps_next": 1.497,
-      "implied_target": 36.766,
-      "current_price": 27.14,
-      "upside_pct": 35.47
+      "implied_target": 27.632,
+      "current_price": 27.22,
+      "upside_pct": 1.51,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:19.403989",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "601985",
@@ -227,9 +579,25 @@
       "total_count": 90,
       "buy_ratio": 0.978,
       "consensus_eps_next": 0.64,
-      "implied_target": 13.882,
-      "current_price": 8.71,
-      "upside_pct": 59.38
+      "implied_target": 14.136,
+      "current_price": 8.84,
+      "upside_pct": 59.91,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:19.645182",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "003816",
@@ -237,9 +605,25 @@
       "total_count": 62,
       "buy_ratio": 0.968,
       "consensus_eps_next": 0.25,
-      "implied_target": 5.183,
+      "implied_target": 5.991,
       "current_price": 4.5,
-      "upside_pct": 15.18
+      "upside_pct": 33.13,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:19.943018",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600905",
@@ -247,9 +631,25 @@
       "total_count": 51,
       "buy_ratio": 0.961,
       "consensus_eps_next": 0.295,
-      "implied_target": 8.29,
-      "current_price": 4.09,
-      "upside_pct": 102.69
+      "implied_target": 15.166,
+      "current_price": 4.15,
+      "upside_pct": 265.45,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:20.236080",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600886",
@@ -257,19 +657,51 @@
       "total_count": 60,
       "buy_ratio": 0.95,
       "consensus_eps_next": 1.06,
-      "implied_target": 13.727,
-      "current_price": 13.71,
-      "upside_pct": 0.12
+      "implied_target": 15.764,
+      "current_price": 13.81,
+      "upside_pct": 14.15,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:20.641694",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600011",
-      "buy_count": 96,
-      "total_count": 99,
+      "buy_count": 97,
+      "total_count": 100,
       "buy_ratio": 0.97,
-      "consensus_eps_next": 0.915,
-      "implied_target": 6.131,
-      "current_price": 7.66,
-      "upside_pct": -19.96
+      "consensus_eps_next": 0.91,
+      "implied_target": 8.271,
+      "current_price": 8.06,
+      "upside_pct": 2.62,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:21.049969",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300442",
@@ -277,9 +709,25 @@
       "total_count": 32,
       "buy_ratio": 1,
       "consensus_eps_next": 2.29,
-      "implied_target": 138.82,
-      "current_price": 86.38,
-      "upside_pct": 60.71
+      "implied_target": 62.212,
+      "current_price": 86.47,
+      "upside_pct": -28.05,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:21.475546",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300383",
@@ -287,9 +735,25 @@
       "total_count": 104,
       "buy_ratio": 0.865,
       "consensus_eps_next": 0.25,
-      "implied_target": 73.265,
-      "current_price": 14.65,
-      "upside_pct": 400.1
+      "implied_target": -8.091,
+      "current_price": 14.51,
+      "upside_pct": -155.76,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:21.863292",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "603881",
@@ -297,9 +761,25 @@
       "total_count": 41,
       "buy_ratio": 0.976,
       "consensus_eps_next": 0.29,
-      "implied_target": 43.048,
-      "current_price": 37.01,
-      "upside_pct": 16.31
+      "implied_target": 55.466,
+      "current_price": 37.13,
+      "upside_pct": 49.38,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:22.241352",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300738",
@@ -307,9 +787,25 @@
       "total_count": 27,
       "buy_ratio": 1,
       "consensus_eps_next": 0.32,
-      "implied_target": 19.907,
-      "current_price": 23.42,
-      "upside_pct": -15
+      "implied_target": 42.018,
+      "current_price": 23.1,
+      "upside_pct": 81.9,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:22.529161",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002335",
@@ -317,9 +813,25 @@
       "total_count": 34,
       "buy_ratio": 1,
       "consensus_eps_next": 2.03,
-      "implied_target": 208.522,
-      "current_price": 62.19,
-      "upside_pct": 235.3
+      "implied_target": 148.227,
+      "current_price": 60.5,
+      "upside_pct": 145,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:22.846970",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "603290",
@@ -327,9 +839,25 @@
       "total_count": 94,
       "buy_ratio": 0.957,
       "consensus_eps_next": 5.39,
-      "implied_target": 1665.51,
-      "current_price": 137.43,
-      "upside_pct": 1111.9
+      "implied_target": 562.474,
+      "current_price": 143,
+      "upside_pct": 293.34,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:23.549457",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688187",
@@ -337,9 +865,25 @@
       "total_count": 48,
       "buy_ratio": 1,
       "consensus_eps_next": 3.55,
-      "implied_target": 114.807,
-      "current_price": 61.75,
-      "upside_pct": 85.92
+      "implied_target": 72.896,
+      "current_price": 62.6,
+      "upside_pct": 16.45,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:23.964580",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688711",
@@ -347,9 +891,25 @@
       "total_count": 25,
       "buy_ratio": 0.96,
       "consensus_eps_next": 0.965,
-      "implied_target": 2160.731,
-      "current_price": 38.21,
-      "upside_pct": 5554.88
+      "implied_target": 459.817,
+      "current_price": 37.88,
+      "upside_pct": 1113.88,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:24.216798",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "605111",
@@ -357,19 +917,51 @@
       "total_count": 94,
       "buy_ratio": 1,
       "consensus_eps_next": 1.666,
-      "implied_target": 127.149,
-      "current_price": 69.49,
-      "upside_pct": 82.97
+      "implied_target": 126.585,
+      "current_price": 69.5,
+      "upside_pct": 82.14,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:24.496021",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600460",
       "buy_count": 86,
-      "total_count": 86,
-      "buy_ratio": 1,
+      "total_count": 87,
+      "buy_ratio": 0.989,
       "consensus_eps_next": 0.495,
-      "implied_target": 35.813,
-      "current_price": 36.32,
-      "upside_pct": -1.4
+      "implied_target": 69.011,
+      "current_price": 38.44,
+      "upside_pct": 79.53,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:25.406805",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688396",
@@ -377,9 +969,25 @@
       "total_count": 74,
       "buy_ratio": 0.905,
       "consensus_eps_next": 0.97,
-      "implied_target": 64.932,
-      "current_price": 66.53,
-      "upside_pct": -2.4
+      "implied_target": 99.113,
+      "current_price": 69.8,
+      "upside_pct": 42,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:25.801252",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600745",
@@ -387,9 +995,25 @@
       "total_count": 85,
       "buy_ratio": 0.953,
       "consensus_eps_next": 2.58,
-      "implied_target": -79.516,
-      "current_price": 18.75,
-      "upside_pct": -524.09
+      "implied_target": -6.874,
+      "current_price": 19.69,
+      "upside_pct": -134.91,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:26.029888",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "603986",
@@ -397,9 +1021,25 @@
       "total_count": 221,
       "buy_ratio": 0.932,
       "consensus_eps_next": 3.14,
-      "implied_target": 200.332,
-      "current_price": 531.89,
-      "upside_pct": -62.34
+      "implied_target": 369.892,
+      "current_price": 483,
+      "upside_pct": -23.42,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:26.478188",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688008",
@@ -407,9 +1047,25 @@
       "total_count": 130,
       "buy_ratio": 0.9,
       "consensus_eps_next": 2.495,
-      "implied_target": 249.126,
-      "current_price": 276.9,
-      "upside_pct": -10.03
+      "implied_target": 311.16,
+      "current_price": 260.98,
+      "upside_pct": 19.23,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:26.840826",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300223",
@@ -417,9 +1073,25 @@
       "total_count": 89,
       "buy_ratio": 0.978,
       "consensus_eps_next": 1.45,
-      "implied_target": 91.886,
-      "current_price": 167.57,
-      "upside_pct": -45.17
+      "implied_target": 181.976,
+      "current_price": 161.59,
+      "upside_pct": 12.62,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:27.078812",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "301308",
@@ -427,9 +1099,25 @@
       "total_count": 12,
       "buy_ratio": 1,
       "consensus_eps_next": 2.72,
-      "implied_target": 42.84,
-      "current_price": 575.07,
-      "upside_pct": -92.55
+      "implied_target": 115.977,
+      "current_price": 548.01,
+      "upside_pct": -78.84,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:27.813812",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002156",
@@ -437,9 +1125,25 @@
       "total_count": 121,
       "buy_ratio": 0.967,
       "consensus_eps_next": 1.04,
-      "implied_target": 89.45,
-      "current_price": 74.6,
-      "upside_pct": 19.91
+      "implied_target": 75.621,
+      "current_price": 69.3,
+      "upside_pct": 9.12,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:28.363127",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600584",
@@ -447,9 +1151,25 @@
       "total_count": 134,
       "buy_ratio": 0.955,
       "consensus_eps_next": 1.7,
-      "implied_target": 238.391,
-      "current_price": 90.99,
-      "upside_pct": 162
+      "implied_target": 156.027,
+      "current_price": 84.74,
+      "upside_pct": 84.12,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:28.638426",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002185",
@@ -457,9 +1177,25 @@
       "total_count": 80,
       "buy_ratio": 0.912,
       "consensus_eps_next": 0.4,
-      "implied_target": 76.116,
-      "current_price": 20.22,
-      "upside_pct": 276.44
+      "implied_target": 34.423,
+      "current_price": 21.49,
+      "upside_pct": 60.18,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:29.067700",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002371",
@@ -467,9 +1203,25 @@
       "total_count": 275,
       "buy_ratio": 0.982,
       "consensus_eps_next": 17.26,
-      "implied_target": 1291.048,
-      "current_price": 674.8,
-      "upside_pct": 91.32
+      "implied_target": 1478.561,
+      "current_price": 659,
+      "upside_pct": 124.36,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:29.253955",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688012",
@@ -477,9 +1229,25 @@
       "total_count": 216,
       "buy_ratio": 0.935,
       "consensus_eps_next": 5.18,
-      "implied_target": 415.954,
-      "current_price": 475.29,
-      "upside_pct": -12.48
+      "implied_target": 540.878,
+      "current_price": 453.12,
+      "upside_pct": 19.37,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:29.901090",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688072",
@@ -487,9 +1255,25 @@
       "total_count": 65,
       "buy_ratio": 1,
       "consensus_eps_next": 5.56,
-      "implied_target": 493.394,
-      "current_price": 716.49,
-      "upside_pct": -31.14
+      "implied_target": 642.959,
+      "current_price": 672.61,
+      "upside_pct": -4.41,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:30.334722",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688126",
@@ -497,9 +1281,25 @@
       "total_count": 54,
       "buy_ratio": 0.963,
       "consensus_eps_next": 0.09,
-      "implied_target": -4.102,
-      "current_price": 26.65,
-      "upside_pct": -115.39
+      "implied_target": -5.109,
+      "current_price": 30.61,
+      "upside_pct": -116.69,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:30.881395",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300476",
@@ -507,9 +1307,25 @@
       "total_count": 83,
       "buy_ratio": 0.928,
       "consensus_eps_next": 8.065,
-      "implied_target": 604.633,
-      "current_price": 393.14,
-      "upside_pct": 53.8
+      "implied_target": 635.648,
+      "current_price": 375.3,
+      "upside_pct": 69.37,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:31.612871",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002463",
@@ -517,9 +1333,25 @@
       "total_count": 167,
       "buy_ratio": 0.994,
       "consensus_eps_next": 2.3,
-      "implied_target": 118.128,
-      "current_price": 132.61,
-      "upside_pct": -10.92
+      "implied_target": 136.899,
+      "current_price": 133.06,
+      "upside_pct": 2.89,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:32.540846",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002916",
@@ -527,9 +1359,25 @@
       "total_count": 170,
       "buy_ratio": 0.9,
       "consensus_eps_next": 5.985,
-      "implied_target": 495.139,
-      "current_price": 413.06,
-      "upside_pct": 19.87
+      "implied_target": 446.744,
+      "current_price": 398.28,
+      "upside_pct": 12.17,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:32.789092",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002938",
@@ -537,19 +1385,51 @@
       "total_count": 117,
       "buy_ratio": 0.932,
       "consensus_eps_next": 2.18,
-      "implied_target": 300.251,
-      "current_price": 109.98,
-      "upside_pct": 173.01
+      "implied_target": 144.287,
+      "current_price": 106,
+      "upside_pct": 36.12,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:33.258274",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600183",
-      "buy_count": 134,
-      "total_count": 137,
+      "buy_count": 135,
+      "total_count": 138,
       "buy_ratio": 0.978,
-      "consensus_eps_next": 1.61,
-      "implied_target": 113.634,
-      "current_price": 134.6,
-      "upside_pct": -15.58
+      "consensus_eps_next": 1.615,
+      "implied_target": 135.453,
+      "current_price": 135.64,
+      "upside_pct": -0.14,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:33.704742",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002436",
@@ -557,9 +1437,25 @@
       "total_count": 92,
       "buy_ratio": 1,
       "consensus_eps_next": 0.29,
-      "implied_target": 248.165,
-      "current_price": 37.75,
-      "upside_pct": 557.39
+      "implied_target": 124.116,
+      "current_price": 36.34,
+      "upside_pct": 241.54,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:34.329967",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688261",
@@ -567,9 +1463,25 @@
       "total_count": 42,
       "buy_ratio": 1,
       "consensus_eps_next": 1.555,
-      "implied_target": 809.766,
-      "current_price": 94.45,
-      "upside_pct": 757.35
+      "implied_target": 443.098,
+      "current_price": 102.2,
+      "upside_pct": 333.56,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:34.836504",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688019",
@@ -577,9 +1489,25 @@
       "total_count": 52,
       "buy_ratio": 0.808,
       "consensus_eps_next": 6.939,
-      "implied_target": 485.244,
-      "current_price": 331.94,
-      "upside_pct": 46.18
+      "implied_target": 447.335,
+      "current_price": 303,
+      "upside_pct": 47.64,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:35.532582",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "002409",
@@ -587,9 +1515,25 @@
       "total_count": 61,
       "buy_ratio": 0.967,
       "consensus_eps_next": 3.2,
-      "implied_target": 175.136,
-      "current_price": 122.67,
-      "upside_pct": 42.77
+      "implied_target": 174.514,
+      "current_price": 115.36,
+      "upside_pct": 51.28,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:36.016463",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688981",
@@ -597,19 +1541,51 @@
       "total_count": 104,
       "buy_ratio": 0.933,
       "consensus_eps_next": 0.775,
-      "implied_target": 171.942,
-      "current_price": 150.75,
-      "upside_pct": 14.06
+      "implied_target": 189.178,
+      "current_price": 153.7,
+      "upside_pct": 23.08,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:36.497885",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600941",
-      "buy_count": 77,
-      "total_count": 79,
+      "buy_count": 78,
+      "total_count": 80,
       "buy_ratio": 0.975,
       "consensus_eps_next": 7.3,
-      "implied_target": 129.94,
-      "current_price": 96.41,
-      "upside_pct": 34.78
+      "implied_target": 114.359,
+      "current_price": 98.18,
+      "upside_pct": 16.48,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:36.748521",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "601728",
@@ -617,9 +1593,25 @@
       "total_count": 47,
       "buy_ratio": 0.979,
       "consensus_eps_next": 0.42,
-      "implied_target": 7.741,
-      "current_price": 5.92,
-      "upside_pct": 30.76
+      "implied_target": 7.245,
+      "current_price": 5.97,
+      "upside_pct": 21.36,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:37.168388",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688082",
@@ -627,19 +1619,51 @@
       "total_count": 67,
       "buy_ratio": 0.985,
       "consensus_eps_next": 4.28,
-      "implied_target": 1213.209,
-      "current_price": 245.02,
-      "upside_pct": 395.15
+      "implied_target": 401.742,
+      "current_price": 243.88,
+      "upside_pct": 64.73,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:37.496897",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "300346",
-      "buy_count": 5,
-      "total_count": 5,
+      "buy_count": 6,
+      "total_count": 6,
       "buy_ratio": 1,
-      "consensus_eps_next": 0.65,
-      "implied_target": 52.728,
-      "current_price": 58.31,
-      "upside_pct": -9.57
+      "consensus_eps_next": 0.62,
+      "implied_target": 71.228,
+      "current_price": 57.91,
+      "upside_pct": 23,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:38.192244",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600703",
@@ -648,8 +1672,21 @@
       "buy_ratio": 0.953,
       "consensus_eps_next": null,
       "implied_target": null,
-      "current_price": 16.95,
-      "upside_pct": null
+      "current_price": 16.85,
+      "upside_pct": null,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:38.426512",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report"
+      }
     },
     {
       "symbol": "300666",
@@ -657,9 +1694,25 @@
       "total_count": 86,
       "buy_ratio": 0.919,
       "consensus_eps_next": 2.485,
-      "implied_target": 152.778,
-      "current_price": 194.41,
-      "upside_pct": -21.41
+      "implied_target": 242.511,
+      "current_price": 203.05,
+      "upside_pct": 19.43,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:38.840139",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600050",
@@ -667,9 +1720,25 @@
       "total_count": 131,
       "buy_ratio": 0.878,
       "consensus_eps_next": 0.36,
-      "implied_target": 5.742,
-      "current_price": 4.36,
-      "upside_pct": 31.7
+      "implied_target": 5.655,
+      "current_price": 4.35,
+      "upside_pct": 30,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:39.291341",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "600667",
@@ -677,9 +1746,25 @@
       "total_count": 33,
       "buy_ratio": 0.636,
       "consensus_eps_next": 0.585,
-      "implied_target": 34.585,
-      "current_price": 14.6,
-      "upside_pct": 136.88
+      "implied_target": 36.31,
+      "current_price": 13.63,
+      "upside_pct": 166.4,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:39.597595",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688120",
@@ -687,9 +1772,25 @@
       "total_count": 67,
       "buy_ratio": 0.985,
       "consensus_eps_next": 6.75,
-      "implied_target": 708.75,
-      "current_price": 293.7,
-      "upside_pct": 141.32
+      "implied_target": 596.999,
+      "current_price": 274.5,
+      "upside_pct": 117.49,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:40.292241",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "688037",
@@ -697,9 +1798,25 @@
       "total_count": 76,
       "buy_ratio": 0.934,
       "consensus_eps_next": 2.49,
-      "implied_target": 9840.331,
-      "current_price": 275.1,
-      "upside_pct": 3477
+      "implied_target": 1871.825,
+      "current_price": 263.05,
+      "upside_pct": 611.59,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:40.867094",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "603228",
@@ -707,9 +1824,25 @@
       "total_count": 60,
       "buy_ratio": 0.883,
       "consensus_eps_next": 2.075,
-      "implied_target": 187.02,
-      "current_price": 85.18,
-      "upside_pct": 119.56
+      "implied_target": 145.745,
+      "current_price": 81.22,
+      "upside_pct": 79.44,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:41.327725",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     },
     {
       "symbol": "000021",
@@ -718,8 +1851,21 @@
       "buy_ratio": 0.944,
       "consensus_eps_next": null,
       "implied_target": null,
-      "current_price": 45,
-      "upside_pct": null
+      "current_price": 42.65,
+      "upside_pct": null,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:41.479102",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report"
+      }
     },
     {
       "symbol": "600845",
@@ -727,9 +1873,545 @@
       "total_count": 212,
       "buy_ratio": 0.976,
       "consensus_eps_next": 1.84,
-      "implied_target": 72.625,
-      "current_price": 20.97,
-      "upside_pct": 246.33
+      "implied_target": 89.169,
+      "current_price": 20.96,
+      "upside_pct": 325.42,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:41.801645",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688521",
+      "buy_count": 70,
+      "total_count": 74,
+      "buy_ratio": 0.946,
+      "consensus_eps_next": 0.29,
+      "implied_target": -62.329,
+      "current_price": 264.95,
+      "upside_pct": -123.52,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:42.215227",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688347",
+      "buy_count": 14,
+      "total_count": 15,
+      "buy_ratio": 0.933,
+      "consensus_eps_next": 0.645,
+      "implied_target": 567.075,
+      "current_price": 249.65,
+      "upside_pct": 127.15,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:42.636750",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688200",
+      "buy_count": 95,
+      "total_count": 96,
+      "buy_ratio": 0.99,
+      "consensus_eps_next": 4.16,
+      "implied_target": 421.677,
+      "current_price": 425,
+      "upside_pct": -0.78,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:43.636405",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "300054",
+      "buy_count": 125,
+      "total_count": 129,
+      "buy_ratio": 0.969,
+      "consensus_eps_next": 0.94,
+      "implied_target": 80.04,
+      "current_price": 74.56,
+      "upside_pct": 7.35,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:44.065263",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "600406",
+      "buy_count": 134,
+      "total_count": 148,
+      "buy_ratio": 0.905,
+      "consensus_eps_next": 1.2,
+      "implied_target": 29.076,
+      "current_price": 25.1,
+      "upside_pct": 15.84,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:44.402300",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688234",
+      "buy_count": 38,
+      "total_count": 39,
+      "buy_ratio": 0.974,
+      "consensus_eps_next": 1.125,
+      "implied_target": -321.499,
+      "current_price": 163.55,
+      "upside_pct": -296.58,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:44.563197",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688469",
+      "buy_count": 10,
+      "total_count": 12,
+      "buy_ratio": 0.833,
+      "consensus_eps_next": 0.01,
+      "implied_target": -1.503,
+      "current_price": 8.98,
+      "upside_pct": -116.74,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:44.835793",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "300548",
+      "buy_count": 33,
+      "total_count": 40,
+      "buy_ratio": 0.825,
+      "consensus_eps_next": 0.92,
+      "implied_target": 171.687,
+      "current_price": 240.15,
+      "upside_pct": -28.51,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:45.257531",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "600641",
+      "buy_count": 47,
+      "total_count": 49,
+      "buy_ratio": 0.959,
+      "consensus_eps_next": 0.35,
+      "implied_target": -75.434,
+      "current_price": 28,
+      "upside_pct": -369.41,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:45.928654",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "300913",
+      "buy_count": 3,
+      "total_count": 3,
+      "buy_ratio": 1,
+      "consensus_eps_next": 0.8,
+      "implied_target": 57.557,
+      "current_price": 51.91,
+      "upside_pct": 10.88,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:46.220866",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688498",
+      "buy_count": 37,
+      "total_count": 42,
+      "buy_ratio": 0.881,
+      "consensus_eps_next": 2.57,
+      "implied_target": 1026.437,
+      "current_price": 1142.18,
+      "upside_pct": -10.13,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:46.575797",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688268",
+      "buy_count": 39,
+      "total_count": 43,
+      "buy_ratio": 0.907,
+      "consensus_eps_next": 3.035,
+      "implied_target": 456.389,
+      "current_price": 152.3,
+      "upside_pct": 199.66,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:46.790245",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688525",
+      "buy_count": 16,
+      "total_count": 18,
+      "buy_ratio": 0.889,
+      "consensus_eps_next": 1.835,
+      "implied_target": 70.794,
+      "current_price": 323.62,
+      "upside_pct": -78.12,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:47.234847",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688668",
+      "buy_count": 26,
+      "total_count": 26,
+      "buy_ratio": 1,
+      "consensus_eps_next": 2.14,
+      "implied_target": 337.852,
+      "current_price": 303.75,
+      "upside_pct": 11.23,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:47.429627",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "002851",
+      "buy_count": 81,
+      "total_count": 86,
+      "buy_ratio": 0.942,
+      "consensus_eps_next": 1.87,
+      "implied_target": 962.011,
+      "current_price": 135.49,
+      "upside_pct": 610.02,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:47.730587",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "300570",
+      "buy_count": 28,
+      "total_count": 29,
+      "buy_ratio": 0.966,
+      "consensus_eps_next": 2.7175,
+      "implied_target": 368.549,
+      "current_price": 170.4,
+      "upside_pct": 116.28,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:48.019190",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "000034",
+      "buy_count": 96,
+      "total_count": 98,
+      "buy_ratio": 0.98,
+      "consensus_eps_next": 2.9,
+      "implied_target": 143.001,
+      "current_price": 26.27,
+      "upside_pct": 444.35,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:48.488018",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688535",
+      "buy_count": 9,
+      "total_count": 11,
+      "buy_ratio": 0.818,
+      "consensus_eps_next": 1.04,
+      "implied_target": 623.179,
+      "current_price": 129.03,
+      "upside_pct": 382.97,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:48.732801",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "688361",
+      "buy_count": 24,
+      "total_count": 27,
+      "buy_ratio": 0.889,
+      "consensus_eps_next": 1.17,
+      "implied_target": 16870.459,
+      "current_price": 232.7,
+      "upside_pct": 7149.87,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:49.107159",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
+    },
+    {
+      "symbol": "603650",
+      "buy_count": 52,
+      "total_count": 57,
+      "buy_ratio": 0.912,
+      "consensus_eps_next": 1.245,
+      "implied_target": 75.075,
+      "current_price": 57.23,
+      "upside_pct": 31.18,
+      "source": "akshare_primary",
+      "fetched_at": "2026-05-28T20:02:49.409367",
+      "error": null,
+      "warnings": [
+        "current_price is latest daily close from AkShare stock_value_em, not realtime"
+      ],
+      "field_sources": {
+        "current_price": "akshare_stock_value_em_close",
+        "pe_ttm": "akshare_stock_value_em",
+        "buy_count": "akshare_research_report",
+        "total_count": "akshare_research_report",
+        "buy_ratio": "akshare_research_report",
+        "consensus_eps_next": "akshare_research_report",
+        "implied_target": "derived_eps_pe",
+        "upside_pct": "derived_target_price"
+      }
     }
   ]
 }
