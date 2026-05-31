@@ -7,10 +7,9 @@ AGENTS_DIR="${HOME}/Library/LaunchAgents"
 LOG_DIR="${HOME}/Library/Logs/topkyo-ai-infra"
 
 UV_BIN="${UV_BIN:-$(command -v uv 2>/dev/null || echo "${HOME}/.local/bin/uv")}"
-if [[ -z "${NODE_BIN:-}" ]]; then
-  NODE_BIN="$(ls -1 "${HOME}/.nvm/versions/node/"*/bin/node 2>/dev/null | sort -V | tail -1 || true)"
-fi
-NODE_BIN="${NODE_BIN:-$(command -v node 2>/dev/null || true)}"
+# shellcheck source=scripts/resolve-node.sh
+source "${REPO_ROOT}/scripts/resolve-node.sh"
+NODE_BIN="$(resolve_node_bin)"
 NPM_BIN="$(dirname "${NODE_BIN}")/npm"
 
 if [[ ! -x "${UV_BIN}" ]]; then
@@ -108,13 +107,7 @@ if [[ ! -f "${REPO_ROOT}/web/.next/BUILD_ID" ]]; then
   (cd "${REPO_ROOT}/web" && "${NPM_BIN}" run build)
 fi
 
-echo "rebuilding native modules for ${NODE_BIN}..."
-(
-  export PATH="$(dirname "${NODE_BIN}"):/usr/bin:/bin"
-  cd "${REPO_ROOT}/web/node_modules/better-sqlite3"
-  rm -rf build
-  npm run build-release
-)
+bash "${REPO_ROOT}/scripts/rebuild-native-modules.sh"
 
 ENV_XML="  <key>EnvironmentVariables</key>
   <dict>
